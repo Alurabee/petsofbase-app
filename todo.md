@@ -104,3 +104,10 @@
 - [x] Re-enable image-to-image generation to preserve pet's color and features
 - [x] Update prompts to emphasize "preserve appearance, change style only"
 - [x] Add explicit anti-text instructions while using original image as reference
+
+## Homepage Redesign
+- [x] Add before/after showcase section with user's dog transformation
+- [x] Create style showcase grid displaying all 5 artistic styles
+- [x] Update logo to be more fun and pet-themed
+- [x] Add social proof section highlighting community engagement
+- [x] Copy example images to project public folder
