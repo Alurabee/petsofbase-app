@@ -157,12 +157,42 @@ export default function MyPets() {
                       Generate PFP
                     </Button>
                   ) : !pet.nftTokenId ? (
-                    <Button
-                      asChild
-                      className="w-full bg-base-gradient hover:opacity-90"
-                    >
-                      <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
-                    </Button>
+                    <>
+                      {/* Generation Counter */}
+                      {pet.generationCount !== undefined && (
+                        <div className="bg-blue-50 border border-blue-200 p-2 rounded text-xs text-center">
+                          <strong className="text-blue-800">
+                            {pet.generationCount}/2 free generations used
+                          </strong>
+                          {pet.generationCount >= 2 && (
+                            <span className="text-blue-600 block mt-0.5">
+                              Additional: $0.10 USDC each
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Try Different Style Button */}
+                      <Button
+                        onClick={() => setSelectedPet(pet.id)}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Try Different Style
+                        {pet.generationCount !== undefined && pet.generationCount >= 2 && (
+                          <span className="ml-2 text-xs">($0.10 USDC)</span>
+                        )}
+                      </Button>
+
+                      {/* Mint Button */}
+                      <Button
+                        asChild
+                        className="w-full bg-base-gradient hover:opacity-90"
+                      >
+                        <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
+                      </Button>
+                    </>
                   ) : (
                     <Button asChild variant="outline" className="w-full">
                       <Link href={`/pet/${pet.id}`}>View Profile</Link>

@@ -95,3 +95,12 @@
 - [x] Fix AI prompts to prevent text/labels from appearing in generated images
 - [x] Add "Try Different Style" button to Pet Detail page (not just Mint page)
 - [x] Remove any mention of "border" or "color" from AI prompts to avoid text generation
+
+## UX Improvement
+- [x] Add "Try Different Style" button to My Pets page (currently only on Pet Detail page)
+- [x] Show generation counter on My Pets page pet cards
+
+## Bug Fix: AI Not Preserving Pet Appearance
+- [x] Re-enable image-to-image generation to preserve pet's color and features
+- [x] Update prompts to emphasize "preserve appearance, change style only"
+- [x] Add explicit anti-text instructions while using original image as reference

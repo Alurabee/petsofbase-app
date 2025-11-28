@@ -35,10 +35,12 @@ export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<st
   // Get the style-specific rendering instructions
   const styleDescription = stylePrompts[style];
   
-  // Build the complete prompt - NO mention of borders, colors, or text to avoid AI adding labels
-  let prompt = `${subjectDescription} ${styleDescription} `;
-  prompt += `Centered composition, facing forward, professional quality portrait, suitable for a profile picture. `;
-  prompt += `Clean image with no text, no labels, no watermarks, no borders.`;
+  // Build the complete prompt - emphasize preserving appearance while changing style
+  let prompt = `Transform this pet photo into ${styleDescription}. `;
+  prompt += `IMPORTANT: Preserve the pet's exact coloring, markings, and distinctive features. Only change the artistic style, not the pet's appearance. `;
+  prompt += `${subjectDescription} `;
+  prompt += `Centered composition, facing forward, professional quality portrait. `;
+  prompt += `Absolutely NO text, NO labels, NO watermarks, NO color codes, NO words anywhere in the image.`;
   
   console.log("[Image Generation] Pet description:", subjectDescription);
   console.log("[Image Generation] Style:", style);
@@ -46,11 +48,14 @@ export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<st
   console.log("[Image Generation] Generating PFP with prompt:", prompt);
 
   try {
-    // Generate a new image from scratch (not editing) for stronger artistic transformation
-    // The original image URL is not used to avoid subtle edits - we want full artistic rendering
+    // Use image-to-image generation to preserve pet's appearance while applying style
     const result = await generateImageCore({
       prompt,
-      // Do NOT use originalImages - we want pure generation, not editing
+      // Use original image as reference to preserve pet's features and coloring
+      originalImages: originalImageUrl ? [{
+        url: originalImageUrl,
+        mimeType: "image/jpeg"
+      }] : undefined,
     });
 
     if (!result.url) {
