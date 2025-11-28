@@ -122,6 +122,8 @@
 ## Logo Update
 - [x] Create flat 2D front-facing version of glassmorphism logo with transparent background
 - [x] Replace current logo with new flat version
+- [x] Fix logo background - ensure truly transparent (not black) for white navigation bar
+- [x] Add mobile-responsive navigation with hamburger menu
 
 ## PFP Version History Feature
 - [ ] Add database schema to store all generated PFP versions (not just latest)
