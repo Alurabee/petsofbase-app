@@ -77,3 +77,13 @@
 - [ ] Add X402 payment ($0.10 USDC) for 3rd+ generations (backend ready, needs payment endpoint)
 - [x] Show generation counter in UI (e.g., "1/2 free generations remaining")
 - [x] Update MyPets page to display generation limit status
+
+## Bug Fix
+- [x] Fix nested div inside p tag on Mint page (/mint/:id)
+
+## New Features: Regeneration UX Improvements
+- [x] Add "Try Different Style" button on Mint page
+- [x] Show generation count and remaining free generations on Mint page
+- [x] Create X402 payment endpoint for paid regenerations ($0.10 USDC)
+- [x] Integrate X402 payment for 3rd+ generations
+- [x] Handle payment flow in frontend for paid regenerations
