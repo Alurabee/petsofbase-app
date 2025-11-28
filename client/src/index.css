@@ -43,8 +43,8 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
+  --primary: oklch(0.55 0.25 264); /* Base Blue #0052FF */
+  --primary-foreground: oklch(0.985 0 0);
   --sidebar-primary: var(--color-blue-600);
   --sidebar-primary-foreground: var(--color-blue-50);
   --chart-1: var(--color-blue-300);
@@ -69,7 +69,7 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
+  --ring: oklch(0.55 0.25 264); /* Base Blue ring */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.235 0.015 65);
   --sidebar-accent: oklch(0.967 0.001 286.375);
@@ -79,8 +79,8 @@
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
+  --primary: oklch(0.55 0.25 264); /* Base Blue #0052FF */
+  --primary-foreground: oklch(0.985 0 0);
   --sidebar-primary: var(--color-blue-500);
   --sidebar-primary-foreground: var(--color-blue-50);
   --background: oklch(0.141 0.005 285.823);
@@ -99,7 +99,7 @@
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
+  --ring: oklch(0.55 0.25 264); /* Base Blue ring */
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);
   --chart-3: var(--color-blue-600);
@@ -173,5 +173,27 @@
       padding-right: 2rem;
       max-width: 1280px; /* Standard content width */
     }
+  }
+
+  /* Base gradient utilities */
+  .bg-base-gradient {
+    background: linear-gradient(135deg, #0052FF 0%, #0066FF 100%);
+  }
+  
+  .bg-base-gradient-soft {
+    background: linear-gradient(135deg, rgba(0, 82, 255, 0.1) 0%, rgba(0, 102, 255, 0.05) 100%);
+  }
+  
+  .text-base-gradient {
+    background: linear-gradient(135deg, #0052FF 0%, #0066FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Pet card blue border */
+  .pet-card-border {
+    border: 4px solid #0052FF;
+    box-shadow: 0 0 20px rgba(0, 82, 255, 0.3);
   }
 }

@@ -1,0 +1,62 @@
+# PetsOfBase TODO
+
+## Phase 1: Core Infrastructure & Setup
+- [x] Research and document X402 payment protocol integration
+- [x] Set up database schema for pets, votes, and leaderboard
+- [x] Configure S3 storage for pet images (pre-configured in template)
+- [x] Design and implement ERC-721 smart contract for Pet PFP NFTs
+
+## Phase 2: Pet Upload & Profile Creation
+- [x] Create pet upload form (image, name, personality traits, likes/dislikes)
+- [x] Implement image upload to S3 with proper file handling
+- [x] Create pet info card component with blue border styling
+- [x] Store pet metadata in database
+
+## Phase 3: AI Image Generation
+- [x] Integrate DALL-E 3 API for Pixar-style pet image generation
+- [x] Implement multiple style options for pet PFPs (Pixar, Cartoon, Realistic, Anime, Watercolor)
+- [x] Create PFP preview and selection UI
+- [x] Store generated PFP URLs in database
+
+## Phase 4: X402 Payment Integration
+- [x] Install and configure X402 payment middleware
+- [x] Create protected API endpoint for NFT minting with $0.25 USDC fee
+- [x] Implement payment verification flow
+- [ ] Test payment flow on Base testnet (requires deployed contract)
+
+## Phase 5: NFT Minting
+- [ ] Deploy ERC-721 smart contract to Base testnet (requires user action)
+- [x] Implement NFT minting logic in backend
+- [x] Store NFT metadata (tokenId, contract address, owner)
+- [x] Create minting confirmation UI
+
+## Phase 6: Leaderboard & Voting
+- [x] Create leaderboard database schema (votes, rankings)
+- [x] Implement voting mechanism (one vote per user per pet)
+- [x] Build leaderboard UI with sorting by votes
+- [ ] Add real-time vote count updates
+
+## Phase 7: Community Features
+- [x] Display all pets in a gallery view
+- [x] Implement pet profile pages with full info cards
+- [ ] Add social sharing functionality
+- [ ] Create "trending" and "new" pet filters
+
+## Phase 8: Testing & Polish
+- [ ] Write vitest tests for all tRPC procedures
+- [ ] Test complete user flow (upload → generate → pay → mint → vote)
+- [ ] Optimize image loading and performance
+- [ ] Add error handling and user feedback
+- [ ] Test on Base mainnet
+
+## Phase 9: Base Mini-App Integration
+- [ ] Configure minikit.config.ts with app metadata
+- [ ] Create account association credentials
+- [ ] Test app preview in Base app
+- [ ] Prepare deployment to Vercel
+
+## Phase 10: Launch Preparation
+- [ ] Final security audit
+- [ ] Set pricing to $0.25 USDC
+- [ ] Create launch announcement content
+- [ ] Deploy to production

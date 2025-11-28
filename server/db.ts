@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, pets, votes, InsertPet, InsertVote } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,110 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============ Pet Functions ============
+
+export async function createPet(pet: InsertPet) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(pets).values(pet);
+  return result;
+}
+
+export async function getPetById(petId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.select().from(pets).where(eq(pets.id, petId)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getPetsByUserId(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select().from(pets).where(eq(pets.userId, userId)).orderBy(desc(pets.createdAt));
+}
+
+export async function getAllPets(limit = 50, offset = 0) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select().from(pets).orderBy(desc(pets.createdAt)).limit(limit).offset(offset);
+}
+
+export async function getLeaderboard(limit = 20) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select().from(pets).orderBy(desc(pets.voteCount), desc(pets.createdAt)).limit(limit);
+}
+
+export async function updatePet(petId: number, updates: Partial<InsertPet>) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.update(pets).set(updates).where(eq(pets.id, petId));
+}
+
+// ============ Vote Functions ============
+
+export async function createVote(vote: InsertVote) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  try {
+    // Insert vote
+    await db.insert(votes).values(vote);
+    
+    // Increment vote count on pet
+    await db.update(pets)
+      .set({ voteCount: sql`${pets.voteCount} + 1` })
+      .where(eq(pets.id, vote.petId));
+    
+    return true;
+  } catch (error) {
+    // Unique constraint violation (user already voted)
+    if ((error as any).code === 'ER_DUP_ENTRY') {
+      return false;
+    }
+    throw error;
+  }
+}
+
+export async function hasUserVotedForPet(userId: number, petId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.select()
+    .from(votes)
+    .where(sql`${votes.userId} = ${userId} AND ${votes.petId} = ${petId}`)
+    .limit(1);
+  
+  return result.length > 0;
+}
+
+export async function getUserVotes(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select().from(votes).where(eq(votes.userId, userId));
+}

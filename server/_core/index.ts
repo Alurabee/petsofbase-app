@@ -4,6 +4,10 @@ import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
+import { x402Middleware, checkX402Configuration } from "../x402Payment";
+import { mintPetNFT, generateNFTMetadata, checkNFTContractStatus } from "../nftMinting";
+import { storagePut } from "../storage";
+import { getPetById, updatePet } from "../db";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -35,6 +39,76 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // Check X402 and NFT configuration on startup
+  checkX402Configuration();
+  checkNFTContractStatus();
+
+  // X402 Payment-protected NFT minting endpoint
+  app.post("/api/mint-nft", x402Middleware, async (req, res) => {
+    try {
+      const { petId, walletAddress } = req.body;
+
+      if (!petId || !walletAddress) {
+        return res.status(400).json({ error: "Missing petId or walletAddress" });
+      }
+
+      // Get pet from database
+      const pet = await getPetById(petId);
+      if (!pet) {
+        return res.status(404).json({ error: "Pet not found" });
+      }
+
+      if (!pet.pfpImageUrl) {
+        return res.status(400).json({ error: "Pet does not have a generated PFP" });
+      }
+
+      if (pet.nftTokenId) {
+        return res.status(400).json({ error: "Pet already minted as NFT" });
+      }
+
+      // Generate NFT metadata
+      const metadata = generateNFTMetadata(pet, pet.pfpImageUrl);
+      const metadataJson = JSON.stringify(metadata, null, 2);
+
+      // Upload metadata to S3
+      const metadataKey = `pets/${pet.userId}/${pet.id}/metadata.json`;
+      const { url: metadataUri } = await storagePut(
+        metadataKey,
+        Buffer.from(metadataJson, "utf-8"),
+        "application/json"
+      );
+
+      // Mint NFT on Base
+      const mintResult = await mintPetNFT({
+        petId: pet.id,
+        ownerAddress: walletAddress,
+        metadataUri,
+      });
+
+      if (!mintResult.success) {
+        return res.status(500).json({ error: mintResult.error || "Failed to mint NFT" });
+      }
+
+      // Update pet record with NFT data
+      await updatePet(pet.id, {
+        nftTokenId: mintResult.tokenId!,
+        nftContractAddress: mintResult.contractAddress!,
+        nftTransactionHash: mintResult.transactionHash!,
+      });
+
+      return res.json({
+        success: true,
+        tokenId: mintResult.tokenId,
+        transactionHash: mintResult.transactionHash,
+        contractAddress: mintResult.contractAddress,
+        metadataUri,
+      });
+    } catch (error: any) {
+      console.error("[Mint NFT] Error:", error);
+      return res.status(500).json({ error: error.message || "Internal server error" });
+    }
+  });
   // tRPC API
   app.use(
     "/api/trpc",
