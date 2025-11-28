@@ -1,6 +1,6 @@
 import { eq, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, pets, votes, InsertPet, InsertVote } from "../drizzle/schema";
+import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -195,4 +195,66 @@ export async function getUserVotes(userId: number) {
   }
 
   return await db.select().from(votes).where(eq(votes.userId, userId));
+}
+
+// ============ PFP Version Functions ============
+
+export async function createPfpVersion(version: InsertPfpVersion) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Unselect all previous versions for this pet
+  await db.update(pfpVersions)
+    .set({ isSelected: 0 })
+    .where(eq(pfpVersions.petId, version.petId));
+
+  // Insert new version
+  const result = await db.insert(pfpVersions).values(version);
+  return result;
+}
+
+export async function getPfpVersionsByPetId(petId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select()
+    .from(pfpVersions)
+    .where(eq(pfpVersions.petId, petId))
+    .orderBy(desc(pfpVersions.generationNumber));
+}
+
+export async function selectPfpVersion(versionId: number, petId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Unselect all versions for this pet
+  await db.update(pfpVersions)
+    .set({ isSelected: 0 })
+    .where(eq(pfpVersions.petId, petId));
+
+  // Select the chosen version
+  await db.update(pfpVersions)
+    .set({ isSelected: 1 })
+    .where(eq(pfpVersions.id, versionId));
+
+  // Get the selected version's image URL
+  const version = await db.select()
+    .from(pfpVersions)
+    .where(eq(pfpVersions.id, versionId))
+    .limit(1);
+
+  if (version.length > 0) {
+    // Update pet's pfpImageUrl to the selected version
+    await db.update(pets)
+      .set({ pfpImageUrl: version[0].imageUrl })
+      .where(eq(pets.id, petId));
+  }
+
+  return version.length > 0 ? version[0] : undefined;
 }

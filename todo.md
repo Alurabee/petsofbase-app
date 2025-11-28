@@ -125,9 +125,13 @@
 - [x] Fix logo background - ensure truly transparent (not black) for white navigation bar
 - [x] Add mobile-responsive navigation with hamburger menu
 - [x] Fix logo checkerboard pattern - replaced transparency with white background
+- [x] Make logo perfectly square (1024x1024) for Base app requirements
 
 ## PFP Version History Feature
-- [ ] Add database schema to store all generated PFP versions (not just latest)
-- [ ] Create "View Previous Versions" UI on pet detail/mint pages
-- [ ] Allow users to select which version to mint from history
-- [ ] Show generation timestamps and style info for each version
+- [x] Add database schema to store all generated PFP versions (not just latest)
+- [x] Create backend procedures to save and retrieve versions
+- [x] Update generatePFP to save each version
+- [x] Create "View Previous Versions" UI on pet detail pages
+- [x] Add version selection functionality
+- [x] Allow users to select which version to mint from history
+- [x] Show generation timestamps and style info for each version

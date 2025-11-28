@@ -12,7 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trpc } from "@/lib/trpc";
-import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles } from "lucide-react";
+import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check } from "lucide-react";
 import { useParams, useLocation, Link } from "wouter";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -25,6 +25,7 @@ export default function PetDetail() {
   const [showStylePicker, setShowStylePicker] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
   const [regenerating, setRegenerating] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
 
   const { data: pet, isLoading, refetch } = trpc.pets.getById.useQuery(
     { id: petId },
@@ -37,6 +38,11 @@ export default function PetDetail() {
     { enabled: isAuthenticated && petId > 0 }
   );
 
+  const { data: versions, refetch: refetchVersions } = trpc.pfpVersions.getByPetId.useQuery(
+    { petId },
+    { enabled: petId > 0 }
+  );
+
   const utils = trpc.useUtils();
   const voteMutation = trpc.votes.vote.useMutation({
     onSuccess: () => {
@@ -46,6 +52,18 @@ export default function PetDetail() {
     },
     onError: (error) => {
       toast.error(error.message || "Failed to vote");
+    },
+  });
+
+  const selectVersionMutation = trpc.pfpVersions.selectVersion.useMutation({
+    onSuccess: () => {
+      toast.success("Version selected!");
+      refetch();
+      refetchVersions();
+      setShowVersionHistory(false);
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to select version");
     },
   });
 
@@ -318,18 +336,31 @@ export default function PetDetail() {
                     )}
 
                     {/* Try Different Style Button */}
-                    <Button
-                      onClick={() => setShowStylePicker(true)}
-                      disabled={regenerating}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Try Different Style
-                      {pet.generationCount !== undefined && pet.generationCount >= 2 && (
-                        <span className="ml-2 text-xs">($0.10 USDC)</span>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button
+                        onClick={() => setShowStylePicker(true)}
+                        disabled={regenerating}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Sparkles className="w-4 h-4 mr-2" />
+                        Try Style
+                        {pet.generationCount !== undefined && pet.generationCount >= 2 && (
+                          <span className="ml-2 text-xs">($0.10)</span>
+                        )}
+                      </Button>
+                      
+                      {versions && versions.length > 0 && (
+                        <Button
+                          onClick={() => setShowVersionHistory(true)}
+                          variant="outline"
+                          className="w-full"
+                        >
+                          <History className="w-4 h-4 mr-2" />
+                          History ({versions.length})
+                        </Button>
                       )}
-                    </Button>
+                    </div>
 
                     <Button
                       asChild
@@ -411,6 +442,80 @@ export default function PetDetail() {
               {regenerating ? "Regenerating..." : "Regenerate PFP"}
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Version History Dialog */}
+      <Dialog open={showVersionHistory} onOpenChange={setShowVersionHistory}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>PFP Version History</DialogTitle>
+            <DialogDescription>
+              View all generated versions and select which one to use for your NFT.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4">
+            {versions?.map((version) => (
+              <div
+                key={version.id}
+                className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                  version.isSelected
+                    ? "border-primary ring-2 ring-primary ring-offset-2"
+                    : "border-border hover:border-primary/50"
+                }`}
+                onClick={() => {
+                  if (!version.isSelected) {
+                    selectVersionMutation.mutate({
+                      versionId: version.id,
+                      petId: petId,
+                    });
+                  }
+                }}
+              >
+                <img
+                  src={version.imageUrl}
+                  alt={`Version ${version.generationNumber}`}
+                  className="w-full aspect-square object-cover"
+                />
+                
+                {/* Selected Badge */}
+                {version.isSelected && (
+                  <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    Selected
+                  </div>
+                )}
+                
+                {/* Version Info Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-2 text-xs">
+                  <div className="font-bold">Version #{version.generationNumber}</div>
+                  {version.prompt && (
+                    <div className="text-white/80 truncate">{version.prompt}</div>
+                  )}
+                  <div className="text-white/60 text-[10px] mt-1">
+                    {new Date(version.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+                
+                {/* Hover Overlay */}
+                {!version.isSelected && (
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-all flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-bold transition-opacity">
+                      Select This Version
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {(!versions || versions.length === 0) && (
+            <div className="text-center py-8 text-muted-foreground">
+              <History className="w-12 h-12 mx-auto mb-2 opacity-50" />
+              <p>No version history yet. Generate your first PFP!</p>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

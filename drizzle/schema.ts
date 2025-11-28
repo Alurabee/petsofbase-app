@@ -60,3 +60,20 @@ export const votes = mysqlTable("votes", {
 
 export type Vote = typeof votes.$inferSelect;
 export type InsertVote = typeof votes.$inferInsert;
+
+/**
+ * PFP Versions table - stores all generated PFP versions for each pet
+ * Allows users to view history and select which version to use
+ */
+export const pfpVersions = mysqlTable("pfpVersions", {
+  id: int("id").autoincrement().primaryKey(),
+  petId: int("petId").notNull(), // Pet this version belongs to
+  imageUrl: varchar("imageUrl", { length: 500 }).notNull(), // S3 URL of generated PFP
+  prompt: text("prompt"), // AI prompt used for generation
+  isSelected: int("isSelected").default(0).notNull(), // 1 if this is the currently selected version, 0 otherwise
+  generationNumber: int("generationNumber").notNull(), // Sequential number (1, 2, 3...)
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PfpVersion = typeof pfpVersions.$inferSelect;
+export type InsertPfpVersion = typeof pfpVersions.$inferInsert;

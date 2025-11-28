@@ -143,6 +143,18 @@ export const appRouter = router({
 
         // Increment generation count
         const newCount = currentCount + 1;
+        
+        // Save this version to pfpVersions table
+        const prompt = `${input.style} style ${pet.species}${pet.breed ? ` (${pet.breed})` : ''} with personality: ${pet.personality || 'friendly'}`;
+        await db.createPfpVersion({
+          petId: input.petId,
+          imageUrl: pfpImageUrl,
+          prompt,
+          isSelected: 1, // Mark as selected by default
+          generationNumber: newCount,
+        });
+        
+        // Update pet with latest PFP
         await updatePet(input.petId, { pfpImageUrl, generationCount: newCount });
         
         return { 
@@ -208,6 +220,34 @@ export const appRouter = router({
     myVotes: protectedProcedure
       .query(async ({ ctx }) => {
         return await db.getUserVotes(ctx.user.id);
+      }),
+  }),
+
+  pfpVersions: router({
+    // Get all versions for a pet
+    getByPetId: publicProcedure
+      .input(z.object({
+        petId: z.number(),
+      }))
+      .query(async ({ input }) => {
+        return await db.getPfpVersionsByPetId(input.petId);
+      }),
+
+    // Select a specific version as the active PFP
+    selectVersion: protectedProcedure
+      .input(z.object({
+        versionId: z.number(),
+        petId: z.number(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        // Verify ownership
+        const pet = await db.getPetById(input.petId);
+        if (!pet || pet.userId !== ctx.user.id) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Not your pet" });
+        }
+
+        const selectedVersion = await db.selectPfpVersion(input.versionId, input.petId);
+        return { success: true, selectedVersion };
       }),
   }),
 });
