@@ -2,21 +2,35 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trpc } from "@/lib/trpc";
-import { Heart, ExternalLink, Loader2, ArrowLeft } from "lucide-react";
+import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles } from "lucide-react";
 import { useParams, useLocation, Link } from "wouter";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function PetDetail() {
   const { id } = useParams<{ id: string }>();
   const petId = parseInt(id || "0");
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
+  const [showStylePicker, setShowStylePicker] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
+  const [regenerating, setRegenerating] = useState(false);
 
-  const { data: pet, isLoading } = trpc.pets.getById.useQuery(
+  const { data: pet, isLoading, refetch } = trpc.pets.getById.useQuery(
     { id: petId },
     { enabled: petId > 0 }
   );
+  const { data: styles } = trpc.pets.getStyles.useQuery();
 
   const { data: hasVoted } = trpc.votes.hasVoted.useQuery(
     { petId },
@@ -41,6 +55,57 @@ export default function PetDetail() {
       return;
     }
     voteMutation.mutate({ petId });
+  };
+
+  const handleRegenerate = async () => {
+    if (!pet) return;
+
+    const generationCount = pet.generationCount || 0;
+    const FREE_LIMIT = 2;
+
+    setRegenerating(true);
+    toast.loading("Regenerating your PFP... This may take 10-20 seconds.");
+
+    try {
+      const response = await fetch("/api/regenerate-pfp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          petId: pet.id,
+          style: selectedStyle,
+        }),
+      });
+
+      if (response.status === 402 && generationCount >= FREE_LIMIT) {
+        toast.error("Payment required. Please complete the $0.10 USDC payment.");
+        setRegenerating(false);
+        return;
+      }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to regenerate PFP");
+      }
+
+      const result = await response.json();
+      const remaining = result.remainingFreeGenerations;
+      
+      if (remaining > 0) {
+        toast.success(`PFP regenerated! ${remaining} free generation${remaining > 1 ? 's' : ''} remaining.`);
+      } else {
+        toast.success("PFP regenerated! Future regenerations will cost $0.10 USDC.");
+      }
+      
+      setShowStylePicker(false);
+      refetch();
+    } catch (err: any) {
+      console.error("Regeneration error:", err);
+      toast.error(err.message || "Failed to regenerate PFP");
+    } finally {
+      setRegenerating(false);
+    }
   };
 
   if (isLoading) {
@@ -235,12 +300,44 @@ export default function PetDetail() {
                 )}
 
                 {pet.pfpImageUrl && !pet.nftTokenId && (
-                  <Button
-                    asChild
-                    className="w-full bg-base-gradient hover:opacity-90"
-                  >
-                    <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
-                  </Button>
+                  <>
+                    {/* Regeneration Info */}
+                    {pet.generationCount !== undefined && (
+                      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm">
+                        <div className="flex items-center justify-between">
+                          <span className="text-blue-800">
+                            <strong>{pet.generationCount}/2 free generations used</strong>
+                          </span>
+                          {pet.generationCount >= 2 && (
+                            <span className="text-blue-600 text-xs">
+                              Additional: $0.10 USDC each
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Try Different Style Button */}
+                    <Button
+                      onClick={() => setShowStylePicker(true)}
+                      disabled={regenerating}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Try Different Style
+                      {pet.generationCount !== undefined && pet.generationCount >= 2 && (
+                        <span className="ml-2 text-xs">($0.10 USDC)</span>
+                      )}
+                    </Button>
+
+                    <Button
+                      asChild
+                      className="w-full bg-base-gradient hover:opacity-90"
+                    >
+                      <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
+                    </Button>
+                  </>
                 )}
 
                 {pet.nftTokenId && (
@@ -253,6 +350,69 @@ export default function PetDetail() {
           </div>
         </div>
       </div>
+
+      {/* Style Picker Dialog */}
+      <Dialog open={showStylePicker} onOpenChange={setShowStylePicker}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Choose a Different Style</DialogTitle>
+            <DialogDescription>
+              Regenerate your pet's PFP with a different artistic style.
+            </DialogDescription>
+            {pet && (() => {
+              const count = pet.generationCount || 0;
+              const remaining = Math.max(0, 2 - count);
+              return (
+                <div className="mt-2 text-sm">
+                  <strong className="text-primary">
+                    {count}/2 free generations used
+                  </strong>
+                  {remaining === 0 && (
+                    <span className="text-yellow-600 block mt-1">
+                      ⚠️ This regeneration will cost $0.10 USDC
+                    </span>
+                  )}
+                </div>
+              );
+            })()}
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <Label>Select Style</Label>
+            <RadioGroup value={selectedStyle} onValueChange={setSelectedStyle}>
+              {styles?.map((style) => (
+                <div key={style.value} className="flex items-start space-x-3 space-y-0">
+                  <RadioGroupItem value={style.value} id={`detail-${style.value}`} />
+                  <div className="space-y-1 leading-none">
+                    <Label htmlFor={`detail-${style.value}`} className="font-medium cursor-pointer">
+                      {style.label}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">{style.description}</p>
+                  </div>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setShowStylePicker(false)}
+              className="flex-1"
+              disabled={regenerating}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleRegenerate}
+              className="flex-1 bg-base-gradient hover:opacity-90"
+              disabled={regenerating}
+            >
+              {regenerating ? "Regenerating..." : "Regenerate PFP"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

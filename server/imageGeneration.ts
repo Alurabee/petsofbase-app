@@ -35,10 +35,10 @@ export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<st
   // Get the style-specific rendering instructions
   const styleDescription = stylePrompts[style];
   
-  // Build the complete prompt
+  // Build the complete prompt - NO mention of borders, colors, or text to avoid AI adding labels
   let prompt = `${subjectDescription} ${styleDescription} `;
-  prompt += `The portrait must have a prominent blue border frame (#0052FF, Base blue color) around the entire image. `;
-  prompt += `Centered composition, facing forward, professional quality, suitable for a profile picture.`;
+  prompt += `Centered composition, facing forward, professional quality portrait, suitable for a profile picture. `;
+  prompt += `Clean image with no text, no labels, no watermarks, no borders.`;
   
   console.log("[Image Generation] Pet description:", subjectDescription);
   console.log("[Image Generation] Style:", style);

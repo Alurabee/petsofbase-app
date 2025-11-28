@@ -87,3 +87,11 @@
 - [x] Create X402 payment endpoint for paid regenerations ($0.10 USDC)
 - [x] Integrate X402 payment for 3rd+ generations
 - [x] Handle payment flow in frontend for paid regenerations
+
+## Bug Fix
+- [x] Fix nested div inside p tag on MyPets page (/my-pets)
+
+## Bug Fixes & Improvements
+- [x] Fix AI prompts to prevent text/labels from appearing in generated images
+- [x] Add "Try Different Style" button to Pet Detail page (not just Mint page)
+- [x] Remove any mention of "border" or "color" from AI prompts to avoid text generation
