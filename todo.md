@@ -118,3 +118,13 @@
 - [x] Create paw print variations with Base blue square emphasis
 - [x] Create glass aesthetic version of gradient paw logo
 - [x] Implement glassmorphism logo in navigation and favicon
+
+## Logo Update
+- [x] Create flat 2D front-facing version of glassmorphism logo with transparent background
+- [x] Replace current logo with new flat version
+
+## PFP Version History Feature
+- [ ] Add database schema to store all generated PFP versions (not just latest)
+- [ ] Create "View Previous Versions" UI on pet detail/mint pages
+- [ ] Allow users to select which version to mint from history
+- [ ] Show generation timestamps and style info for each version

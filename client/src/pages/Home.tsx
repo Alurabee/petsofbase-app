@@ -24,7 +24,7 @@ export default function Home() {
       <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/logo-glass-final.png" alt="PetsOfBase" className="w-10 h-10 rounded-lg" />
+            <img src="/logo-final.png" alt="PetsOfBase" className="w-10 h-10" />
             <span className="text-2xl font-bold text-base-gradient">PetsOfBase</span>
           </Link>
           
