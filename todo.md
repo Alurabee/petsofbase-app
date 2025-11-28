@@ -65,3 +65,15 @@
 - [x] Fix AI generation prompts to preserve pet's main features and appearance
 - [x] Add demo/bypass mode for testing minting flow without payment
 - [x] Allow users to mark pets as "minted" for testing purposes
+
+## Additional Bug Fixes
+- [x] Fix AI generation to create true artistic transformations instead of subtle edits
+- [x] Switch from image editing mode to pure generation mode for stronger style application
+
+## New Feature: Generation Limits
+- [x] Add generationCount field to pets table schema
+- [x] Track generation count per pet in database
+- [x] Implement 2 free generations per pet limit
+- [ ] Add X402 payment ($0.10 USDC) for 3rd+ generations (backend ready, needs payment endpoint)
+- [x] Show generation counter in UI (e.g., "1/2 free generations remaining")
+- [x] Update MyPets page to display generation limit status

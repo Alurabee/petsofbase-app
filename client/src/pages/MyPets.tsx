@@ -39,11 +39,20 @@ export default function MyPets() {
         style: selectedStyle as any,
       });
 
-      toast.success("PFP generated successfully!");
+      const remaining = result.remainingFreeGenerations;
+      if (remaining > 0) {
+        toast.success(`PFP generated! ${remaining} free generation${remaining > 1 ? 's' : ''} remaining.`);
+      } else {
+        toast.success("PFP generated! Future generations will cost $0.10 USDC.");
+      }
       setSelectedPet(null);
       refetch();
     } catch (error: any) {
-      toast.error(error.message || "Failed to generate PFP");
+      if (error.message?.includes("Generation limit reached")) {
+        toast.error("You've used your 2 free generations. Additional generations cost $0.10 USDC.");
+      } else {
+        toast.error(error.message || "Failed to generate PFP");
+      }
     } finally {
       setGenerating(false);
     }
@@ -187,6 +196,23 @@ export default function MyPets() {
             <DialogTitle>Generate AI PFP</DialogTitle>
             <DialogDescription>
               Choose a style for your pet's AI-generated profile picture. This will take 10-20 seconds.
+              {selectedPet && pets && (() => {
+                const pet = pets.find(p => p.id === selectedPet);
+                const count = pet?.generationCount || 0;
+                const remaining = Math.max(0, 2 - count);
+                return (
+                  <div className="mt-2">
+                    <strong className="text-primary">
+                      {count}/2 free generations used
+                    </strong>
+                    {remaining === 0 && (
+                      <span className="text-yellow-600 block mt-1">
+                        ⚠️ Additional generations cost $0.10 USDC each
+                      </span>
+                    )}
+                  </div>
+                );
+              })()}
             </DialogDescription>
           </DialogHeader>
 

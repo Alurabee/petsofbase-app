@@ -2,8 +2,10 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import * as db from "./db";
+import { getPetById, updatePet } from "./db";
 import { storagePut } from "./storage";
 import { generatePetPFP, getAvailableStyles, type PetImageStyle } from "./imageGeneration";
 import { nanoid } from "nanoid";
@@ -111,31 +113,44 @@ export const appRouter = router({
 
     // Generate PFP using AI
     generatePFP: protectedProcedure
-      .input(z.object({
-        petId: z.number(),
-        style: z.enum(["pixar", "cartoon", "realistic", "anime", "watercolor"] as const),
-      }))
-      .mutation(async ({ ctx, input }) => {
-        // Get pet details
-        const pet = await db.getPetById(input.petId);
-        if (!pet || pet.userId !== ctx.user.id) {
-          throw new Error("Pet not found or unauthorized");
+      .input(z.object({ petId: z.number(), style: z.enum(["pixar", "cartoon", "realistic", "anime", "watercolor"]) }))
+      .mutation(async ({ input, ctx }) => {
+        const pet = await getPetById(input.petId);
+        if (!pet) throw new TRPCError({ code: "NOT_FOUND", message: "Pet not found" });
+        if (pet.userId !== ctx.user.id) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Not your pet" });
         }
 
-        // Generate PFP
-        const pfpUrl = await generatePetPFP({
+        // Check generation limit (2 free generations per pet)
+        const FREE_GENERATION_LIMIT = 2;
+        const currentCount = pet.generationCount || 0;
+        
+        if (currentCount >= FREE_GENERATION_LIMIT) {
+          throw new TRPCError({ 
+            code: "PAYMENT_REQUIRED", 
+            message: `Generation limit reached. You have used ${currentCount}/${FREE_GENERATION_LIMIT} free generations. Please pay $0.10 USDC to generate more.` 
+          });
+        }
+
+        const pfpImageUrl = await generatePetPFP({
           petName: pet.name,
           species: pet.species,
           breed: pet.breed || undefined,
           personality: pet.personality || undefined,
-          style: input.style as PetImageStyle,
+          style: input.style,
           originalImageUrl: pet.originalImageUrl,
         });
 
-        // Update pet with generated PFP
-        await db.updatePet(input.petId, { pfpImageUrl: pfpUrl });
-
-        return { pfpUrl };
+        // Increment generation count
+        const newCount = currentCount + 1;
+        await updatePet(input.petId, { pfpImageUrl, generationCount: newCount });
+        
+        return { 
+          success: true, 
+          pfpImageUrl, 
+          generationCount: newCount,
+          remainingFreeGenerations: Math.max(0, FREE_GENERATION_LIMIT - newCount)
+        };
       }),
 
     // Update pet (e.g., add generated PFP URL)

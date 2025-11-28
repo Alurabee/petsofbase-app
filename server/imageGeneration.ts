@@ -12,11 +12,11 @@ interface GeneratePetPFPOptions {
 }
 
 const stylePrompts: Record<PetImageStyle, string> = {
-  pixar: "Transform into Pixar 3D animation style while preserving ALL distinctive features, colors, markings, and breed characteristics. Keep the pet instantly recognizable.",
-  cartoon: "Create a cartoon illustration preserving ALL distinctive features, exact colors, patterns, and markings. Keep the pet clearly recognizable with bold outlines.",
-  realistic: "Create a hyper-realistic portrait maintaining ALL distinctive features, exact colors, patterns, and breed characteristics. Professional photography quality.",
-  anime: "Transform into anime art style while preserving ALL distinctive features, exact colors, and markings. Keep the pet recognizable with anime-style rendering.",
-  watercolor: "Create a watercolor painting preserving ALL distinctive colors, markings, and features. Keep the pet clearly recognizable with artistic brush strokes.",
+  pixar: "A Pixar-style 3D animated character portrait. Highly detailed 3D render with smooth, polished surfaces, vibrant saturated colors, large expressive eyes with glossy reflections, soft rounded features, professional Pixar animation studio quality. Warm studio lighting, subtle rim lighting, clean gradient background.",
+  cartoon: "A vibrant cartoon illustration with bold black outlines, flat bright colors, exaggerated cute features, large friendly eyes, simplified shapes, playful expression. Comic book style with clean lines and solid color fills. Colorful gradient background.",
+  realistic: "A hyper-realistic professional portrait photograph. Ultra-detailed fur/feather texture, natural lighting, shallow depth of field, professional studio photography, crisp focus, rich colors, photographic quality. Clean neutral background.",
+  anime: "An anime-style character portrait with large sparkling eyes, detailed shading with cel-shading technique, vibrant colors, glossy highlights, manga-inspired art style. Smooth anime rendering with dramatic lighting. Soft gradient background.",
+  watercolor: "A beautiful watercolor painting with soft flowing colors, visible brush strokes, artistic paper texture, gentle color blending, traditional watercolor technique, delicate and elegant. Subtle watercolor background wash.",
 };
 
 /**
@@ -25,25 +25,32 @@ const stylePrompts: Record<PetImageStyle, string> = {
 export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<string> {
   const { petName, species, breed, personality, style, originalImageUrl } = options;
 
-  // Build the prompt emphasizing preservation of pet's appearance
-  const styleDescription = stylePrompts[style];
+  // Build a detailed description from the pet's attributes
   const breedInfo = breed ? ` ${breed}` : "";
-  const personalityInfo = personality ? ` with a ${personality} personality` : "";
-
-  let prompt = `Based on the reference image: ${styleDescription} `;
-  prompt += `This is a${breedInfo} ${species}${personalityInfo}. `;
-  prompt += `CRITICAL: Maintain the EXACT appearance from the reference image - same colors, same markings, same facial features, same body type. `;
-  prompt += `Only change the artistic style, NOT the pet's appearance. `;
-  prompt += `Add a prominent blue border (#0052FF) around the portrait. `;
-  prompt += `Centered composition, clean background, professional quality.`;
+  const personalityInfo = personality ? ` with a ${personality} expression` : "";
+  
+  // Create a detailed subject description
+  const subjectDescription = `A${breedInfo} ${species}${personalityInfo}.`;
+  
+  // Get the style-specific rendering instructions
+  const styleDescription = stylePrompts[style];
+  
+  // Build the complete prompt
+  let prompt = `${subjectDescription} ${styleDescription} `;
+  prompt += `The portrait must have a prominent blue border frame (#0052FF, Base blue color) around the entire image. `;
+  prompt += `Centered composition, facing forward, professional quality, suitable for a profile picture.`;
+  
+  console.log("[Image Generation] Pet description:", subjectDescription);
+  console.log("[Image Generation] Style:", style);
 
   console.log("[Image Generation] Generating PFP with prompt:", prompt);
 
   try {
-    // Use original image as reference for better feature preservation
+    // Generate a new image from scratch (not editing) for stronger artistic transformation
+    // The original image URL is not used to avoid subtle edits - we want full artistic rendering
     const result = await generateImageCore({
       prompt,
-      originalImages: originalImageUrl ? [{ url: originalImageUrl, mimeType: "image/jpeg" }] : undefined,
+      // Do NOT use originalImages - we want pure generation, not editing
     });
 
     if (!result.url) {

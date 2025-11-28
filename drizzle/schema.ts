@@ -32,6 +32,7 @@ export const pets = mysqlTable("pets", {
   dislikes: text("dislikes"), // Things the pet dislikes
   originalImageUrl: varchar("originalImageUrl", { length: 500 }).notNull(), // Original uploaded photo
   pfpImageUrl: varchar("pfpImageUrl", { length: 500 }), // AI-generated PFP (null until generated)
+  generationCount: int("generationCount").default(0).notNull(), // Number of times PFP has been generated
   nftTokenId: int("nftTokenId"), // Token ID from smart contract (null until minted)
   nftContractAddress: varchar("nftContractAddress", { length: 42 }), // Smart contract address
   nftTransactionHash: varchar("nftTransactionHash", { length: 66 }), // Minting transaction hash
