@@ -60,3 +60,8 @@
 - [ ] Set pricing to $0.25 USDC
 - [ ] Create launch announcement content
 - [ ] Deploy to production
+
+## Bug Fixes & Improvements
+- [x] Fix AI generation prompts to preserve pet's main features and appearance
+- [x] Add demo/bypass mode for testing minting flow without payment
+- [x] Allow users to mark pets as "minted" for testing purposes

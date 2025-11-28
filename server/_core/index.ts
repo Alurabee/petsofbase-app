@@ -8,6 +8,7 @@ import { x402Middleware, checkX402Configuration } from "../x402Payment";
 import { mintPetNFT, generateNFTMetadata, checkNFTContractStatus } from "../nftMinting";
 import { storagePut } from "../storage";
 import { getPetById, updatePet } from "../db";
+import { isDemoMode, simulateMint } from "../demoMode";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
@@ -45,7 +46,8 @@ async function startServer() {
   checkNFTContractStatus();
 
   // X402 Payment-protected NFT minting endpoint
-  app.post("/api/mint-nft", x402Middleware, async (req, res) => {
+  // In demo mode, skip payment middleware for testing
+  const mintHandler = async (req: any, res: any) => {
     try {
       const { petId, walletAddress } = req.body;
 
@@ -79,12 +81,18 @@ async function startServer() {
         "application/json"
       );
 
-      // Mint NFT on Base
-      const mintResult = await mintPetNFT({
-        petId: pet.id,
-        ownerAddress: walletAddress,
-        metadataUri,
-      });
+      // Mint NFT on Base (or simulate in demo mode)
+      let mintResult;
+      if (isDemoMode()) {
+        console.log("[Demo Mode] Simulating NFT mint");
+        mintResult = simulateMint(pet.id);
+      } else {
+        mintResult = await mintPetNFT({
+          petId: pet.id,
+          ownerAddress: walletAddress,
+          metadataUri,
+        });
+      }
 
       if (!mintResult.success) {
         return res.status(500).json({ error: mintResult.error || "Failed to mint NFT" });
@@ -108,7 +116,21 @@ async function startServer() {
       console.error("[Mint NFT] Error:", error);
       return res.status(500).json({ error: error.message || "Internal server error" });
     }
+  };
+
+  // Demo status endpoint
+  app.get("/api/demo-status", (req, res) => {
+    res.json({ demoMode: isDemoMode() });
   });
+
+  // Apply payment middleware only in production mode
+  if (isDemoMode()) {
+    console.log("[Demo Mode] Minting endpoint running WITHOUT payment protection");
+    app.post("/api/mint-nft", mintHandler);
+  } else {
+    console.log("[Production Mode] Minting endpoint protected by X402 payment");
+    app.post("/api/mint-nft", x402Middleware, mintHandler);
+  }
   // tRPC API
   app.use(
     "/api/trpc",

@@ -17,6 +17,15 @@ export default function Mint() {
   const [minting, setMinting] = useState(false);
   const [mintResult, setMintResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [demoMode, setDemoMode] = useState(false);
+
+  // Check if demo mode is active
+  useEffect(() => {
+    fetch("/api/demo-status")
+      .then(res => res.json())
+      .then(data => setDemoMode(data.demoMode))
+      .catch(() => setDemoMode(false));
+  }, []);
 
   const { data: pet, isLoading } = trpc.pets.getById.useQuery(
     { id: petId },
@@ -251,6 +260,14 @@ export default function Mint() {
             </div>
           </div>
 
+          {demoMode && (
+            <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+              <p className="text-sm text-yellow-800 font-medium">
+                🧪 <strong>Demo Mode Active</strong> - Minting is simulated for testing. No payment required.
+              </p>
+            </div>
+          )}
+
           <div className="bg-base-gradient-soft p-4 rounded-lg space-y-3">
             <h4 className="font-bold">Minting Details</h4>
             <div className="space-y-2 text-sm">
@@ -264,7 +281,9 @@ export default function Mint() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Minting Fee:</span>
-                <span className="font-bold text-primary">$0.25 USDC</span>
+                <span className="font-bold text-primary">
+                  {demoMode ? "FREE (Demo)" : "$0.25 USDC"}
+                </span>
               </div>
             </div>
           </div>
@@ -287,14 +306,19 @@ export default function Mint() {
                   <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                   Minting...
                 </>
+              ) : demoMode ? (
+                "Mint NFT (Demo - Free)"
               ) : (
                 "Mint NFT for $0.25 USDC"
               )}
             </Button>
 
             <p className="text-xs text-center text-muted-foreground">
-              By minting, you agree that this NFT will be permanently stored on the Base blockchain.
-              The X402 payment protocol will securely process your $0.25 USDC payment.
+              {demoMode ? (
+                "Demo mode: Minting is simulated for testing. No actual blockchain transaction or payment will occur."
+              ) : (
+                "By minting, you agree that this NFT will be permanently stored on the Base blockchain. The X402 payment protocol will securely process your $0.25 USDC payment."
+              )}
             </p>
           </div>
 

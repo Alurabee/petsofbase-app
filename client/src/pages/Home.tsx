@@ -15,39 +15,31 @@ export default function Home() {
       {/* Navigation */}
       <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container py-4 flex items-center justify-between">
-          <Link href="/">
-            <a className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-base-gradient flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white fill-white" />
-              </div>
-              <span className="text-2xl font-bold text-base-gradient">PetsOfBase</span>
-            </a>
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-base-gradient flex items-center justify-center">
+              <Heart className="w-5 h-5 text-white fill-white" />
+            </div>
+            <span className="text-2xl font-bold text-base-gradient">PetsOfBase</span>
           </Link>
           
           <div className="flex items-center gap-6">
-            <Link href="/leaderboard">
-              <a className="text-sm font-medium hover:text-primary transition-colors">
-                Leaderboard
-              </a>
+            <Link href="/leaderboard" className="text-sm font-medium hover:text-primary transition-colors">
+              Leaderboard
             </Link>
-            <Link href="/gallery">
-              <a className="text-sm font-medium hover:text-primary transition-colors">
-                Gallery
-              </a>
+            <Link href="/gallery" className="text-sm font-medium hover:text-primary transition-colors">
+              Gallery
             </Link>
             {isAuthenticated ? (
               <>
-                <Link href="/my-pets">
-                  <a className="text-sm font-medium hover:text-primary transition-colors">
-                    My Pets
-                  </a>
+                <Link href="/my-pets" className="text-sm font-medium hover:text-primary transition-colors">
+                  My Pets
                 </Link>
-                <Link href="/upload">
-                  <Button className="bg-base-gradient hover:opacity-90">
+                <Button asChild className="bg-base-gradient hover:opacity-90">
+                  <Link href="/upload">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Pet
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </>
             ) : (
               <Button asChild className="bg-base-gradient hover:opacity-90">
@@ -80,12 +72,12 @@ export default function Home() {
             
             <div className="flex items-center justify-center gap-4">
               {isAuthenticated ? (
-                <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
-                  <Link href="/upload">
+                <Link href="/upload">
+                  <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
                     <Upload className="w-5 h-5 mr-2" />
                     Upload Your Pet
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               ) : (
                 <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
                   <a href={getLoginUrl()}>
@@ -93,12 +85,12 @@ export default function Home() {
                   </a>
                 </Button>
               )}
-              <Button asChild size="lg" variant="outline" className="text-lg px-8 py-6">
-                <Link href="/leaderboard">
+              <Link href="/leaderboard">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-6">
                   <Trophy className="w-5 h-5 mr-2" />
                   View Leaderboard
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -150,9 +142,9 @@ export default function Home() {
         <div className="container">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-4xl font-bold">Top Pets</h2>
-            <Button asChild variant="outline">
-              <Link href="/leaderboard">View Full Leaderboard</Link>
-            </Button>
+            <Link href="/leaderboard">
+              <Button variant="outline">View Full Leaderboard</Button>
+            </Link>
           </div>
 
           {isLoading ? (
@@ -188,9 +180,9 @@ export default function Home() {
                       <Heart className="w-4 h-4 text-primary" />
                       <span className="font-medium">{pet.voteCount} votes</span>
                     </div>
-                    <Button asChild size="sm" variant="outline">
-                      <Link href={`/pet/${pet.id}`}>View</Link>
-                    </Button>
+                    <Link href={`/pet/${pet.id}`}>
+                      <Button size="sm" variant="outline">View</Button>
+                    </Link>
                   </div>
                 </Card>
               ))}
@@ -211,12 +203,12 @@ export default function Home() {
             Join hundreds of pet lovers on Base. Upload your pet, mint your NFT, and start earning votes today.
           </p>
           {isAuthenticated ? (
-            <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
-              <Link href="/upload">
+            <Link href="/upload">
+              <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
                 <Upload className="w-5 h-5 mr-2" />
                 Upload Your Pet Now
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           ) : (
             <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6">
               <a href={getLoginUrl()}>

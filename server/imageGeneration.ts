@@ -12,11 +12,11 @@ interface GeneratePetPFPOptions {
 }
 
 const stylePrompts: Record<PetImageStyle, string> = {
-  pixar: "Pixar-style 3D animated portrait with vibrant colors, expressive eyes, and a friendly appearance",
-  cartoon: "Cute cartoon-style illustration with bold outlines and bright colors",
-  realistic: "Photorealistic portrait with detailed fur texture and natural lighting",
-  anime: "Anime-style portrait with large expressive eyes and stylized features",
-  watercolor: "Soft watercolor painting style with gentle colors and artistic brush strokes",
+  pixar: "Transform into Pixar 3D animation style while preserving ALL distinctive features, colors, markings, and breed characteristics. Keep the pet instantly recognizable.",
+  cartoon: "Create a cartoon illustration preserving ALL distinctive features, exact colors, patterns, and markings. Keep the pet clearly recognizable with bold outlines.",
+  realistic: "Create a hyper-realistic portrait maintaining ALL distinctive features, exact colors, patterns, and breed characteristics. Professional photography quality.",
+  anime: "Transform into anime art style while preserving ALL distinctive features, exact colors, and markings. Keep the pet recognizable with anime-style rendering.",
+  watercolor: "Create a watercolor painting preserving ALL distinctive colors, markings, and features. Keep the pet clearly recognizable with artistic brush strokes.",
 };
 
 /**
@@ -25,25 +25,25 @@ const stylePrompts: Record<PetImageStyle, string> = {
 export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<string> {
   const { petName, species, breed, personality, style, originalImageUrl } = options;
 
-  // Build the prompt
+  // Build the prompt emphasizing preservation of pet's appearance
   const styleDescription = stylePrompts[style];
   const breedInfo = breed ? ` ${breed}` : "";
-  const personalityInfo = personality ? ` with a ${personality} expression` : "";
+  const personalityInfo = personality ? ` with a ${personality} personality` : "";
 
-  let prompt = `${styleDescription} of a${breedInfo} ${species}${personalityInfo}. `;
-  prompt += `The portrait should have a prominent blue border (#0052FF, Base app color) around the entire image. `;
-  prompt += `The pet should be centered, facing forward, with a clean white or subtle gradient background. `;
-  prompt += `Professional quality, suitable for a profile picture.`;
+  let prompt = `Based on the reference image: ${styleDescription} `;
+  prompt += `This is a${breedInfo} ${species}${personalityInfo}. `;
+  prompt += `CRITICAL: Maintain the EXACT appearance from the reference image - same colors, same markings, same facial features, same body type. `;
+  prompt += `Only change the artistic style, NOT the pet's appearance. `;
+  prompt += `Add a prominent blue border (#0052FF) around the portrait. `;
+  prompt += `Centered composition, clean background, professional quality.`;
 
   console.log("[Image Generation] Generating PFP with prompt:", prompt);
 
   try {
-    // If we have an original image, use it for editing (future enhancement)
-    // For now, we'll just generate a new image based on the description
+    // Use original image as reference for better feature preservation
     const result = await generateImageCore({
       prompt,
-      // originalImages can be used for image editing in the future
-      // originalImages: originalImageUrl ? [{ url: originalImageUrl, mimeType: "image/jpeg" }] : undefined,
+      originalImages: originalImageUrl ? [{ url: originalImageUrl, mimeType: "image/jpeg" }] : undefined,
     });
 
     if (!result.url) {
