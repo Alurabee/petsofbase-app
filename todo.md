@@ -135,3 +135,9 @@
 - [x] Add version selection functionality
 - [x] Allow users to select which version to mint from history
 - [x] Show generation timestamps and style info for each version
+
+## Social Sharing Feature
+- [x] Add Twitter/X share button to pet detail pages
+- [x] Generate share text with pet name and hashtags
+- [x] Include page URL in Twitter share
+- [x] Add share button styling and icon with gradient

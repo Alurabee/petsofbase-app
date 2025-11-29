@@ -12,7 +12,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trpc } from "@/lib/trpc";
-import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check } from "lucide-react";
+import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check, Share2 } from "lucide-react";
 import { useParams, useLocation, Link } from "wouter";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -261,6 +261,24 @@ export default function PetDetail() {
                 <p className="text-muted-foreground">{pet.dislikes}</p>
               </Card>
             )}
+
+            {/* Social Sharing */}
+            <Card className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+              <Button
+                onClick={() => {
+                  const shareText = pet.nftTokenId
+                    ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for just $0.25 USDC.\n\n#PetsOfBase #Based #BaseNFT`
+                    : `Just created an AI-generated PFP for ${pet.name} on @PetsOfBase! 🐾✨\n\nJoin the most wholesome community on @base.\n\n#PetsOfBase #Based`;
+                  
+                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
+                  window.open(shareUrl, '_blank', 'width=550,height=420');
+                }}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Share on 𝕏 (Twitter)
+              </Button>
+            </Card>
 
             {/* Voting */}
             <Card className="p-6 bg-base-gradient-soft">
