@@ -6,6 +6,7 @@ import { trpc } from "@/lib/trpc";
 import { Heart, Search, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
+import Navigation from "@/components/Navigation";
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,6 +25,7 @@ export default function Gallery() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft">
+      <Navigation />
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container py-8">

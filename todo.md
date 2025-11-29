@@ -152,3 +152,13 @@
 - [x] Display referral code on referral dashboard page
 - [x] Add referral tracking to App.tsx (URL parameter detection)
 - [x] Update share buttons to include referral codes
+
+## Navigation Consistency
+- [x] Extract navigation bar into shared component
+- [x] Add navigation to Leaderboard page
+- [x] Add navigation to Gallery page
+- [x] Add navigation to My Pets page
+- [x] Add navigation to Referrals page
+- [x] Add navigation to Upload page
+- [x] Add navigation to Pet Detail page
+- [x] Add navigation to Mint page

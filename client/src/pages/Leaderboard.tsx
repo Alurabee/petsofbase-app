@@ -3,12 +3,14 @@ import { Card } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
 import { Heart, Trophy, Crown } from "lucide-react";
 import { Link } from "wouter";
+import Navigation from "@/components/Navigation";
 
 export default function Leaderboard() {
   const { data: pets, isLoading } = trpc.pets.leaderboard.useQuery({ limit: 50 });
 
   return (
     <div className="min-h-screen bg-base-gradient-soft">
+      <Navigation />
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container py-8">
