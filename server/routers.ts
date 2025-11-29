@@ -121,14 +121,18 @@ export const appRouter = router({
           throw new TRPCError({ code: "FORBIDDEN", message: "Not your pet" });
         }
 
+        // Check if user has referral free generations
+        const referralStats = await db.getUserReferralStats(ctx.user.id);
+        const hasFreeGeneration = referralStats && referralStats.freeGenerationsEarned > 0;
+        
         // Check generation limit (2 free generations per pet)
         const FREE_GENERATION_LIMIT = 2;
         const currentCount = pet.generationCount || 0;
         
-        if (currentCount >= FREE_GENERATION_LIMIT) {
+        if (currentCount >= FREE_GENERATION_LIMIT && !hasFreeGeneration) {
           throw new TRPCError({ 
             code: "PAYMENT_REQUIRED", 
-            message: `Generation limit reached. You have used ${currentCount}/${FREE_GENERATION_LIMIT} free generations. Please pay $0.10 USDC to generate more.` 
+            message: `Generation limit reached. You have used ${currentCount}/${FREE_GENERATION_LIMIT} free generations. Please pay $0.10 USDC to generate more, or refer friends to earn free generations!` 
           });
         }
 
@@ -141,6 +145,9 @@ export const appRouter = router({
           originalImageUrl: pet.originalImageUrl,
         });
 
+        // Determine if this generation uses a free credit
+        const usedFreeGeneration = currentCount >= FREE_GENERATION_LIMIT && hasFreeGeneration;
+        
         // Increment generation count
         const newCount = currentCount + 1;
         
@@ -157,11 +164,18 @@ export const appRouter = router({
         // Update pet with latest PFP
         await updatePet(input.petId, { pfpImageUrl, generationCount: newCount });
         
+        // Consume free generation if used
+        if (usedFreeGeneration && referralStats) {
+          await db.consumeFreeGeneration(ctx.user.id);
+        }
+        
         return { 
           success: true, 
           pfpImageUrl, 
           generationCount: newCount,
-          remainingFreeGenerations: Math.max(0, FREE_GENERATION_LIMIT - newCount)
+          remainingFreeGenerations: Math.max(0, FREE_GENERATION_LIMIT - newCount),
+          usedFreeGeneration,
+          remainingReferralGenerations: usedFreeGeneration ? (referralStats!.freeGenerationsEarned - 1) : (referralStats?.freeGenerationsEarned || 0)
         };
       }),
 

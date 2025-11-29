@@ -453,6 +453,28 @@ export async function getUserReferralStats(userId: number) {
 }
 
 /**
+ * Consume one free generation from referral rewards
+ */
+export async function consumeFreeGeneration(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+  
+  const stats = await getUserReferralStats(userId);
+  if (!stats || stats.freeGenerationsEarned <= 0) {
+    return false;
+  }
+  
+  await db
+    .update(userReferralStats)
+    .set({ freeGenerationsEarned: stats.freeGenerationsEarned - 1 })
+    .where(eq(userReferralStats.userId, userId));
+  
+  return true;
+}
+
+/**
  * Get user's referral history
  */
 export async function getUserReferrals(userId: number) {

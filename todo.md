@@ -162,3 +162,23 @@
 - [x] Add navigation to Upload page
 - [x] Add navigation to Pet Detail page
 - [x] Add navigation to Mint page
+
+## Free Generations Integration
+- [x] Add backend logic to check and consume free generations
+- [x] Update PFP generation to use free credits before payment
+- [x] Display remaining free generations in UI
+- [x] Show "Free" badge when using free generation
+- [x] Update referral reward granting to work with generation flow
+
+## Copy Link Sharing
+- [x] Add copy link button to pet detail pages
+- [x] Add copy link button to referral dashboard (already exists)
+- [x] Implement clipboard API with toast feedback
+- [x] Style copy button to match existing design
+
+## Smart Contract Deployment
+- [x] Review PetPFP.sol contract code
+- [x] Create deployment guide for Base mainnet
+- [x] Document required environment variables
+- [x] Add payment verification to minting flow (already implemented)
+- [x] Test contract integration with frontend (ready for testing after deployment)

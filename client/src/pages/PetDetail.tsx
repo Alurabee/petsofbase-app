@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trpc } from "@/lib/trpc";
-import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check, Share2 } from "lucide-react";
+import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check, Share2, Copy } from "lucide-react";
 import { useParams, useLocation, Link } from "wouter";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -115,11 +115,15 @@ export default function PetDetail() {
 
       const result = await response.json();
       const remaining = result.remainingFreeGenerations;
+      const usedFree = result.usedFreeGeneration;
+      const referralGens = result.remainingReferralGenerations;
       
-      if (remaining > 0) {
+      if (usedFree) {
+        toast.success(`PFP regenerated using referral credit! ${referralGens} referral generation${referralGens !== 1 ? 's' : ''} remaining.`);
+      } else if (remaining > 0) {
         toast.success(`PFP regenerated! ${remaining} free generation${remaining > 1 ? 's' : ''} remaining.`);
       } else {
-        toast.success("PFP regenerated! Future regenerations will cost $0.10 USDC.");
+        toast.success("PFP regenerated! Future regenerations will cost $0.10 USDC or use referral credits.");
       }
       
       setShowStylePicker(false);
@@ -273,29 +277,51 @@ export default function PetDetail() {
 
             {/* Social Sharing */}
             <Card className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-              <Button
-                onClick={() => {
-                  const shareText = pet.nftTokenId
-                    ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for just $0.25 USDC.\n\n#PetsOfBase #Based #BaseNFT`
-                    : `Just created an AI-generated PFP for ${pet.name} on @PetsOfBase! 🐾✨\n\nJoin the most wholesome community on @base.\n\n#PetsOfBase #Based`;
-                  
-                  // Add referral code to URL if user is authenticated
-                  const baseUrl = window.location.origin + window.location.pathname;
-                  const sharePageUrl = referralStats?.referralCode 
-                    ? `${baseUrl}?ref=${referralStats.referralCode}`
-                    : baseUrl;
-                  
-                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(sharePageUrl)}`;
-                  window.open(shareUrl, '_blank', 'width=550,height=420');
-                }}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Share on 𝕏 (Twitter)
-                {referralStats && (
-                  <span className="ml-2 text-xs opacity-80">(+1 free gen per signup)</span>
-                )}
-              </Button>
+              <div className="space-y-2">
+                <Button
+                  onClick={() => {
+                    const shareText = pet.nftTokenId
+                      ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for just $0.25 USDC.\n\n#PetsOfBase #Based #BaseNFT`
+                      : `Just created an AI-generated PFP for ${pet.name} on @PetsOfBase! 🐾✨\n\nJoin the most wholesome community on @base.\n\n#PetsOfBase #Based`;
+                    
+                    // Add referral code to URL if user is authenticated
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    const sharePageUrl = referralStats?.referralCode 
+                      ? `${baseUrl}?ref=${referralStats.referralCode}`
+                      : baseUrl;
+                    
+                    const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(sharePageUrl)}`;
+                    window.open(shareUrl, '_blank', 'width=550,height=420');
+                  }}
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share on 𝕏 (Twitter)
+                  {referralStats && (
+                    <span className="ml-2 text-xs opacity-80">(+1 free gen per signup)</span>
+                  )}
+                </Button>
+                
+                <Button
+                  onClick={() => {
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    const sharePageUrl = referralStats?.referralCode 
+                      ? `${baseUrl}?ref=${referralStats.referralCode}`
+                      : baseUrl;
+                    
+                    navigator.clipboard.writeText(sharePageUrl);
+                    toast.success("Link copied to clipboard!");
+                  }}
+                  variant="outline"
+                  className="w-full"
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Copy Link
+                  {referralStats && (
+                    <span className="ml-2 text-xs text-muted-foreground">(includes referral code)</span>
+                  )}
+                </Button>
+              </div>
             </Card>
 
             {/* Voting */}
@@ -429,13 +455,26 @@ export default function PetDetail() {
             {pet && (() => {
               const count = pet.generationCount || 0;
               const remaining = Math.max(0, 2 - count);
+              const referralGens = referralStats?.freeGenerationsEarned || 0;
+              const hasReferralCredit = referralGens > 0;
+              
               return (
-                <div className="mt-2 text-sm">
-                  <strong className="text-primary">
-                    {count}/2 free generations used
-                  </strong>
-                  {remaining === 0 && (
-                    <span className="text-yellow-600 block mt-1">
+                <div className="mt-2 space-y-2">
+                  <div className="text-sm">
+                    <strong className="text-primary">
+                      {count}/2 free generations used
+                    </strong>
+                  </div>
+                  
+                  {hasReferralCredit && (
+                    <div className="text-sm bg-green-50 border border-green-200 rounded-lg p-2">
+                      <strong className="text-green-700">🎁 {referralGens} referral credit{referralGens !== 1 ? 's' : ''} available!</strong>
+                      <p className="text-green-600 text-xs mt-1">This generation will use a referral credit (FREE)</p>
+                    </div>
+                  )}
+                  
+                  {remaining === 0 && !hasReferralCredit && (
+                    <span className="text-yellow-600 block text-sm">
                       ⚠️ This regeneration will cost $0.10 USDC
                     </span>
                   )}
