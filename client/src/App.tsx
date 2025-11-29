@@ -11,6 +11,34 @@ import MyPets from "./pages/MyPets";
 import Mint from "./pages/Mint";
 import PetDetail from "./pages/PetDetail";
 import Gallery from "./pages/Gallery";
+import Referrals from "./pages/Referrals";
+import { useEffect } from "react";
+import { trpc } from "@/lib/trpc";
+
+// Referral tracking component
+function ReferralTracker() {
+  const trackClickMutation = trpc.referrals.trackClick.useMutation();
+
+  useEffect(() => {
+    // Check for referral code in URL
+    const params = new URLSearchParams(window.location.search);
+    const refCode = params.get('ref');
+    
+    if (refCode) {
+      // Store in localStorage for later (when user signs up)
+      localStorage.setItem('referralCode', refCode);
+      
+      // Track the click
+      trackClickMutation.mutate({ referralCode: refCode });
+      
+      // Clean URL (remove ref param)
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, []);
+
+  return null;
+}
 
 function Router() {
   return (
@@ -22,6 +50,7 @@ function Router() {
       <Route path={"/mint/:id"} component={Mint} />
       <Route path={"/pet/:id"} component={PetDetail} />
       <Route path={"/gallery"} component={Gallery} />
+      <Route path={"/referrals"} component={Referrals} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -34,6 +63,7 @@ function App() {
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
+          <ReferralTracker />
           <Router />
         </TooltipProvider>
       </ThemeProvider>

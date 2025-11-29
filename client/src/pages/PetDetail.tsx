@@ -43,6 +43,11 @@ export default function PetDetail() {
     { enabled: petId > 0 }
   );
 
+  const { data: referralStats } = trpc.referrals.getMyStats.useQuery(
+    undefined,
+    { enabled: isAuthenticated }
+  );
+
   const utils = trpc.useUtils();
   const voteMutation = trpc.votes.vote.useMutation({
     onSuccess: () => {
@@ -270,13 +275,22 @@ export default function PetDetail() {
                     ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for just $0.25 USDC.\n\n#PetsOfBase #Based #BaseNFT`
                     : `Just created an AI-generated PFP for ${pet.name} on @PetsOfBase! 🐾✨\n\nJoin the most wholesome community on @base.\n\n#PetsOfBase #Based`;
                   
-                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
+                  // Add referral code to URL if user is authenticated
+                  const baseUrl = window.location.origin + window.location.pathname;
+                  const sharePageUrl = referralStats?.referralCode 
+                    ? `${baseUrl}?ref=${referralStats.referralCode}`
+                    : baseUrl;
+                  
+                  const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(sharePageUrl)}`;
                   window.open(shareUrl, '_blank', 'width=550,height=420');
                 }}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Share on 𝕏 (Twitter)
+                {referralStats && (
+                  <span className="ml-2 text-xs opacity-80">(+1 free gen per signup)</span>
+                )}
               </Button>
             </Card>
 

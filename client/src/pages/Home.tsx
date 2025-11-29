@@ -43,6 +43,9 @@ export default function Home() {
                 <Link href="/my-pets" className="text-sm font-medium hover:text-primary transition-colors">
                   My Pets
                 </Link>
+                <Link href="/referrals" className="text-sm font-medium hover:text-primary transition-colors">
+                  Referrals
+                </Link>
                 <Button asChild className="bg-base-gradient hover:opacity-90">
                   <Link href="/upload">
                     <Upload className="w-4 h-4 mr-2" />
@@ -92,6 +95,13 @@ export default function Home() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     My Pets
+                  </Link>
+                  <Link 
+                    href="/referrals" 
+                    className="text-sm font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Referrals
                   </Link>
                   <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
                     <Link href="/upload" onClick={() => setMobileMenuOpen(false)}>

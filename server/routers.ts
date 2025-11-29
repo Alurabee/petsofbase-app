@@ -250,6 +250,54 @@ export const appRouter = router({
         return { success: true, selectedVersion };
       }),
   }),
+
+  referrals: router({
+    // Get or create user's referral stats
+    getMyStats: protectedProcedure
+      .query(async ({ ctx }) => {
+        return await db.getOrCreateUserReferralStats(ctx.user.id);
+      }),
+
+    // Get user's referral history
+    getMyReferrals: protectedProcedure
+      .query(async ({ ctx }) => {
+        return await db.getUserReferrals(ctx.user.id);
+      }),
+
+    // Track referral click (public - called when visiting with ?ref=code)
+    trackClick: publicProcedure
+      .input(z.object({
+        referralCode: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const referrerId = await db.trackReferralClick(input.referralCode);
+        return { success: !!referrerId, referrerId };
+      }),
+
+    // Complete referral (called after new user signs up)
+    completeReferral: publicProcedure
+      .input(z.object({
+        referralCode: z.string(),
+        newUserId: z.number(),
+      }))
+      .mutation(async ({ input }) => {
+        const referrerId = await db.completeReferral(input.referralCode, input.newUserId);
+        
+        if (referrerId) {
+          // Grant reward automatically
+          const referrals = await db.getUserReferrals(referrerId);
+          const completedReferral = referrals.find(
+            r => r.referralCode === input.referralCode && r.status === 'completed' && r.rewardGranted === 0
+          );
+          
+          if (completedReferral) {
+            await db.grantReferralReward(completedReferral.id);
+          }
+        }
+        
+        return { success: !!referrerId, referrerId };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

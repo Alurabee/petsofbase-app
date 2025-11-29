@@ -1,6 +1,6 @@
 import { eq, desc, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion } from "../drizzle/schema";
+import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion, referrals, InsertReferral, userReferralStats, InsertUserReferralStats } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -257,4 +257,212 @@ export async function selectPfpVersion(versionId: number, petId: number) {
   }
 
   return version.length > 0 ? version[0] : undefined;
+}
+
+// ============ Referral Functions ============
+
+/**
+ * Generate a unique referral code for a user
+ */
+function generateReferralCode(userId: number): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid confusing chars like 0/O, 1/I
+  let code = '';
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `${code}${userId}`; // Add userId to ensure uniqueness
+}
+
+/**
+ * Create or get user referral stats (called when user signs up)
+ */
+export async function getOrCreateUserReferralStats(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Check if stats already exist
+  const existing = await db.select()
+    .from(userReferralStats)
+    .where(eq(userReferralStats.userId, userId))
+    .limit(1);
+
+  if (existing.length > 0) {
+    return existing[0];
+  }
+
+  // Create new stats with unique referral code
+  const referralCode = generateReferralCode(userId);
+  
+  await db.insert(userReferralStats).values({
+    userId,
+    referralCode,
+    totalReferrals: 0,
+    pendingReferrals: 0,
+    freeGenerationsEarned: 0,
+  });
+
+  const newStats = await db.select()
+    .from(userReferralStats)
+    .where(eq(userReferralStats.userId, userId))
+    .limit(1);
+
+  return newStats[0];
+}
+
+/**
+ * Track a referral click (when someone visits with ?ref=code)
+ */
+export async function trackReferralClick(referralCode: string) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Find the user who owns this referral code
+  const stats = await db.select()
+    .from(userReferralStats)
+    .where(eq(userReferralStats.referralCode, referralCode))
+    .limit(1);
+
+  if (stats.length === 0) {
+    return null; // Invalid code
+  }
+
+  const referrerId = stats[0].userId;
+
+  // Create a pending referral record
+  await db.insert(referrals).values({
+    referrerId,
+    referralCode,
+    status: 'pending',
+  });
+
+  // Increment pending count
+  await db.update(userReferralStats)
+    .set({ 
+      pendingReferrals: sql`${userReferralStats.pendingReferrals} + 1`,
+      updatedAt: new Date(),
+    })
+    .where(eq(userReferralStats.userId, referrerId));
+
+  return referrerId;
+}
+
+/**
+ * Complete a referral (when referred user signs up)
+ */
+export async function completeReferral(referralCode: string, newUserId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Find the most recent pending referral with this code
+  const pendingReferrals = await db.select()
+    .from(referrals)
+    .where(sql`${referrals.referralCode} = ${referralCode} AND ${referrals.status} = 'pending'`)
+    .orderBy(desc(referrals.createdAt))
+    .limit(1);
+
+  if (pendingReferrals.length === 0) {
+    return null; // No pending referral found
+  }
+
+  const referral = pendingReferrals[0];
+  const referrerId = referral.referrerId;
+
+  // Update referral record
+  await db.update(referrals)
+    .set({
+      referredUserId: newUserId,
+      status: 'completed',
+      completedAt: new Date(),
+    })
+    .where(eq(referrals.id, referral.id));
+
+  // Update stats: increment total, decrement pending
+  await db.update(userReferralStats)
+    .set({
+      totalReferrals: sql`${userReferralStats.totalReferrals} + 1`,
+      pendingReferrals: sql`GREATEST(${userReferralStats.pendingReferrals} - 1, 0)`,
+      updatedAt: new Date(),
+    })
+    .where(eq(userReferralStats.userId, referrerId));
+
+  return referrerId;
+}
+
+/**
+ * Grant referral reward (1 free generation per successful referral)
+ */
+export async function grantReferralReward(referralId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Get referral
+  const referralData = await db.select()
+    .from(referrals)
+    .where(eq(referrals.id, referralId))
+    .limit(1);
+
+  if (referralData.length === 0 || referralData[0].rewardGranted === 1) {
+    return false; // Already rewarded or not found
+  }
+
+  const referral = referralData[0];
+  const referrerId = referral.referrerId;
+
+  // Mark reward as granted
+  await db.update(referrals)
+    .set({ 
+      rewardGranted: 1,
+      status: 'rewarded',
+    })
+    .where(eq(referrals.id, referralId));
+
+  // Add free generation to user stats
+  await db.update(userReferralStats)
+    .set({
+      freeGenerationsEarned: sql`${userReferralStats.freeGenerationsEarned} + 1`,
+      updatedAt: new Date(),
+    })
+    .where(eq(userReferralStats.userId, referrerId));
+
+  return true;
+}
+
+/**
+ * Get user's referral stats
+ */
+export async function getUserReferralStats(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const stats = await db.select()
+    .from(userReferralStats)
+    .where(eq(userReferralStats.userId, userId))
+    .limit(1);
+
+  return stats.length > 0 ? stats[0] : null;
+}
+
+/**
+ * Get user's referral history
+ */
+export async function getUserReferrals(userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  return await db.select()
+    .from(referrals)
+    .where(eq(referrals.referrerId, userId))
+    .orderBy(desc(referrals.createdAt));
 }

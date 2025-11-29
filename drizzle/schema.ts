@@ -77,3 +77,39 @@ export const pfpVersions = mysqlTable("pfpVersions", {
 
 export type PfpVersion = typeof pfpVersions.$inferSelect;
 export type InsertPfpVersion = typeof pfpVersions.$inferInsert;
+
+/**
+ * Referrals table - tracks user invitations and rewards
+ */
+export const referrals = mysqlTable("referrals", {
+  id: int("id").autoincrement().primaryKey(),
+  referrerId: int("referrerId").notNull(), // User who sent the invite
+  referredUserId: int("referredUserId"), // User who signed up (null until they sign up)
+  referralCode: varchar("referralCode", { length: 50 }).notNull(), // Unique code for tracking
+  status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, completed, rewarded
+  rewardGranted: int("rewardGranted").default(0).notNull(), // 1 if reward given, 0 otherwise
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  completedAt: timestamp("completedAt"), // When referred user signed up
+}, (table) => ({
+  // Index for fast lookups
+  referralCodeIndex: uniqueIndex("referral_code_unique").on(table.referralCode),
+}));
+
+export type Referral = typeof referrals.$inferSelect;
+export type InsertReferral = typeof referrals.$inferInsert;
+
+/**
+ * User referral stats - aggregated data for each user
+ */
+export const userReferralStats = mysqlTable("userReferralStats", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(), // One record per user
+  referralCode: varchar("referralCode", { length: 50 }).notNull().unique(), // User's personal referral code
+  totalReferrals: int("totalReferrals").default(0).notNull(), // Total successful referrals
+  pendingReferrals: int("pendingReferrals").default(0).notNull(), // Clicks but no signup yet
+  freeGenerationsEarned: int("freeGenerationsEarned").default(0).notNull(), // Bonus generations from referrals
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+
+export type UserReferralStats = typeof userReferralStats.$inferSelect;
+export type InsertUserReferralStats = typeof userReferralStats.$inferInsert;

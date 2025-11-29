@@ -141,3 +141,14 @@
 - [x] Generate share text with pet name and hashtags
 - [x] Include page URL in Twitter share
 - [x] Add share button styling and icon with gradient
+
+## Referral System
+- [x] Create referrals database table to track invites
+- [x] Generate unique referral code for each user
+- [x] Add referral code to share links (?ref=code)
+- [x] Track referral conversions when new users sign up
+- [x] Create referral stats dashboard showing invites and rewards
+- [x] Add reward system (1 free generation per successful referral)
+- [x] Display referral code on referral dashboard page
+- [x] Add referral tracking to App.tsx (URL parameter detection)
+- [x] Update share buttons to include referral codes
