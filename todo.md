@@ -182,3 +182,38 @@
 - [x] Document required environment variables
 - [x] Add payment verification to minting flow (already implemented)
 - [x] Test contract integration with frontend (ready for testing after deployment)
+
+## Base Mainnet Deployment Walkthrough
+- [ ] Prepare flattened contract for Remix deployment
+- [ ] Guide user through Remix IDE contract deployment
+- [ ] Help user verify contract on BaseScan
+- [ ] Assist with creating minter wallet
+- [ ] Configure environment variables in Manus settings
+- [ ] Test NFT minting flow end-to-end
+- [ ] Verify payment integration works
+
+## Base Mini App Deployment (Current Phase)
+- [x] Deploy PetPFP.sol smart contract to Base Mainnet
+- [x] Obtain deployed contract address (0x2420CF62135B37C8AE51DEfbF0ca8790771E76f4)
+- [ ] Configure NFT_CONTRACT_ADDRESS environment variable
+- [ ] Configure PAYMENT_RECIPIENT_ADDRESS environment variable
+- [ ] Configure NFT_MINTER_PRIVATE_KEY environment variable (create new wallet)
+- [ ] Create Farcaster manifest file (/.well-known/farcaster.json)
+- [ ] Deploy web app to Vercel with public HTTPS domain
+- [ ] Sign manifest using Base Build Account Association tool
+- [ ] Preview and validate app in Base Build (base.dev/preview)
+- [ ] Publish to Base app by creating a post with app URL
+
+## Client-Side NFT Minting (Base Mini App Standard)
+- [ ] Update PetPFP.sol contract to allow public minting (remove onlyOwner restriction)
+- [ ] Add payment requirement to mint function (users pay USDC + gas)
+- [ ] Redeploy updated contract to Base Mainnet
+- [ ] Integrate Base Account wallet connection in frontend
+- [ ] Update mint page to call contract directly from user's wallet
+- [ ] Remove server-side minting logic (not needed for Base mini apps)
+- [ ] Test minting flow with Base Account
+
+## UI Bug Fixes (Current)
+- [x] Fix navigation header overlapping success message on mint page
+- [x] Add PFP version history selector on mint page (allow choosing from previous generations)
+- [x] Ensure proper z-index and spacing for all modals and overlays

@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { AlertCircle, CheckCircle2, Loader2, ExternalLink, Sparkles } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, ExternalLink, Sparkles, History } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "wouter";
 import { toast } from "sonner";
@@ -31,6 +31,7 @@ export default function Mint() {
   const [showStylePicker, setShowStylePicker] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
   const [regenerating, setRegenerating] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
 
   // Check if demo mode is active
   useEffect(() => {
@@ -45,6 +46,17 @@ export default function Mint() {
     { enabled: petId > 0 }
   );
   const { data: styles } = trpc.pets.getStyles.useQuery();
+  const { data: versions } = trpc.pfpVersions.getByPetId.useQuery(
+    { petId },
+    { enabled: petId > 0 }
+  );
+  const selectVersionMutation = trpc.pfpVersions.selectVersion.useMutation({
+    onSuccess: () => {
+      refetch();
+      setShowVersionHistory(false);
+      toast.success("PFP version selected!");
+    },
+  });
 
   useEffect(() => {
     if (!petId || petId === 0) {
@@ -238,8 +250,9 @@ export default function Mint() {
 
   if (mintResult) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft py-12">
-      <Navigation />/
+      <div className="min-h-screen bg-base-gradient-soft">
+        <Navigation />
+        <div className="flex items-center justify-center py-12 pt-24">
         <Card className="p-8 max-w-2xl space-y-6">
           <div className="text-center space-y-4">
             <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto" />
@@ -301,6 +314,7 @@ export default function Mint() {
             </Button>
           </div>
         </Card>
+        </div>
       </div>
     );
   }
@@ -385,6 +399,19 @@ export default function Mint() {
                   )}
                 </div>
               </div>
+            )}
+
+            {/* Version History Button */}
+            {versions && versions.length > 1 && (
+              <Button
+                onClick={() => setShowVersionHistory(true)}
+                disabled={regenerating || minting}
+                variant="outline"
+                className="w-full"
+              >
+                <History className="w-4 h-4 mr-2" />
+                View All Versions ({versions.length})
+              </Button>
             )}
 
             {/* Try Different Style Button */}
@@ -496,6 +523,74 @@ export default function Mint() {
               disabled={regenerating}
             >
               {regenerating ? "Regenerating..." : "Regenerate PFP"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Version History Dialog */}
+      <Dialog open={showVersionHistory} onOpenChange={setShowVersionHistory}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>PFP Version History</DialogTitle>
+            <DialogDescription>
+              View all generated versions and select which one to mint as an NFT.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4">
+            {versions?.map((version) => (
+              <div
+                key={version.id}
+                className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                  version.isSelected
+                    ? "border-primary ring-2 ring-primary ring-offset-2"
+                    : "border-border hover:border-primary/50"
+                }`}
+                onClick={() => {
+                  if (!version.isSelected) {
+                    selectVersionMutation.mutate({ versionId: version.id, petId });
+                  }
+                }}
+              >
+                <img
+                  src={version.imageUrl}
+                  alt={`Version ${version.generationNumber}`}
+                  className="w-full aspect-square object-cover"
+                />
+                
+                {version.isSelected && (
+                  <div className="absolute top-2 right-2 bg-primary text-primary-foreground px-2 py-1 rounded-md text-xs font-bold">
+                    Selected
+                  </div>
+                )}
+                
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                  <p className="text-white text-xs font-medium">
+                    Version {version.generationNumber}
+                  </p>
+                  <p className="text-white/80 text-xs truncate">
+                    {version.prompt}
+                  </p>
+                </div>
+                
+                {!version.isSelected && (
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity font-medium text-sm">
+                      Select This Version
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setShowVersionHistory(false)}
+            >
+              Close
             </Button>
           </div>
         </DialogContent>
