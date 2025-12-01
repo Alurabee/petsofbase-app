@@ -240,3 +240,14 @@
 - [x] Fix active badge not updating after selecting new version
 - [x] Auto-close dialog after version selection
 - [x] Refresh version list to show updated active status
+
+## Pet Image Validation System
+- [x] Create backend validation endpoint with AI vision model
+- [x] Detect domestic animals (dogs, cats, rabbits, birds, etc.)
+- [x] Reject human faces
+- [x] Reject inappropriate content
+- [x] Check image quality (resolution, clarity)
+- [x] Add validation UI to upload page
+- [x] Implement all error states with clear messaging
+- [x] Add smooth retry flow
+- [x] Track validation failures for analytics

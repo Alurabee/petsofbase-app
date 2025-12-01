@@ -8,6 +8,7 @@ import * as db from "./db";
 import { getPetById, updatePet } from "./db";
 import { storagePut } from "./storage";
 import { generatePetPFP, getAvailableStyles, type PetImageStyle } from "./imageGeneration";
+import { validatePetImage, getValidationErrorMessage } from "./imageValidation";
 import { nanoid } from "nanoid";
 
 export const appRouter = router({
@@ -21,6 +22,24 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+  }),
+
+  imageValidation: router({
+    validatePetImage: publicProcedure
+      .input(z.object({ imageUrl: z.string().url() }))
+      .mutation(async ({ input }) => {
+        const result = await validatePetImage(input.imageUrl);
+        
+        if (!result.isValid) {
+          const errorDetails = getValidationErrorMessage(result.reason || "unknown");
+          return {
+            ...result,
+            errorDetails
+          };
+        }
+        
+        return result;
+      }),
   }),
 
   pets: router({

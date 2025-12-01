@@ -18,6 +18,12 @@ export default function Upload() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [validating, setValidating] = useState(false);
+  const [validationError, setValidationError] = useState<{
+    icon: string;
+    title: string;
+    message: string;
+  } | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -30,6 +36,7 @@ export default function Upload() {
 
   const uploadImage = trpc.pets.uploadImage.useMutation();
   const createPet = trpc.pets.create.useMutation();
+  const validateImage = trpc.imageValidation.validatePetImage.useMutation();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,9 +55,59 @@ export default function Upload() {
     }
 
     setImageFile(file);
+    setValidationError(null);
+    
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result as string);
+    reader.onloadend = async () => {
+      const preview = reader.result as string;
+      setImagePreview(preview);
+      
+      // Validate image with AI
+      setValidating(true);
+      toast.loading("Analyzing image...", { id: "validation" });
+      
+      try {
+        // First upload to get URL for validation
+        const base64Data = preview.split(',')[1];
+        const uploadResult = await uploadImage.mutateAsync({
+          fileName: file.name,
+          fileType: file.type,
+          fileData: base64Data,
+        });
+        
+        // Validate the uploaded image
+        const validationResult = await validateImage.mutateAsync({
+          imageUrl: uploadResult.url
+        });
+        
+        if (!validationResult.isValid) {
+          // Show validation error
+          const errorDetails = (validationResult as any).errorDetails || {
+            icon: "❌",
+            title: "Validation Failed",
+            message: validationResult.message || "Please try a different image"
+          };
+          setValidationError(errorDetails);
+          setImageFile(null);
+          setImagePreview(null);
+          toast.error(errorDetails.title || "Validation failed", { id: "validation" });
+          
+          // Track validation failure for analytics
+          console.log("[Analytics] Image validation failed:", {
+            reason: validationResult.reason,
+            confidence: validationResult.confidence,
+            detectedSubject: validationResult.detectedSubject
+          });
+        } else {
+          // Success
+          toast.success("Pet detected! ✓", { id: "validation" });
+        }
+      } catch (error: any) {
+        console.error("Validation error:", error);
+        toast.error("Validation failed. Please try again.", { id: "validation" });
+      } finally {
+        setValidating(false);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -58,6 +115,7 @@ export default function Upload() {
   const handleRemoveImage = () => {
     setImageFile(null);
     setImagePreview(null);
+    setValidationError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -192,6 +250,48 @@ export default function Upload() {
                 </div>
               )}
             </div>
+
+            {/* Validation Error */}
+            {validationError && (
+              <Card className="p-6 border-2 border-destructive bg-destructive/5">
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="text-3xl">{validationError.icon}</span>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-1">{validationError.title}</h3>
+                      <p className="text-sm text-muted-foreground">{validationError.message}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setValidationError(null);
+                        document.getElementById('image')?.click();
+                      }}
+                      className="bg-base-gradient hover:opacity-90"
+                    >
+                      Try Another Photo
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setValidationError(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Validating Indicator */}
+            {validating && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                <span>Analyzing image...</span>
+              </div>
+            )}
 
             {/* Pet Name */}
             <div className="space-y-2">
