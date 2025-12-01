@@ -217,3 +217,8 @@
 - [x] Fix navigation header overlapping success message on mint page
 - [x] Add PFP version history selector on mint page (allow choosing from previous generations)
 - [x] Ensure proper z-index and spacing for all modals and overlays
+
+## Homepage CTA Improvements
+- [x] Add prominent call-to-action near top of homepage
+- [x] Remove "Built on Base" badge from top of page
+- [x] Change footer heart icon from red to blue
