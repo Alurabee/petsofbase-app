@@ -235,3 +235,8 @@
 - [x] Create improved version selection dialog with active PFP indicator
 - [x] Make it clear which PFP is currently selected for minting
 - [x] Allow easy switching between generated versions
+
+## Version Selection Bug Fixes
+- [x] Fix active badge not updating after selecting new version
+- [x] Auto-close dialog after version selection
+- [x] Refresh version list to show updated active status

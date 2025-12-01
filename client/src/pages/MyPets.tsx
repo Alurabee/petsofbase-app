@@ -34,10 +34,15 @@ export default function MyPets() {
     { petId: viewingVersions! },
     { enabled: viewingVersions !== null }
   );
+  const utils = trpc.useUtils();
   const selectVersionMutation = trpc.pfpVersions.selectVersion.useMutation({
     onSuccess: () => {
-      refetch();
+      // Invalidate both pets and versions queries to refresh UI
+      utils.pets.myPets.invalidate();
+      utils.pfpVersions.getByPetId.invalidate();
       toast.success("PFP version selected!");
+      // Close dialog after selection
+      setViewingVersions(null);
     },
   });
 
