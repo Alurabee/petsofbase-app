@@ -225,3 +225,6 @@
 
 ## CTA Button Repositioning
 - [x] Move CTA buttons to top of homepage (right under subtitle, before before/after showcase)
+
+## Homepage Spacing Fixes
+- [x] Reduce white space between hero section and "Choose Your Style" section

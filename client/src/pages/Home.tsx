@@ -26,7 +26,7 @@ export default function Home() {
       {/* Hero Section with Before/After */}
       <section className="relative overflow-hidden bg-base-gradient-soft">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container py-20 relative">
+        <div className="container py-16 pb-12 relative">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
               <h1 className="text-6xl font-bold leading-tight">
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Style Showcase Section */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="container">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-4xl font-bold">Choose Your Style</h2>
