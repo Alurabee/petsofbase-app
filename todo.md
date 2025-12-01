@@ -228,3 +228,10 @@
 
 ## Homepage Spacing Fixes
 - [x] Reduce white space between hero section and "Choose Your Style" section
+
+## Improved PFP Generation Flow
+- [x] Change "Generate PFP" button to "Choose Style"
+- [x] Add "View All Generations" button to My Pets page
+- [x] Create improved version selection dialog with active PFP indicator
+- [x] Make it clear which PFP is currently selected for minting
+- [x] Allow easy switching between generated versions
