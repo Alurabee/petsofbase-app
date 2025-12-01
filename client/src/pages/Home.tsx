@@ -38,6 +38,31 @@ export default function Home() {
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
                 and compete on the Cuteness Leaderboard. All for just 0.25 USDC.
               </p>
+              
+              {/* Primary CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                {isAuthenticated ? (
+                  <Link href="/upload">
+                    <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                      <Upload className="w-5 h-5 mr-2" />
+                      Upload Your Pet Now
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                    <a href={getLoginUrl()}>
+                      <Zap className="w-5 h-5 mr-2" />
+                      Get Started Free
+                    </a>
+                  </Button>
+                )}
+                <Link href="/leaderboard">
+                  <Button size="lg" variant="outline" className="text-lg px-8 py-6 w-full sm:w-auto">
+                    <Trophy className="w-5 h-5 mr-2" />
+                    View Leaderboard
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Before/After Showcase */}
@@ -72,31 +97,6 @@ export default function Home() {
                 </div>
                 <p className="text-center text-sm font-medium text-primary">Your Based NFT PFP 🎬</p>
               </Card>
-            </div>
-            
-            {/* Primary CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-              {isAuthenticated ? (
-                <Link href="/upload">
-                  <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
-                    <Upload className="w-5 h-5 mr-2" />
-                    Upload Your Pet Now
-                  </Button>
-                </Link>
-              ) : (
-                <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
-                  <a href={getLoginUrl()}>
-                    <Zap className="w-5 h-5 mr-2" />
-                    Get Started Free
-                  </a>
-                </Button>
-              )}
-              <Link href="/leaderboard">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 w-full sm:w-auto">
-                  <Trophy className="w-5 h-5 mr-2" />
-                  View Leaderboard
-                </Button>
-              </Link>
             </div>
           </div>
         </div>

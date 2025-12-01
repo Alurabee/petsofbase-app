@@ -222,3 +222,6 @@
 - [x] Add prominent call-to-action near top of homepage
 - [x] Remove "Built on Base" badge from top of page
 - [x] Change footer heart icon from red to blue
+
+## CTA Button Repositioning
+- [x] Move CTA buttons to top of homepage (right under subtitle, before before/after showcase)
