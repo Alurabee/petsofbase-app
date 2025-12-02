@@ -146,6 +146,22 @@ export type PetOfTheDayVote = typeof petOfTheDayVotes.$inferSelect;
 export type InsertPetOfTheDayVote = typeof petOfTheDayVotes.$inferInsert;
 
 /**
+ * Weekly Draw - tracks weekly winners from Pet of the Day entries
+ */
+export const weeklyDraw = mysqlTable("weeklyDraw", {
+  id: int("id").autoincrement().primaryKey(),
+  weekStartDate: varchar("weekStartDate", { length: 10 }).notNull().unique(), // Monday YYYY-MM-DD
+  winningPetId: int("winningPetId").notNull(), // Winner's pet ID
+  winningPetOfTheDayId: int("winningPetOfTheDayId").notNull(), // Reference to petOfTheDay record
+  prizeAmount: int("prizeAmount").default(5).notNull(), // Prize in USDC (500 = $5.00)
+  prizeAwarded: int("prizeAwarded").default(0).notNull(), // 1 if prize distributed
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type WeeklyDraw = typeof weeklyDraw.$inferSelect;
+export type InsertWeeklyDraw = typeof weeklyDraw.$inferInsert;
+
+/**
  * Activity Feed - tracks all major events for live feed
  */
 export const activityFeed = mysqlTable("activityFeed", {

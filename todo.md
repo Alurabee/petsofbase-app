@@ -269,3 +269,23 @@
 - [ ] Emoji reactions (😍🔥⭐)
 - [x] Scarcity messaging ("Only 3 spots left in Top 10")
 - [x] Weekly leaderboard reset (every Monday)
+
+## Production Readiness - Final Steps
+- [x] Update Pet of the Day to weekly draw model
+- [x] Set up automated Pet of the Day cron job (12pm ET daily)
+- [x] Set up weekly draw cron job (Monday 12pm ET)
+- [ ] Implement $5 USDC prize distribution for weekly winners
+- [x] Add weekly draw UI with countdown timer
+- [x] Show all 7 daily entries for current week
+- [ ] Add Base wallet connection (OnchainKit)
+- [ ] Implement USDC payment for paid generations ($0.10)
+- [ ] Implement USDC payment for minting ($0.25)
+- [ ] Create Farcaster Frame for in-feed minting
+- [ ] Add /.well-known/farcaster.json manifest
+- [ ] Test complete payment and minting flow
+
+## How It Works Page
+- [x] Create How It Works page explaining all systems
+- [x] Add to footer navigation
+- [x] Add to main navigation menu
+- [x] Update Pet of the Day selection to hybrid model (5+ votes threshold)

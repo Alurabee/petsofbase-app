@@ -17,24 +17,25 @@ function getTodayET(): string {
  * Prioritizes pets that haven't been featured recently
  */
 export async function selectPetOfTheDay(): Promise<number> {
-  // Get pets that have PFPs and haven't been featured in the last 30 days
+  // HYBRID MODEL: Get pets with 5+ votes, PFPs, and not featured in last 7 days
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   
   const recentlyFeatured = await db
     .select({ petId: petOfTheDay.petId })
     .from(petOfTheDay)
-    .where(sql`DATE(${petOfTheDay.createdAt}) > DATE_SUB(NOW(), INTERVAL 30 DAY)`);
+    .where(sql`DATE(${petOfTheDay.createdAt}) > DATE_SUB(NOW(), INTERVAL 7 DAY)`);
 
   const recentlyFeaturedIds = recentlyFeatured.map((r: any) => r.petId);
 
-  // Get eligible pets (have PFP, not recently featured)
+  // Get eligible pets (have PFP, 5+ votes, not recently featured)
   const eligiblePets = await db
-    .select({ id: pets.id })
+    .select({ id: pets.id, voteCount: pets.voteCount })
     .from(pets)
     .where(
       and(
         sql`${pets.pfpImageUrl} IS NOT NULL`,
+        sql`${pets.voteCount} >= 5`, // MINIMUM 5 VOTES REQUIRED
         recentlyFeaturedIds.length > 0 
           ? sql`${pets.id} NOT IN (${sql.join(recentlyFeaturedIds.map((id: number) => sql`${id}`), sql`, `)})`
           : sql`1=1`
@@ -42,11 +43,18 @@ export async function selectPetOfTheDay(): Promise<number> {
     );
 
   if (eligiblePets.length === 0) {
-    // Fallback: select any pet with a PFP
+    // Fallback: select any pet with a PFP (no vote requirement)
     const anyPets = await db
       .select({ id: pets.id })
       .from(pets)
-      .where(sql`${pets.pfpImageUrl} IS NOT NULL`);
+      .where(
+        and(
+          sql`${pets.pfpImageUrl} IS NOT NULL`,
+          recentlyFeaturedIds.length > 0 
+            ? sql`${pets.id} NOT IN (${sql.join(recentlyFeaturedIds.map((id: number) => sql`${id}`), sql`, `)})`
+            : sql`1=1`
+        )
+      );
     
     if (anyPets.length === 0) {
       throw new Error("No pets with PFPs available for Pet of the Day");
@@ -56,7 +64,7 @@ export async function selectPetOfTheDay(): Promise<number> {
     return anyPets[randomIndex].id;
   }
 
-  // Select random pet from eligible list
+  // Random selection from pets with 5+ votes
   const randomIndex = Math.floor(Math.random() * eligiblePets.length);
   return eligiblePets[randomIndex].id;
 }

@@ -12,6 +12,7 @@ import { validatePetImage, getValidationErrorMessage } from "./imageValidation";
 import { nanoid } from "nanoid";
 import * as petOfTheDayService from "./petOfTheDay";
 import * as activityFeedService from "./activityFeed";
+import * as weeklyDrawService from "./weeklyDraw";
 
 export const appRouter = router({
   system: systemRouter,
@@ -369,6 +370,33 @@ export const appRouter = router({
       await petOfTheDayService.createTodaysPetOfTheDay();
       return { success: true };
       }),
+  }),
+
+  weeklyDraw: router({
+    // Get current week's entries
+    getCurrentWeekEntries: publicProcedure.query(async () => {
+      return await weeklyDrawService.getCurrentWeekEntries();
+    }),
+
+    // Get current week's draw result
+    getCurrentDraw: publicProcedure.query(async () => {
+      return await weeklyDrawService.getCurrentWeekDraw();
+    }),
+
+    // Get draw history
+    getHistory: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(20).default(10) }).optional())
+      .query(async ({ input }) => {
+        return await weeklyDrawService.getDrawHistory(input?.limit || 10);
+      }),
+
+    // Conduct weekly draw (admin only)
+    conductDraw: protectedProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin only" });
+      }
+      return await weeklyDrawService.conductWeeklyDraw();
+    }),
   }),
 
   activityFeed: router({

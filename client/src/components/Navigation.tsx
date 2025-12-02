@@ -25,6 +25,9 @@ export default function Navigation() {
           <Link href="/gallery" className="text-sm font-medium hover:text-primary transition-colors">
             Gallery
           </Link>
+          <Link href="/how-it-works" className="text-sm font-medium hover:text-primary transition-colors">
+            How It Works
+          </Link>
           {isAuthenticated ? (
             <>
               <Link href="/my-pets" className="text-sm font-medium hover:text-primary transition-colors">
@@ -73,6 +76,13 @@ export default function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Gallery
+            </Link>
+            <Link 
+              href="/how-it-works" 
+              className="text-sm font-medium hover:text-primary transition-colors py-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              How It Works
             </Link>
             {isAuthenticated ? (
               <>

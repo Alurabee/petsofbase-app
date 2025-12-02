@@ -15,6 +15,8 @@ export default function PetOfTheDay() {
   const { data: hasVoted } = trpc.petOfTheDay.hasVoted.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+  const { data: weekEntries } = trpc.weeklyDraw.getCurrentWeekEntries.useQuery();
+  const { data: currentDraw } = trpc.weeklyDraw.getCurrentDraw.useQuery();
   
   const utils = trpc.useUtils();
   const voteMutation = trpc.petOfTheDay.vote.useMutation({
@@ -125,15 +127,45 @@ export default function PetOfTheDay() {
           🎉 Share Pet of the Day
         </Button>
 
-        {/* Info */}
-        <div className="mt-4 p-4 bg-yellow-100 rounded-lg text-center text-sm">
-          <p className="font-semibold text-yellow-900">
-            🏆 The pet with the most votes at the end of the day wins 2 USDC!
+        {/* Weekly Draw Info */}
+        <div className="mt-4 p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg text-center text-sm">
+          <p className="font-bold text-purple-900 text-lg mb-2">
+            🎰 Weekly Draw: $5 USDC Prize!
           </p>
-          <p className="text-yellow-700 mt-1">
-            New Pet of the Day every day at 12pm ET
+          <p className="text-purple-700">
+            Every Pet of the Day enters the weekly draw
           </p>
+          <p className="text-purple-600 mt-1">
+            Winner announced Monday at 12pm ET
+          </p>
+          {weekEntries && weekEntries.length > 0 && (
+            <p className="text-sm text-purple-800 mt-2 font-semibold">
+              📅 {weekEntries.length}/7 entries this week
+            </p>
+          )}
         </div>
+
+        {/* Current Week Winner */}
+        {currentDraw && (
+          <div className="mt-4 p-4 bg-green-100 rounded-lg border-2 border-green-400">
+            <p className="font-bold text-green-900 text-center mb-2">
+              🎉 This Week's Winner!
+            </p>
+            <div className="flex items-center gap-3 justify-center">
+              {currentDraw.petImageUrl && (
+                <img
+                  src={currentDraw.petImageUrl}
+                  alt={currentDraw.petName || "Winner"}
+                  className="w-16 h-16 rounded-lg object-cover"
+                />
+              )}
+              <div>
+                <p className="font-semibold text-green-900">{currentDraw.petName}</p>
+                <p className="text-sm text-green-700">Won $5 USDC!</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );

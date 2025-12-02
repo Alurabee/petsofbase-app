@@ -269,10 +269,23 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-8 bg-white border-t">
-        <div className="container text-center text-sm text-muted-foreground">
-          <p className="flex items-center justify-center gap-1">
-            Built with <Heart className="w-4 h-4 fill-primary text-primary" /> on Base • PetsOfBase © 2025
-          </p>
+        <div className="container">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <p className="flex items-center gap-1">
+              Built with <Heart className="w-4 h-4 fill-primary text-primary" /> on Base • PetsOfBase © 2025
+            </p>
+            <div className="flex items-center gap-6">
+              <Link href="/how-it-works" className="hover:text-primary transition-colors">
+                How It Works
+              </Link>
+              <Link href="/leaderboard" className="hover:text-primary transition-colors">
+                Leaderboard
+              </Link>
+              <Link href="/gallery" className="hover:text-primary transition-colors">
+                Gallery
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

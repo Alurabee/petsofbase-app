@@ -12,6 +12,7 @@ import Mint from "./pages/Mint";
 import PetDetail from "./pages/PetDetail";
 import Gallery from "./pages/Gallery";
 import Referrals from "./pages/Referrals";
+import HowItWorks from "./pages/HowItWorks";
 import { useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 
@@ -51,6 +52,7 @@ function Router() {
       <Route path={"/pet/:id"} component={PetDetail} />
       <Route path={"/gallery"} component={Gallery} />
       <Route path={"/referrals"} component={Referrals} />
+      <Route path={"/how-it-works"} component={HowItWorks} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
