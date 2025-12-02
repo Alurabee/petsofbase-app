@@ -139,7 +139,7 @@ export default function PetDetail() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -148,7 +148,7 @@ export default function PetDetail() {
   if (!pet) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <h2 className="text-2xl font-bold">Pet Not Found</h2>
           <p className="text-muted-foreground">
@@ -167,7 +167,7 @@ export default function PetDetail() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft">
-      <Navigation />/
+      <Navigation />
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container py-6">

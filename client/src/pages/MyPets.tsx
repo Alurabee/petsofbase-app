@@ -100,7 +100,7 @@ export default function MyPets() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <h2 className="text-2xl font-bold">Connect Your Wallet</h2>
           <p className="text-muted-foreground">
@@ -116,7 +116,7 @@ export default function MyPets() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft">
-      <Navigation />/
+      <Navigation />
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container py-8">

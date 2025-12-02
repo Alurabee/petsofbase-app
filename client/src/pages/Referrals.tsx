@@ -25,7 +25,7 @@ export default function Referrals() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-base-gradient-soft flex items-center justify-center">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <h2 className="text-2xl font-bold">Connect Wallet</h2>
           <p className="text-muted-foreground">
@@ -54,7 +54,7 @@ export default function Referrals() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft">
-      <Navigation />/
+      <Navigation />
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container py-6">

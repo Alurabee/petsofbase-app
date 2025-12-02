@@ -173,7 +173,7 @@ export default function Mint() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <h2 className="text-2xl font-bold">Connect Your Wallet</h2>
           <p className="text-muted-foreground">
@@ -190,7 +190,7 @@ export default function Mint() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -199,7 +199,7 @@ export default function Mint() {
   if (!pet) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
           <h2 className="text-2xl font-bold">Pet Not Found</h2>
@@ -217,7 +217,7 @@ export default function Mint() {
   if (!pet.pfpImageUrl) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-yellow-500 mx-auto" />
           <h2 className="text-2xl font-bold">PFP Not Generated</h2>
@@ -235,7 +235,7 @@ export default function Mint() {
   if (pet.nftTokenId && !mintResult) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto" />
           <h2 className="text-2xl font-bold">Already Minted</h2>
@@ -333,7 +333,7 @@ export default function Mint() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft py-12">
-      <Navigation />/
+      <Navigation />
       <div className="container max-w-2xl">
         <Card className="p-8 space-y-6">
           <div className="text-center space-y-2">

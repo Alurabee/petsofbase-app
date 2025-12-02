@@ -179,7 +179,7 @@ export default function Upload() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
-      <Navigation />/
+        <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
           <h2 className="text-2xl font-bold">Connect Your Wallet</h2>
           <p className="text-muted-foreground">
@@ -195,7 +195,7 @@ export default function Upload() {
 
   return (
     <div className="min-h-screen bg-base-gradient-soft py-12">
-      <Navigation />/
+      <Navigation />
       <div className="container max-w-3xl">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Upload Your Pet</h1>
@@ -236,7 +236,7 @@ export default function Upload() {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="w-full h-64 object-contain rounded-lg pet-card-border bg-gray-50"
+                    className="w-full aspect-square object-contain rounded-lg pet-card-border bg-gray-50"
                   />
                   <Button
                     type="button"

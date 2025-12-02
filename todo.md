@@ -301,3 +301,8 @@
 - [x] Fix image preview to show full image without cropping
 - [x] Use object-contain instead of object-cover for preview
 - [x] Add proper aspect ratio handling for uploaded images
+
+## Critical UI Fixes
+- [x] Remove forward slash "/" character appearing in top left of all pages
+- [x] Change image preview box from rectangle to square (aspect-square)
+- [x] Match preview dimensions to actual PFP output format
