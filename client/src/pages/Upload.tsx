@@ -236,7 +236,7 @@ export default function Upload() {
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="w-full h-64 object-cover rounded-lg pet-card-border"
+                    className="w-full h-64 object-contain rounded-lg pet-card-border bg-gray-50"
                   />
                   <Button
                     type="button"

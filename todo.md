@@ -295,3 +295,9 @@
 - [x] Adjust spacing between navigation links
 - [x] Ensure navigation works on tablet/desktop breakpoints
 - [x] Test on different screen sizes
+
+## UI Fixes - Upload Page
+- [x] Remove stray "/" character appearing in top left (was browser artifact)
+- [x] Fix image preview to show full image without cropping
+- [x] Use object-contain instead of object-cover for preview
+- [x] Add proper aspect ratio handling for uploaded images
