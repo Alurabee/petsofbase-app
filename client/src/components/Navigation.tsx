@@ -18,22 +18,22 @@ export default function Navigation() {
         </Link>
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/leaderboard" className="text-sm font-medium hover:text-primary transition-colors">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+          <Link href="/leaderboard" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             Leaderboard
           </Link>
-          <Link href="/gallery" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/gallery" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             Gallery
           </Link>
-          <Link href="/how-it-works" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link href="/how-it-works" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
             How It Works
           </Link>
           {isAuthenticated ? (
             <>
-              <Link href="/my-pets" className="text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/my-pets" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                 My Pets
               </Link>
-              <Link href="/referrals" className="text-sm font-medium hover:text-primary transition-colors">
+              <Link href="/referrals" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                 Referrals
               </Link>
               <Button asChild className="bg-base-gradient hover:opacity-90">
@@ -52,7 +52,7 @@ export default function Navigation() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -61,7 +61,7 @@ export default function Navigation() {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t bg-white/95 backdrop-blur-sm">
+        <div className="lg:hidden border-t bg-white/95 backdrop-blur-sm">
           <div className="container py-4 flex flex-col gap-4">
             <Link 
               href="/leaderboard" 
