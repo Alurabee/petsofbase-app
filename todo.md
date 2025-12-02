@@ -251,3 +251,21 @@
 - [x] Implement all error states with clear messaging
 - [x] Add smooth retry flow
 - [x] Track validation failures for analytics
+
+## Viral Features - Top 3 Priorities
+- [x] Add MiniKit useCompose() hook for social sharing
+- [x] Share to Feed after PFP generation
+- [x] Share to Feed after minting NFT
+- [ ] Share to Feed when reaching Top 10
+- [x] Daily "Pet of the Day" ritual (12pm ET)
+- [x] Community voting for Pet of the Day
+- [x] Winner gets featured + 2 USDC prize
+- [x] Live activity feed (generations, votes, mints)
+- [x] Real-time updates (TikTok-style)
+
+## Quick Wins for Virality
+- [x] Challenge a Friend feature (tag friends)
+- [x] Live feed notifications ("Just minted: Fluffy the Cat")
+- [ ] Emoji reactions (😍🔥⭐)
+- [x] Scarcity messaging ("Only 3 spots left in Top 10")
+- [x] Weekly leaderboard reset (every Monday)

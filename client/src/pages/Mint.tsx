@@ -18,11 +18,13 @@ import { AlertCircle, CheckCircle2, Loader2, ExternalLink, Sparkles, History } f
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "wouter";
 import { toast } from "sonner";
+import { useSocialSharing } from "@/hooks/useSocialSharing";
 
 export default function Mint() {
   const { id } = useParams<{ id: string }>();
   const petId = parseInt(id || "0");
   const { user, isAuthenticated } = useAuth();
+  const { shareMint } = useSocialSharing();
   const [, setLocation] = useLocation();
   const [minting, setMinting] = useState(false);
   const [mintResult, setMintResult] = useState<any>(null);
@@ -298,20 +300,30 @@ export default function Mint() {
             )}
           </div>
 
-          <div className="flex gap-3">
+          <div className="space-y-3">
             <Button
-              onClick={() => setLocation(`/pet/${pet.id}`)}
-              className="flex-1 bg-base-gradient hover:opacity-90"
+              onClick={() => shareMint(pet.name, pet.id.toString(), pet.pfpImageUrl!)}
+              className="w-full bg-base-gradient hover:opacity-90 text-lg py-6"
+              size="lg"
             >
-              View Pet Profile
+              🎉 Share to Feed
             </Button>
-            <Button
-              onClick={() => setLocation("/my-pets")}
-              variant="outline"
-              className="flex-1"
-            >
-              Back to My Pets
-            </Button>
+            <div className="flex gap-3">
+              <Button
+                onClick={() => setLocation(`/pet/${pet.id}`)}
+                className="flex-1"
+                variant="outline"
+              >
+                View Pet Profile
+              </Button>
+              <Button
+                onClick={() => setLocation("/my-pets")}
+                variant="outline"
+                className="flex-1"
+              >
+                Back to My Pets
+              </Button>
+            </div>
           </div>
         </Card>
         </div>

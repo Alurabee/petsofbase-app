@@ -36,6 +36,20 @@
       "when": 1764393193431,
       "tag": "0004_naive_spirit",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1764653320240,
+      "tag": "0005_clear_mariko_yashida",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1764654001203,
+      "tag": "0006_smooth_ravenous",
+      "breakpoints": true
     }
   ]
 }

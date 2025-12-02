@@ -10,6 +10,8 @@ import { storagePut } from "./storage";
 import { generatePetPFP, getAvailableStyles, type PetImageStyle } from "./imageGeneration";
 import { validatePetImage, getValidationErrorMessage } from "./imageValidation";
 import { nanoid } from "nanoid";
+import * as petOfTheDayService from "./petOfTheDay";
+import * as activityFeedService from "./activityFeed";
 
 export const appRouter = router({
   system: systemRouter,
@@ -330,6 +332,58 @@ export const appRouter = router({
         
         return { success: !!referrerId, referrerId };
       }),
+  }),
+
+  petOfTheDay: router({
+    // Get today's Pet of the Day
+    getToday: publicProcedure.query(async () => {
+      return await petOfTheDayService.getTodaysPetOfTheDay();
+    }),
+
+    // Vote for today's Pet of the Day
+    vote: protectedProcedure.mutation(async ({ ctx }) => {
+      if (!ctx.user) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Must be logged in to vote" });
+      }
+      return await petOfTheDayService.voteForPetOfTheDay(ctx.user.id);
+    }),
+
+    // Check if user has voted today
+    hasVoted: protectedProcedure.query(async ({ ctx }) => {
+      if (!ctx.user) return false;
+      return await petOfTheDayService.hasUserVotedToday(ctx.user.id);
+    }),
+
+    // Get Pet of the Day history
+    getHistory: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(30).default(7) }).optional())
+      .query(async ({ input }) => {
+        return await petOfTheDayService.getPetOfTheDayHistory(input?.limit || 7);
+      }),
+
+    // Create today's Pet of the Day (admin only)
+    createToday: protectedProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin only" });
+      }
+      await petOfTheDayService.createTodaysPetOfTheDay();
+      return { success: true };
+      }),
+  }),
+
+  activityFeed: router({
+
+    // Get recent activity
+    getRecent: publicProcedure
+      .input(z.object({ limit: z.number().min(1).max(50).default(20) }).optional())
+      .query(async ({ input }) => {
+        return await activityFeedService.getRecentActivity(input?.limit || 20);
+      }),
+
+    // Get activity stats (last 24h)
+    getStats: publicProcedure.query(async () => {
+      return await activityFeedService.getActivityStats();
+    }),
   }),
 });
 

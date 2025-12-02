@@ -17,9 +17,11 @@ import { Heart, Sparkles, Upload as UploadIcon, History } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { useSocialSharing } from "@/hooks/useSocialSharing";
 
 export default function MyPets() {
   const { user, isAuthenticated } = useAuth();
+  const { shareGeneration, challengeFriend } = useSocialSharing();
   const [selectedPet, setSelectedPet] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
   const [generating, setGenerating] = useState(false);
@@ -62,6 +64,26 @@ export default function MyPets() {
       } else {
         toast.success("PFP generated! Future generations will cost $0.10 USDC.");
       }
+      
+      // Find the pet to get its details for sharing
+      const pet = pets?.find(p => p.id === petId);
+      if (pet && result.pfpImageUrl) {
+        // Show share prompt
+        toast.success(
+          <div className="flex flex-col gap-2">
+            <p>PFP generated! Share it with your friends?</p>
+            <Button
+              size="sm"
+              onClick={() => shareGeneration(pet.name, pet.id.toString(), result.pfpImageUrl!)}
+              className="bg-base-gradient hover:opacity-90"
+            >
+              Share to Feed 🎉
+            </Button>
+          </div>,
+          { duration: 10000 }
+        );
+      }
+      
       setSelectedPet(null);
       refetch();
     } catch (error: any) {

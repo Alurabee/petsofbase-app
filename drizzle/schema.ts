@@ -113,3 +113,49 @@ export const userReferralStats = mysqlTable("userReferralStats", {
 
 export type UserReferralStats = typeof userReferralStats.$inferSelect;
 export type InsertUserReferralStats = typeof userReferralStats.$inferInsert;
+
+/**
+ * Pet of the Day - daily featured pet with voting
+ */
+export const petOfTheDay = mysqlTable("petOfTheDay", {
+  id: int("id").autoincrement().primaryKey(),
+  petId: int("petId").notNull(), // Featured pet
+  date: varchar("date", { length: 10 }).notNull().unique(), // YYYY-MM-DD format
+  voteCount: int("voteCount").default(0).notNull(), // Total votes for this day
+  prizeAwarded: int("prizeAwarded").default(0).notNull(), // 1 if 2 USDC prize awarded
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PetOfTheDay = typeof petOfTheDay.$inferSelect;
+export type InsertPetOfTheDay = typeof petOfTheDay.$inferInsert;
+
+/**
+ * Pet of the Day Votes - tracks individual votes for daily featured pet
+ */
+export const petOfTheDayVotes = mysqlTable("petOfTheDayVotes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Voter's user ID
+  petOfTheDayId: int("petOfTheDayId").notNull(), // Reference to petOfTheDay record
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+}, (table) => ({
+  // Unique constraint: one vote per user per day
+  userDayUnique: uniqueIndex("user_day_unique").on(table.userId, table.petOfTheDayId),
+}));
+
+export type PetOfTheDayVote = typeof petOfTheDayVotes.$inferSelect;
+export type InsertPetOfTheDayVote = typeof petOfTheDayVotes.$inferInsert;
+
+/**
+ * Activity Feed - tracks all major events for live feed
+ */
+export const activityFeed = mysqlTable("activityFeed", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // User who performed the action
+  petId: int("petId"), // Pet involved (if applicable)
+  activityType: mysqlEnum("activityType", ["generation", "mint", "vote", "top10"]).notNull(),
+  metadata: text("metadata"), // JSON string with additional data
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ActivityFeed = typeof activityFeed.$inferSelect;
+export type InsertActivityFeed = typeof activityFeed.$inferInsert;

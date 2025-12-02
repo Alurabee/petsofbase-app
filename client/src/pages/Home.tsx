@@ -6,6 +6,8 @@ import { trpc } from "@/lib/trpc";
 import { ArrowRight, Heart, Sparkles, Trophy, Upload, Zap } from "lucide-react";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
+import PetOfTheDay from "@/components/PetOfTheDay";
+import LiveActivityFeed from "@/components/LiveActivityFeed";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
@@ -102,8 +104,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Style Showcase Section */}
+      {/* Pet of the Day Section */}
       <section className="py-16 bg-white">
+        <div className="container">
+          <div className="max-w-2xl mx-auto">
+            <PetOfTheDay />
+          </div>
+        </div>
+      </section>
+
+      {/* Style Showcase Section */}
+      <section className="py-16 bg-base-gradient-soft">
         <div className="container">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-4xl font-bold">Choose Your Style</h2>
@@ -167,9 +178,18 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Live Activity Feed */}
+      <section className="py-16 bg-white">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <LiveActivityFeed />
+          </div>
+        </div>
+      </section>
+
       {/* Leaderboard Preview */}
       {leaderboard && leaderboard.length > 0 && (
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-base-gradient-soft">
           <div className="container">
             <div className="flex items-center justify-between mb-12">
               <div>
@@ -177,6 +197,11 @@ export default function Home() {
                 <p className="text-xl text-muted-foreground">
                   The most loved pets in the Based community
                 </p>
+                {leaderboard && leaderboard.length < 10 && (
+                  <p className="text-sm text-orange-600 font-semibold mt-2">
+                    🔥 Only {10 - leaderboard.length} spots left in today's Top 10!
+                  </p>
+                )}
               </div>
               <Link href="/leaderboard">
                 <Button variant="outline" size="lg">

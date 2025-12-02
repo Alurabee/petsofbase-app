@@ -23,6 +23,14 @@ export default function Leaderboard() {
               <p className="text-muted-foreground">
                 Vote for your favorite pets and help them climb the ranks!
               </p>
+              {pets && pets.length < 10 && (
+                <p className="text-sm text-orange-600 font-semibold mt-2">
+                  🔥 Only {10 - pets.length} spots left in the Top 10!
+                </p>
+              )}
+              <p className="text-sm text-muted-foreground mt-2">
+                🗓️ Leaderboard resets every Monday at 12pm ET
+              </p>
             </div>
             <Button asChild className="bg-base-gradient hover:opacity-90">
               <Link href="/">Back to Home</Link>
