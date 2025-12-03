@@ -312,3 +312,7 @@
 - [x] Add confetti celebration when user successfully mints NFT
 - [x] Add navigation menu to How It Works page (currently missing)
 - [x] Add delete button for non-minted PFPs on gallery page (allow cleanup of unwanted generations)
+
+## Image Display Issue
+- [x] Fix generated PFP images not fitting square frame properly (beige padding on sides)
+- [x] Updated AI prompt to fill entire square frame edge-to-edge without padding or borders

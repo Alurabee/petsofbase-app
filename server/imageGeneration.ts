@@ -40,6 +40,7 @@ export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<st
   prompt += `IMPORTANT: Preserve the pet's exact coloring, markings, and distinctive features. Only change the artistic style, not the pet's appearance. `;
   prompt += `${subjectDescription} `;
   prompt += `Centered composition, facing forward, professional quality portrait. `;
+  prompt += `CRITICAL: Fill the ENTIRE square frame edge-to-edge with the image. NO padding, NO borders, NO margins, NO empty space around the subject. The pet should fill the frame completely. `;
   prompt += `Absolutely NO text, NO labels, NO watermarks, NO color codes, NO words anywhere in the image.`;
   
   console.log("[Image Generation] Pet description:", subjectDescription);
