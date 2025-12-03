@@ -232,8 +232,9 @@ export default function Home() {
       </section>
 
       {/* Live Activity Feed */}
-      <section className="py-16 bg-white">
-        <div className="container">
+      <section className="py-16 bg-vibrant-mesh relative">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="container relative z-10">
           <div className="max-w-3xl mx-auto">
             <LiveActivityFeed />
           </div>
@@ -242,22 +243,23 @@ export default function Home() {
 
       {/* Leaderboard Preview */}
       {leaderboard && leaderboard.length > 0 && (
-        <section className="py-20 bg-base-gradient-soft">
-          <div className="container">
+        <section className="py-20 bg-vibrant-mesh relative">
+          <div className="absolute inset-0 dot-pattern" />
+          <div className="container relative z-10">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-2">Cuteness Leaderboard</h2>
-                <p className="text-xl text-muted-foreground">
+                <h2 className="text-4xl font-bold mb-2 text-white">Most Based Pets Leaderboard</h2>
+                <p className="text-xl text-white/70">
                   The most loved pets in the Based community
                 </p>
                 {leaderboard && leaderboard.length < 10 && (
-                  <p className="text-sm text-orange-600 font-semibold mt-2">
+                  <p className="text-sm text-orange-400 font-semibold mt-2">
                     🔥 Only {10 - leaderboard.length} spots left in today's Top 10!
                   </p>
                 )}
               </div>
               <Link href="/leaderboard">
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
                   View All
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -267,7 +269,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {leaderboard.map((pet, index) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                  <div className="glass-card overflow-hidden hover:glass-strong transition-all cursor-pointer rounded-2xl hover:-translate-y-2">
                     <div className="aspect-square relative">
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
@@ -279,16 +281,16 @@ export default function Home() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-2xl font-bold mb-2">{pet.name}</h3>
-                      <p className="text-muted-foreground mb-4">
+                      <h3 className="text-2xl font-bold mb-2 text-white">{pet.name}</h3>
+                      <p className="text-white/70 mb-4">
                         {pet.species} • {pet.breed}
                       </p>
-                      <div className="flex items-center gap-2 text-primary">
-                        <Heart className="w-5 h-5 fill-primary" />
+                      <div className="flex items-center gap-2 text-cyan-400">
+                        <Heart className="w-5 h-5 fill-cyan-400" />
                         <span className="font-bold">{pet.voteCount} votes</span>
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -297,8 +299,9 @@ export default function Home() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-base-gradient text-white">
-        <div className="container text-center space-y-8">
+      <section className="py-20 bg-vibrant-mesh relative">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="container text-center space-y-8 relative z-10">
           <h2 className="text-5xl font-bold">Ready to Join the Based Pet Community?</h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
             Upload your pet, generate an adorable AI PFP, and compete for the #1 spot on the leaderboard.
@@ -321,20 +324,20 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-white border-t">
+      <footer className="py-8 bg-vibrant-mesh/50 backdrop-blur-md border-t border-cyan-400/20">
         <div className="container">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/70">
             <p className="flex items-center gap-1">
-              Built with <Heart className="w-4 h-4 fill-primary text-primary" /> on Base • PetsOfBase © 2025
+              Built with <Heart className="w-4 h-4 fill-cyan-400 text-cyan-400" /> on Base • PetsOfBase © 2025
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/how-it-works" className="hover:text-primary transition-colors">
+              <Link href="/how-it-works" className="hover:text-white transition-colors">
                 How It Works
               </Link>
-              <Link href="/leaderboard" className="hover:text-primary transition-colors">
+              <Link href="/leaderboard" className="hover:text-white transition-colors">
                 Leaderboard
               </Link>
-              <Link href="/gallery" className="hover:text-primary transition-colors">
+              <Link href="/gallery" className="hover:text-white transition-colors">
                 Gallery
               </Link>
             </div>

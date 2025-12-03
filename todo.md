@@ -366,4 +366,4 @@
 - [x] Make text areas lighter with gradients (glass cards with glowing borders)
 - [x] Replace floating pet silhouettes with proper cat/dog silhouettes (6 unique shapes)
 - [x] Change menu bar color to match main theme background
-- [ ] Fix homepage theme continuity from Live Activity section downwards to footer - REMAINING
+- [x] Fix homepage theme continuity from Live Activity section downwards to footer
