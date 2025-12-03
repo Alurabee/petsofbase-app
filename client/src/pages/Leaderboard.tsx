@@ -18,7 +18,7 @@ export default function Leaderboard() {
             <div>
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
                 <Trophy className="w-10 h-10 text-primary" />
-                Cuteness Leaderboard
+                Most Popular Pet Leaderboard
               </h1>
               <p className="text-muted-foreground">
                 Vote for your favorite pets and help them climb the ranks!
