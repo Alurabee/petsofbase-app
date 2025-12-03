@@ -5,67 +5,33 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Upload from "./pages/Upload";
-import Leaderboard from "./pages/Leaderboard";
-import MyPets from "./pages/MyPets";
-import Mint from "./pages/Mint";
-import PetDetail from "./pages/PetDetail";
-import Gallery from "./pages/Gallery";
-import Referrals from "./pages/Referrals";
-import HowItWorks from "./pages/HowItWorks";
-import { useEffect } from "react";
-import { trpc } from "@/lib/trpc";
-
-// Referral tracking component
-function ReferralTracker() {
-  const trackClickMutation = trpc.referrals.trackClick.useMutation();
-
-  useEffect(() => {
-    // Check for referral code in URL
-    const params = new URLSearchParams(window.location.search);
-    const refCode = params.get('ref');
-    
-    if (refCode) {
-      // Store in localStorage for later (when user signs up)
-      localStorage.setItem('referralCode', refCode);
-      
-      // Track the click
-      trackClickMutation.mutate({ referralCode: refCode });
-      
-      // Clean URL (remove ref param)
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
-    }
-  }, []);
-
-  return null;
-}
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/upload"} component={Upload} />
-      <Route path={"/leaderboard"} component={Leaderboard} />
-      <Route path={"/my-pets"} component={MyPets} />
-      <Route path={"/mint/:id"} component={Mint} />
-      <Route path={"/pet/:id"} component={PetDetail} />
-      <Route path={"/gallery"} component={Gallery} />
-      <Route path={"/referrals"} component={Referrals} />
-      <Route path={"/how-it-works"} component={HowItWorks} />
       <Route path={"/404"} component={NotFound} />
+      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
 }
 
+// NOTE: About Theme
+// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
+//   to keep consistent foreground/background color across components
+// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
+
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider
+        defaultTheme="light"
+        // switchable
+      >
         <TooltipProvider>
           <Toaster />
-          <ReferralTracker />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
