@@ -51,10 +51,10 @@ export default function Gallery() {
       <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
-      <div className="glass-nav border-b border-cyan-400/30 relative z-10">
+      <div className="light-blue-gradient border-b border-blue-200 relative z-10">
         <div className="container py-8">
-          <h1 className="text-4xl font-bold mb-2 text-white">Pet Gallery</h1>
-          <p className="text-white/70 mb-6">
+          <h1 className="text-4xl font-bold mb-2 text-gray-900">Pet Gallery</h1>
+          <p className="text-gray-700 mb-6">
             Browse all pets in the PetsOfBase community
           </p>
 
@@ -85,7 +85,7 @@ export default function Gallery() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPets.map((pet: any) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <div className="glass-card p-4 space-y-3 rounded-2xl hover:glass-strong transition-all cursor-pointer group">
+                  <div className="light-blue-gradient p-4 space-y-3 rounded-2xl border-2 border-blue-200 hover:border-blue-400 transition-all cursor-pointer group shadow-lg">
                     <div className="relative">
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
@@ -120,13 +120,13 @@ export default function Gallery() {
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-lg text-white">{pet.name}</h3>
-                      <p className="text-sm text-white/70">
+                      <h3 className="font-bold text-lg text-gray-900">{pet.name}</h3>
+                      <p className="text-sm text-gray-700">
                         {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t">
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-300">
                       <div className="flex items-center gap-2">
                         <Heart className="w-4 h-4 text-primary" />
                         <span className="text-sm font-medium">{pet.voteCount}</span>

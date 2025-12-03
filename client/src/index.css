@@ -436,6 +436,11 @@
     animation: logo-glow 3s ease-in-out infinite;
   }
   
+  /* Almost-white with slight blue gradient */
+  .light-blue-gradient {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(224, 242, 254, 0.95) 50%, rgba(255, 255, 255, 0.95) 100%);
+  }
+  
   @keyframes logo-glow {
     0%, 100% { 
       filter: drop-shadow(0 0 8px rgba(0, 82, 255, 0.6));

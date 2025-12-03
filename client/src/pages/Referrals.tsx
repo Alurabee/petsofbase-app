@@ -58,12 +58,12 @@ export default function Referrals() {
       <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
-      <div className="glass-nav border-b border-cyan-400/30 relative z-10">
+      <div className="light-blue-gradient border-b border-blue-200 relative z-10">
         <div className="container py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">Referral Dashboard</h1>
-              <p className="text-white/70 mt-1">
+              <h1 className="text-3xl font-bold text-gray-900">Referral Dashboard</h1>
+              <p className="text-gray-700 mt-1">
                 Invite friends and earn free PFP generations
               </p>
             </div>

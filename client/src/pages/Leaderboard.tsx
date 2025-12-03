@@ -13,23 +13,23 @@ export default function Leaderboard() {
       <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
-      <div className="glass-nav border-b border-cyan-400/30 relative z-10">
+      <div className="light-blue-gradient border-b border-blue-200 relative z-10">
         <div className="container py-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 text-white">
+              <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 text-gray-900">
                 <Trophy className="w-10 h-10 text-yellow-400" />
                 Most Based Pets Leaderboard
               </h1>
-              <p className="text-white/70">
+              <p className="text-gray-700">
                 Vote for your favorite pets and help them climb the ranks!
               </p>
               {pets && pets.length < 10 && (
-                <p className="text-sm text-orange-300 font-semibold mt-2">
+                <p className="text-sm text-orange-600 font-semibold mt-2">
                   🔥 Only {10 - pets.length} spots left in the Top 10!
                 </p>
               )}
-              <p className="text-sm text-white/60 mt-2">
+              <p className="text-sm text-gray-600 mt-2">
                 🗓️ Leaderboard resets every Monday at 12pm ET
               </p>
             </div>
