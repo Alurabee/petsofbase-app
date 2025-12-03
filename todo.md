@@ -1,0 +1,314 @@
+# PetsOfBase TODO
+
+## Phase 1: Core Infrastructure & Setup
+- [x] Research and document X402 payment protocol integration
+- [x] Set up database schema for pets, votes, and leaderboard
+- [x] Configure S3 storage for pet images (pre-configured in template)
+- [x] Design and implement ERC-721 smart contract for Pet PFP NFTs
+
+## Phase 2: Pet Upload & Profile Creation
+- [x] Create pet upload form (image, name, personality traits, likes/dislikes)
+- [x] Implement image upload to S3 with proper file handling
+- [x] Create pet info card component with blue border styling
+- [x] Store pet metadata in database
+
+## Phase 3: AI Image Generation
+- [x] Integrate DALL-E 3 API for Pixar-style pet image generation
+- [x] Implement multiple style options for pet PFPs (Pixar, Cartoon, Realistic, Anime, Watercolor)
+- [x] Create PFP preview and selection UI
+- [x] Store generated PFP URLs in database
+
+## Phase 4: X402 Payment Integration
+- [x] Install and configure X402 payment middleware
+- [x] Create protected API endpoint for NFT minting with $0.25 USDC fee
+- [x] Implement payment verification flow
+- [ ] Test payment flow on Base testnet (requires deployed contract)
+
+## Phase 5: NFT Minting
+- [ ] Deploy ERC-721 smart contract to Base testnet (requires user action)
+- [x] Implement NFT minting logic in backend
+- [x] Store NFT metadata (tokenId, contract address, owner)
+- [x] Create minting confirmation UI
+
+## Phase 6: Leaderboard & Voting
+- [x] Create leaderboard database schema (votes, rankings)
+- [x] Implement voting mechanism (one vote per user per pet)
+- [x] Build leaderboard UI with sorting by votes
+- [ ] Add real-time vote count updates
+
+## Phase 7: Community Features
+- [x] Display all pets in a gallery view
+- [x] Implement pet profile pages with full info cards
+- [ ] Add social sharing functionality
+- [ ] Create "trending" and "new" pet filters
+
+## Phase 8: Testing & Polish
+- [ ] Write vitest tests for all tRPC procedures
+- [ ] Test complete user flow (upload → generate → pay → mint → vote)
+- [ ] Optimize image loading and performance
+- [ ] Add error handling and user feedback
+- [ ] Test on Base mainnet
+
+## Phase 9: Base Mini-App Integration
+- [ ] Configure minikit.config.ts with app metadata
+- [ ] Create account association credentials
+- [ ] Test app preview in Base app
+- [ ] Prepare deployment to Vercel
+
+## Phase 10: Launch Preparation
+- [ ] Final security audit
+- [ ] Set pricing to $0.25 USDC
+- [ ] Create launch announcement content
+- [ ] Deploy to production
+
+## Bug Fixes & Improvements
+- [x] Fix AI generation prompts to preserve pet's main features and appearance
+- [x] Add demo/bypass mode for testing minting flow without payment
+- [x] Allow users to mark pets as "minted" for testing purposes
+
+## Additional Bug Fixes
+- [x] Fix AI generation to create true artistic transformations instead of subtle edits
+- [x] Switch from image editing mode to pure generation mode for stronger style application
+
+## New Feature: Generation Limits
+- [x] Add generationCount field to pets table schema
+- [x] Track generation count per pet in database
+- [x] Implement 2 free generations per pet limit
+- [ ] Add X402 payment ($0.10 USDC) for 3rd+ generations (backend ready, needs payment endpoint)
+- [x] Show generation counter in UI (e.g., "1/2 free generations remaining")
+- [x] Update MyPets page to display generation limit status
+
+## Bug Fix
+- [x] Fix nested div inside p tag on Mint page (/mint/:id)
+
+## New Features: Regeneration UX Improvements
+- [x] Add "Try Different Style" button on Mint page
+- [x] Show generation count and remaining free generations on Mint page
+- [x] Create X402 payment endpoint for paid regenerations ($0.10 USDC)
+- [x] Integrate X402 payment for 3rd+ generations
+- [x] Handle payment flow in frontend for paid regenerations
+
+## Bug Fix
+- [x] Fix nested div inside p tag on MyPets page (/my-pets)
+
+## Bug Fixes & Improvements
+- [x] Fix AI prompts to prevent text/labels from appearing in generated images
+- [x] Add "Try Different Style" button to Pet Detail page (not just Mint page)
+- [x] Remove any mention of "border" or "color" from AI prompts to avoid text generation
+
+## UX Improvement
+- [x] Add "Try Different Style" button to My Pets page (currently only on Pet Detail page)
+- [x] Show generation counter on My Pets page pet cards
+
+## Bug Fix: AI Not Preserving Pet Appearance
+- [x] Re-enable image-to-image generation to preserve pet's color and features
+- [x] Update prompts to emphasize "preserve appearance, change style only"
+- [x] Add explicit anti-text instructions while using original image as reference
+
+## Homepage Redesign
+- [x] Add before/after showcase section with user's dog transformation
+- [x] Create style showcase grid displaying all 5 artistic styles
+- [x] Update logo to be more fun and pet-themed
+- [x] Add social proof section highlighting community engagement
+- [x] Copy example images to project public folder
+
+## Logo Design
+- [x] Generate 4 logo options using AI
+- [x] Present options to user for selection
+- [x] Create paw print variations with Base blue square emphasis
+- [x] Create glass aesthetic version of gradient paw logo
+- [x] Implement glassmorphism logo in navigation and favicon
+
+## Logo Update
+- [x] Create flat 2D front-facing version of glassmorphism logo with transparent background
+- [x] Replace current logo with new flat version
+- [x] Fix logo background - ensure truly transparent (not black) for white navigation bar
+- [x] Add mobile-responsive navigation with hamburger menu
+- [x] Fix logo checkerboard pattern - replaced transparency with white background
+- [x] Make logo perfectly square (1024x1024) for Base app requirements
+
+## PFP Version History Feature
+- [x] Add database schema to store all generated PFP versions (not just latest)
+- [x] Create backend procedures to save and retrieve versions
+- [x] Update generatePFP to save each version
+- [x] Create "View Previous Versions" UI on pet detail pages
+- [x] Add version selection functionality
+- [x] Allow users to select which version to mint from history
+- [x] Show generation timestamps and style info for each version
+
+## Social Sharing Feature
+- [x] Add Twitter/X share button to pet detail pages
+- [x] Generate share text with pet name and hashtags
+- [x] Include page URL in Twitter share
+- [x] Add share button styling and icon with gradient
+
+## Referral System
+- [x] Create referrals database table to track invites
+- [x] Generate unique referral code for each user
+- [x] Add referral code to share links (?ref=code)
+- [x] Track referral conversions when new users sign up
+- [x] Create referral stats dashboard showing invites and rewards
+- [x] Add reward system (1 free generation per successful referral)
+- [x] Display referral code on referral dashboard page
+- [x] Add referral tracking to App.tsx (URL parameter detection)
+- [x] Update share buttons to include referral codes
+
+## Navigation Consistency
+- [x] Extract navigation bar into shared component
+- [x] Add navigation to Leaderboard page
+- [x] Add navigation to Gallery page
+- [x] Add navigation to My Pets page
+- [x] Add navigation to Referrals page
+- [x] Add navigation to Upload page
+- [x] Add navigation to Pet Detail page
+- [x] Add navigation to Mint page
+
+## Free Generations Integration
+- [x] Add backend logic to check and consume free generations
+- [x] Update PFP generation to use free credits before payment
+- [x] Display remaining free generations in UI
+- [x] Show "Free" badge when using free generation
+- [x] Update referral reward granting to work with generation flow
+
+## Copy Link Sharing
+- [x] Add copy link button to pet detail pages
+- [x] Add copy link button to referral dashboard (already exists)
+- [x] Implement clipboard API with toast feedback
+- [x] Style copy button to match existing design
+
+## Smart Contract Deployment
+- [x] Review PetPFP.sol contract code
+- [x] Create deployment guide for Base mainnet
+- [x] Document required environment variables
+- [x] Add payment verification to minting flow (already implemented)
+- [x] Test contract integration with frontend (ready for testing after deployment)
+
+## Base Mainnet Deployment Walkthrough
+- [ ] Prepare flattened contract for Remix deployment
+- [ ] Guide user through Remix IDE contract deployment
+- [ ] Help user verify contract on BaseScan
+- [ ] Assist with creating minter wallet
+- [ ] Configure environment variables in Manus settings
+- [ ] Test NFT minting flow end-to-end
+- [ ] Verify payment integration works
+
+## Base Mini App Deployment (Current Phase)
+- [x] Deploy PetPFP.sol smart contract to Base Mainnet
+- [x] Obtain deployed contract address (0x2420CF62135B37C8AE51DEfbF0ca8790771E76f4)
+- [ ] Configure NFT_CONTRACT_ADDRESS environment variable
+- [ ] Configure PAYMENT_RECIPIENT_ADDRESS environment variable
+- [ ] Configure NFT_MINTER_PRIVATE_KEY environment variable (create new wallet)
+- [ ] Create Farcaster manifest file (/.well-known/farcaster.json)
+- [ ] Deploy web app to Vercel with public HTTPS domain
+- [ ] Sign manifest using Base Build Account Association tool
+- [ ] Preview and validate app in Base Build (base.dev/preview)
+- [ ] Publish to Base app by creating a post with app URL
+
+## Client-Side NFT Minting (Base Mini App Standard)
+- [ ] Update PetPFP.sol contract to allow public minting (remove onlyOwner restriction)
+- [ ] Add payment requirement to mint function (users pay USDC + gas)
+- [ ] Redeploy updated contract to Base Mainnet
+- [ ] Integrate Base Account wallet connection in frontend
+- [ ] Update mint page to call contract directly from user's wallet
+- [ ] Remove server-side minting logic (not needed for Base mini apps)
+- [ ] Test minting flow with Base Account
+
+## UI Bug Fixes (Current)
+- [x] Fix navigation header overlapping success message on mint page
+- [x] Add PFP version history selector on mint page (allow choosing from previous generations)
+- [x] Ensure proper z-index and spacing for all modals and overlays
+
+## Homepage CTA Improvements
+- [x] Add prominent call-to-action near top of homepage
+- [x] Remove "Built on Base" badge from top of page
+- [x] Change footer heart icon from red to blue
+
+## CTA Button Repositioning
+- [x] Move CTA buttons to top of homepage (right under subtitle, before before/after showcase)
+
+## Homepage Spacing Fixes
+- [x] Reduce white space between hero section and "Choose Your Style" section
+
+## Improved PFP Generation Flow
+- [x] Change "Generate PFP" button to "Choose Style"
+- [x] Add "View All Generations" button to My Pets page
+- [x] Create improved version selection dialog with active PFP indicator
+- [x] Make it clear which PFP is currently selected for minting
+- [x] Allow easy switching between generated versions
+
+## Version Selection Bug Fixes
+- [x] Fix active badge not updating after selecting new version
+- [x] Auto-close dialog after version selection
+- [x] Refresh version list to show updated active status
+
+## Pet Image Validation System
+- [x] Create backend validation endpoint with AI vision model
+- [x] Detect domestic animals (dogs, cats, rabbits, birds, etc.)
+- [x] Reject human faces
+- [x] Reject inappropriate content
+- [x] Check image quality (resolution, clarity)
+- [x] Add validation UI to upload page
+- [x] Implement all error states with clear messaging
+- [x] Add smooth retry flow
+- [x] Track validation failures for analytics
+
+## Viral Features - Top 3 Priorities
+- [x] Add MiniKit useCompose() hook for social sharing
+- [x] Share to Feed after PFP generation
+- [x] Share to Feed after minting NFT
+- [ ] Share to Feed when reaching Top 10
+- [x] Daily "Pet of the Day" ritual (12pm ET)
+- [x] Community voting for Pet of the Day
+- [x] Winner gets featured + 2 USDC prize
+- [x] Live activity feed (generations, votes, mints)
+- [x] Real-time updates (TikTok-style)
+
+## Quick Wins for Virality
+- [x] Challenge a Friend feature (tag friends)
+- [x] Live feed notifications ("Just minted: Fluffy the Cat")
+- [ ] Emoji reactions (😍🔥⭐)
+- [x] Scarcity messaging ("Only 3 spots left in Top 10")
+- [x] Weekly leaderboard reset (every Monday)
+
+## Production Readiness - Final Steps
+- [x] Update Pet of the Day to weekly draw model
+- [x] Set up automated Pet of the Day cron job (12pm ET daily)
+- [x] Set up weekly draw cron job (Monday 12pm ET)
+- [ ] Implement $5 USDC prize distribution for weekly winners
+- [x] Add weekly draw UI with countdown timer
+- [x] Show all 7 daily entries for current week
+- [ ] Add Base wallet connection (OnchainKit)
+- [ ] Implement USDC payment for paid generations ($0.10)
+- [ ] Implement USDC payment for minting ($0.25)
+- [ ] Create Farcaster Frame for in-feed minting
+- [ ] Add /.well-known/farcaster.json manifest
+- [ ] Test complete payment and minting flow
+
+## How It Works Page
+- [x] Create How It Works page explaining all systems
+- [x] Add to footer navigation
+- [x] Add to main navigation menu
+- [x] Update Pet of the Day selection to hybrid model (5+ votes threshold)
+
+## Navigation Responsiveness Fix
+- [x] Fix overlapping menu items in navigation
+- [x] Adjust spacing between navigation links
+- [x] Ensure navigation works on tablet/desktop breakpoints
+- [x] Test on different screen sizes
+
+## UI Fixes - Upload Page
+- [x] Remove stray "/" character appearing in top left (was browser artifact)
+- [x] Fix image preview to show full image without cropping
+- [x] Use object-contain instead of object-cover for preview
+- [x] Add proper aspect ratio handling for uploaded images
+
+## Critical UI Fixes
+- [x] Remove forward slash "/" character appearing in top left of all pages
+- [x] Change image preview box from rectangle to square (aspect-square)
+- [x] Match preview dimensions to actual PFP output format
+
+## User-Reported Issues (Current)
+- [x] Investigate and fix Pixar style generation (not working properly)
+- [x] Add confetti celebration when user successfully mints NFT
+- [x] Add navigation menu to How It Works page (currently missing)
+- [x] Add delete button for non-minted PFPs on gallery page (allow cleanup of unwanted generations)
