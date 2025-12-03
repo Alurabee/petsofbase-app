@@ -3,52 +3,53 @@ import Navigation from "@/components/Navigation";
 
 export default function HowItWorks() {
   return (
-    <div className="min-h-screen bg-base-gradient-soft">
+    <div className="min-h-screen bg-vibrant-mesh relative">
+      <div className="absolute inset-0 dot-pattern" />
       <Navigation />
-      <div className="container mx-auto py-12 px-4 max-w-4xl">
-      <h1 className="text-4xl font-bold text-center mb-8">
+      <div className="container mx-auto py-12 px-4 max-w-4xl relative z-10">
+      <h1 className="text-4xl font-bold text-center mb-8 text-white">
         How PetsOfBase Works
       </h1>
 
       <div className="space-y-8">
         {/* Cuteness Leaderboard */}
-        <Card className="p-6">
+        <div className="glass-card p-6 rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="text-4xl">🏆</div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-3">Cuteness Leaderboard</h2>
-              <p className="text-gray-700 mb-3">
+              <h2 className="text-2xl font-bold mb-3 text-white">Cuteness Leaderboard</h2>
+              <p className="text-white/70 mb-3">
                 The Cuteness Leaderboard is an all-time popularity contest where the community votes for their favorite pets.
               </p>
               <ul className="space-y-2 text-gray-700">
                 <li className="flex items-start gap-2">
-                  <span className="text-blue-600 font-bold">•</span>
-                  <span>Vote for any pet in the gallery anytime</span>
+                  <span className="text-cyan-400 font-bold">•</span>
+                  <span className="text-white/70">Vote for any pet in the gallery anytime</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-blue-600 font-bold">•</span>
-                  <span>Votes accumulate over time and never reset</span>
+                  <span className="text-cyan-400 font-bold">•</span>
+                  <span className="text-white/70">Votes accumulate over time and never reset</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-blue-600 font-bold">•</span>
-                  <span>Top pets get visibility and bragging rights</span>
+                  <span className="text-cyan-400 font-bold">•</span>
+                  <span className="text-white/70">Top pets get visibility and bragging rights</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-blue-600 font-bold">•</span>
-                  <span>No prizes - just glory and community recognition!</span>
+                  <span className="text-cyan-400 font-bold">•</span>
+                  <span className="text-white/70">No prizes - just glory and community recognition!</span>
                 </li>
               </ul>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* Pet of the Day */}
-        <Card className="p-6">
+        <div className="glass-card p-6 rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="text-4xl">⭐</div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-3">Pet of the Day</h2>
-              <p className="text-gray-700 mb-3">
+              <h2 className="text-2xl font-bold mb-3 text-white">Pet of the Day</h2>
+              <p className="text-white/70 mb-3">
                 Every day at 12pm ET, we feature one special pet on the homepage.
               </p>
               <ul className="space-y-2 text-gray-700">
@@ -76,15 +77,15 @@ export default function HowItWorks() {
               </div>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* Weekly Draw */}
-        <Card className="p-6">
+        <div className="glass-card p-6 rounded-2xl">
           <div className="flex items-start gap-4">
             <div className="text-4xl">🎰</div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-3">Weekly Draw - $5 USDC Prize</h2>
-              <p className="text-gray-700 mb-3">
+              <h2 className="text-2xl font-bold mb-3 text-white">Weekly Draw - $5 USDC Prize</h2>
+              <p className="text-white/70 mb-3">
                 Every Monday at 12pm ET, one lucky pet wins $5 USDC!
               </p>
               <ul className="space-y-2 text-gray-700">
@@ -112,12 +113,12 @@ export default function HowItWorks() {
               </div>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* The Journey */}
-        <Card className="p-6 bg-gradient-to-br from-blue-50 to-purple-50">
-          <h2 className="text-2xl font-bold mb-4 text-center">Your Pet's Journey to Glory</h2>
-          <div className="space-y-3 text-gray-700">
+        <div className="glass-card p-6 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-purple-500/10">
+          <h2 className="text-2xl font-bold mb-4 text-center text-white">Your Pet's Journey to Glory</h2>
+          <div className="space-y-3 text-white/70">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">1</div>
               <span>Upload your pet and generate a unique AI PFP</span>
@@ -143,36 +144,36 @@ export default function HowItWorks() {
               <span>Win the weekly draw and celebrate! 🎉</span>
             </div>
           </div>
-        </Card>
+        </div>
 
         {/* FAQ */}
-        <Card className="p-6">
+        <div className="glass-card p-6 rounded-2xl">
           <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
           <div className="space-y-4">
             <div>
-              <h3 className="font-semibold text-lg mb-1">Can I vote for my own pet?</h3>
-              <p className="text-gray-700">Yes! But you can only vote once per pet.</p>
+              <h3 className="font-semibold text-lg mb-1 text-white">Can I vote for my own pet?</h3>
+              <p className="text-white/70">Yes! But you can only vote once per pet.</p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">How do I increase my chances of winning?</h3>
-              <p className="text-gray-700">
+              <h3 className="font-semibold text-lg mb-1 text-white">How do I increase my chances of winning?</h3>
+              <p className="text-white/70">
                 Get your pet to 5+ votes to become eligible for Pet of the Day. Once featured, you're automatically entered in the weekly draw with equal chances as everyone else!
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">Is the selection process fair?</h3>
-              <p className="text-gray-700">
+              <h3 className="font-semibold text-lg mb-1 text-white">Is the selection process fair?</h3>
+              <p className="text-white/70">
                 Absolutely! Pet of the Day uses random selection from eligible pets (5+ votes), and the weekly draw is completely random. No vote manipulation possible!
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">When do I receive my prize if I win?</h3>
-              <p className="text-gray-700">
+              <h3 className="font-semibold text-lg mb-1 text-white">When do I receive my prize if I win?</h3>
+              <p className="text-white/70">
                 Weekly draw winners are announced every Monday at 12pm ET. The $5 USDC prize is distributed to your connected wallet shortly after.
               </p>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
       </div>
     </div>

@@ -19,7 +19,7 @@ export default function Leaderboard() {
             <div>
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 text-white">
                 <Trophy className="w-10 h-10 text-yellow-400" />
-                Cuteness Leaderboard
+                Most Based Pets Leaderboard
               </h1>
               <p className="text-white/70">
                 Vote for your favorite pets and help them climb the ranks!
@@ -33,7 +33,7 @@ export default function Leaderboard() {
                 🗓️ Leaderboard resets every Monday at 12pm ET
               </p>
             </div>
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient hover:opacity-90 hidden sm:flex">
               <Link href="/">Back to Home</Link>
             </Button>
           </div>

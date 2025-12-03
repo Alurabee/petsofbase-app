@@ -356,3 +356,14 @@
 - [ ] Ensure waveforms and pet silhouettes on all pages
 - [x] Test readability of text elements on completed pages
 - [x] Verify navigation is readable on all pages
+
+## User-Reported Theme Fixes
+- [x] Change "LFG UPLOAD PET" to "UPLOAD YOUR PET" and match LEADERBOARD button size
+- [x] Update HowItWorks page to new glassmorphism theme
+- [x] Update Referrals page to new glassmorphism theme
+- [x] Fix "Back to Home" button cutoff on Leaderboard page (hidden on mobile)
+- [x] Change "Cuteness Leaderboard" to "Most Based Pets Leaderboard"
+- [x] Make text areas lighter with gradients (glass cards with glowing borders)
+- [x] Replace floating pet silhouettes with proper cat/dog silhouettes (6 unique shapes)
+- [x] Change menu bar color to match main theme background
+- [ ] Fix homepage theme continuity from Live Activity section downwards to footer - REMAINING

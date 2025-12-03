@@ -24,17 +24,18 @@ export default function Referrals() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-base-gradient-soft flex items-center justify-center">
+      <div className="min-h-screen bg-vibrant-mesh relative flex items-center justify-center">
+        <div className="absolute inset-0 dot-pattern" />
         <Navigation />
-        <Card className="p-8 max-w-md text-center space-y-4">
-          <h2 className="text-2xl font-bold">Connect Wallet</h2>
-          <p className="text-muted-foreground">
+        <div className="glass-card p-8 max-w-md text-center space-y-4 rounded-2xl relative z-10">
+          <h2 className="text-2xl font-bold text-white">Connect Wallet</h2>
+          <p className="text-white/70">
             Connect your wallet to access your referral dashboard and start earning rewards.
           </p>
           <Button asChild className="w-full bg-base-gradient hover:opacity-90">
             <a href={getLoginUrl()}>Connect Wallet</a>
           </Button>
-        </Card>
+        </div>
       </div>
     );
   }
@@ -53,29 +54,30 @@ export default function Referrals() {
   };
 
   return (
-    <div className="min-h-screen bg-base-gradient-soft">
+    <div className="min-h-screen bg-vibrant-mesh relative">
+      <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="glass-nav border-b border-cyan-400/30 relative z-10">
         <div className="container py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Referral Dashboard</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-3xl font-bold text-white">Referral Dashboard</h1>
+              <p className="text-white/70 mt-1">
                 Invite friends and earn free PFP generations
               </p>
             </div>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="border-white/30 text-white hover:bg-white/10 hidden sm:flex">
               <Link href="/my-pets">My Pets</Link>
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="container py-12 max-w-6xl">
+      <div className="container py-12 max-w-6xl relative z-10">
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <div className="glass-card p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
             <div className="flex items-center justify-between mb-2">
               <Users className="w-8 h-8 text-blue-600" />
               <Badge className="bg-blue-600">Total</Badge>
@@ -84,9 +86,9 @@ export default function Referrals() {
               {stats?.totalReferrals || 0}
             </div>
             <p className="text-sm text-blue-700 mt-1">Successful Referrals</p>
-          </Card>
+          </div>
 
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <div className="glass-card p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8 text-purple-600" />
               <Badge className="bg-purple-600">Pending</Badge>
@@ -95,9 +97,9 @@ export default function Referrals() {
               {stats?.pendingReferrals || 0}
             </div>
             <p className="text-sm text-purple-700 mt-1">Clicks (Not Signed Up)</p>
-          </Card>
+          </div>
 
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <div className="glass-card p-6 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <div className="flex items-center justify-between mb-2">
               <Gift className="w-8 h-8 text-green-600" />
               <Badge className="bg-green-600">Rewards</Badge>
@@ -106,13 +108,13 @@ export default function Referrals() {
               {stats?.freeGenerationsEarned || 0}
             </div>
             <p className="text-sm text-green-700 mt-1">Free Generations Earned</p>
-          </Card>
+          </div>
         </div>
 
         {/* Referral Link Card */}
-        <Card className="p-6 mb-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-          <h2 className="text-2xl font-bold mb-4">Your Referral Link</h2>
-          <p className="mb-4 opacity-90">
+        <div className="glass-card p-6 mb-8 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-cyan-400/30">
+          <h2 className="text-2xl font-bold mb-4 text-white">Your Referral Link</h2>
+          <p className="mb-4 text-white/80">
             Share this link to earn 1 free PFP generation for each friend who signs up!
           </p>
           
@@ -138,11 +140,11 @@ export default function Referrals() {
               Share on 𝕏
             </Button>
           </div>
-        </Card>
+        </div>
 
         {/* Referral Code Display */}
-        <Card className="p-6 mb-8">
-          <h3 className="font-bold text-lg mb-3">Your Referral Code</h3>
+        <div className="glass-card p-6 mb-8 rounded-2xl">
+          <h3 className="font-bold text-lg mb-3 text-white">Your Referral Code</h3>
           <div className="flex items-center gap-3">
             <div className="bg-base-gradient-soft px-6 py-3 rounded-lg flex-1">
               <code className="text-2xl font-bold text-primary">
@@ -159,11 +161,11 @@ export default function Referrals() {
               <Copy className="w-4 h-4" />
             </Button>
           </div>
-        </Card>
+        </div>
 
         {/* Referral History */}
-        <Card className="p-6">
-          <h3 className="font-bold text-lg mb-4">Referral History</h3>
+        <div className="glass-card p-6 rounded-2xl">
+          <h3 className="font-bold text-lg mb-4 text-white">Referral History</h3>
           
           {referrals && referrals.length > 0 ? (
             <div className="space-y-3">
@@ -207,12 +209,12 @@ export default function Referrals() {
               <p>No referrals yet. Start sharing your link to earn rewards!</p>
             </div>
           )}
-        </Card>
+        </div>
 
         {/* How It Works */}
-        <Card className="p-6 mt-8 bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-          <h3 className="font-bold text-lg mb-4 text-yellow-900">How Referrals Work</h3>
-          <div className="space-y-3 text-yellow-900">
+        <div className="glass-card p-6 mt-8 rounded-2xl bg-gradient-to-br from-yellow-500/10 to-orange-500/10">
+          <h3 className="font-bold text-lg mb-4 text-white">How Referrals Work</h3>
+          <div className="space-y-3 text-white/70">
             <div className="flex items-start gap-3">
               <div className="bg-yellow-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 font-bold text-sm">
                 1
@@ -238,7 +240,7 @@ export default function Referrals() {
               <p>Use your free generations to create more PFPs without paying!</p>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );
