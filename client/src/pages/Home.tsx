@@ -324,8 +324,8 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-vibrant-mesh/50 backdrop-blur-md border-t border-cyan-400/20">
-        <div className="container">
+      <footer className="glass-nav border-t border-white/10">
+        <div className="container py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/70">
             <p className="flex items-center gap-1">
               Built with <Heart className="w-4 h-4 fill-cyan-400 text-cyan-400" /> on Base • PetsOfBase © 2025

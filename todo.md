@@ -367,3 +367,6 @@
 - [x] Replace floating pet silhouettes with proper cat/dog silhouettes (6 unique shapes)
 - [x] Change menu bar color to match main theme background
 - [x] Fix homepage theme continuity from Live Activity section downwards to footer
+
+## Footer Styling Fix
+- [x] Update footer to match navigation bar's blue glass aesthetic for better text readability
