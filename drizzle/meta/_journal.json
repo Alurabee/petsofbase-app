@@ -57,6 +57,20 @@
       "when": 1764655842539,
       "tag": "0007_yellow_alex_power",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1764743576879,
+      "tag": "0008_equal_radioactive_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1764743704197,
+      "tag": "0009_material_satana",
+      "breakpoints": true
     }
   ]
 }
