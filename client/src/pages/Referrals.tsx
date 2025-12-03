@@ -31,7 +31,7 @@ export default function Referrals() {
           <p className="text-muted-foreground">
             Connect your wallet to access your referral dashboard and start earning rewards.
           </p>
-          <Button asChild className="w-full bg-base-gradient hover:opacity-90">
+          <Button asChild className="w-full bg-base-gradient btn-primary-hover">
             <a href={getLoginUrl()}>Connect Wallet</a>
           </Button>
         </Card>

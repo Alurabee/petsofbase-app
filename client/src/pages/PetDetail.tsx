@@ -339,7 +339,7 @@ export default function PetDetail() {
                 <Button
                   onClick={handleVote}
                   disabled={hasVoted || voteMutation.isPending}
-                  className="w-full bg-base-gradient hover:opacity-90"
+                  className="w-full bg-base-gradient btn-primary-hover"
                 >
                   {hasVoted ? (
                     <>
@@ -373,7 +373,7 @@ export default function PetDetail() {
                 {!pet.pfpImageUrl && (
                   <Button
                     asChild
-                    className="w-full bg-base-gradient hover:opacity-90"
+                    className="w-full bg-base-gradient btn-primary-hover"
                   >
                     <Link href="/my-pets">Generate PFP</Link>
                   </Button>
@@ -426,7 +426,7 @@ export default function PetDetail() {
 
                     <Button
                       asChild
-                      className="w-full bg-base-gradient hover:opacity-90"
+                      className="w-full bg-base-gradient btn-primary-hover"
                     >
                       <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
                     </Button>
@@ -511,7 +511,7 @@ export default function PetDetail() {
             </Button>
             <Button
               onClick={handleRegenerate}
-              className="flex-1 bg-base-gradient hover:opacity-90"
+              className="flex-1 bg-base-gradient btn-primary-hover"
               disabled={regenerating}
             >
               {regenerating ? "Regenerating..." : "Regenerate PFP"}

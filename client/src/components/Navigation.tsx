@@ -36,7 +36,7 @@ export default function Navigation() {
               <Link href="/referrals" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                 Referrals
               </Link>
-              <Button asChild className="bg-base-gradient hover:opacity-90">
+              <Button asChild className="bg-base-gradient btn-primary-hover">
                 <Link href="/upload">
                   <Upload className="w-4 h-4 mr-2" />
                   Upload Pet
@@ -44,7 +44,7 @@ export default function Navigation() {
               </Button>
             </>
           ) : (
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient btn-primary-hover">
               <a href={getLoginUrl()}>Connect Wallet</a>
             </Button>
           )}

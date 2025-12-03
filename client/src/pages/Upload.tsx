@@ -185,7 +185,7 @@ export default function Upload() {
           <p className="text-muted-foreground">
             You need to connect your wallet to upload a pet.
           </p>
-          <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
+          <Button asChild className="bg-base-gradient btn-primary-hover w-full">
             <a href={getLoginUrl()}>Connect Wallet</a>
           </Button>
         </Card>
@@ -269,7 +269,7 @@ export default function Upload() {
                         setValidationError(null);
                         document.getElementById('image')?.click();
                       }}
-                      className="bg-base-gradient hover:opacity-90"
+                      className="bg-base-gradient btn-primary-hover"
                     >
                       Try Another Photo
                     </Button>
@@ -367,7 +367,7 @@ export default function Upload() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-base-gradient hover:opacity-90"
+              className="w-full bg-base-gradient btn-primary-hover"
               disabled={uploading || !imageFile}
             >
               {uploading ? "Uploading..." : "Continue to Generate PFP"}

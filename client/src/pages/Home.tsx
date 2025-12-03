@@ -45,13 +45,13 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
                 {isAuthenticated ? (
                   <Link href="/upload">
-                    <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                    <Button size="lg" className="bg-base-gradient btn-primary-hover text-lg px-8 py-6 w-full sm:w-auto">
                       <Upload className="w-5 h-5 mr-2" />
                       Upload Your Pet Now
                     </Button>
                   </Link>
                 ) : (
-                  <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                  <Button asChild size="lg" className="bg-base-gradient btn-primary-hover text-lg px-8 py-6 w-full sm:w-auto">
                     <a href={getLoginUrl()}>
                       <Zap className="w-5 h-5 mr-2" />
                       Get Started Free

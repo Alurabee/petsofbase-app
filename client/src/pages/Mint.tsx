@@ -187,7 +187,7 @@ export default function Mint() {
           <p className="text-muted-foreground">
             You need to connect your wallet to mint an NFT.
           </p>
-          <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
+          <Button asChild className="bg-base-gradient btn-primary-hover w-full">
             <a href={getLoginUrl()}>Connect Wallet</a>
           </Button>
         </Card>
@@ -232,7 +232,7 @@ export default function Mint() {
           <p className="text-muted-foreground">
             You need to generate a PFP before minting an NFT.
           </p>
-          <Button onClick={() => setLocation("/my-pets")} className="bg-base-gradient hover:opacity-90">
+          <Button onClick={() => setLocation("/my-pets")} className="bg-base-gradient btn-primary-hover">
             Generate PFP
           </Button>
         </Card>
@@ -250,7 +250,7 @@ export default function Mint() {
           <p className="text-muted-foreground">
             This pet has already been minted as NFT #{pet.nftTokenId}.
           </p>
-          <Button onClick={() => setLocation(`/pet/${pet.id}`)} className="bg-base-gradient hover:opacity-90">
+          <Button onClick={() => setLocation(`/pet/${pet.id}`)} className="bg-base-gradient btn-primary-hover">
             View Pet Profile
           </Button>
         </Card>
@@ -311,7 +311,7 @@ export default function Mint() {
           <div className="space-y-3">
             <Button
               onClick={() => shareMint(pet.name, pet.id.toString(), pet.pfpImageUrl!)}
-              className="w-full bg-base-gradient hover:opacity-90 text-lg py-6"
+              className="w-full bg-base-gradient btn-primary-hover text-lg py-6"
               size="lg"
             >
               🎉 Share to Feed
@@ -452,7 +452,7 @@ export default function Mint() {
             <Button
               onClick={handleMint}
               disabled={minting || regenerating}
-              className="w-full bg-base-gradient hover:opacity-90 h-12 text-lg"
+              className="w-full bg-base-gradient btn-primary-hover h-12 text-lg"
             >
               {minting ? (
                 <>
@@ -539,7 +539,7 @@ export default function Mint() {
             </Button>
             <Button
               onClick={handleRegenerate}
-              className="flex-1 bg-base-gradient hover:opacity-90"
+              className="flex-1 bg-base-gradient btn-primary-hover"
               disabled={regenerating}
             >
               {regenerating ? "Regenerating..." : "Regenerate PFP"}

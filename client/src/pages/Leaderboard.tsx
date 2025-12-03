@@ -32,7 +32,7 @@ export default function Leaderboard() {
                 🗓️ Leaderboard resets every Monday at 12pm ET
               </p>
             </div>
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient btn-primary-hover">
               <Link href="/">Back to Home</Link>
             </Button>
           </div>
@@ -135,7 +135,7 @@ export default function Leaderboard() {
             <p className="text-muted-foreground mb-4">
               Be the first to upload your pet and start the leaderboard!
             </p>
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient btn-primary-hover">
               <Link href="/upload">Upload Your Pet</Link>
             </Button>
           </Card>

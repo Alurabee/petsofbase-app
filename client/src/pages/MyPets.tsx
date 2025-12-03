@@ -75,7 +75,7 @@ export default function MyPets() {
             <Button
               size="sm"
               onClick={() => shareGeneration(pet.name, pet.id.toString(), result.pfpImageUrl!)}
-              className="bg-base-gradient hover:opacity-90"
+              className="bg-base-gradient btn-primary-hover"
             >
               Share to Feed 🎉
             </Button>
@@ -106,7 +106,7 @@ export default function MyPets() {
           <p className="text-muted-foreground">
             You need to connect your wallet to view your pets.
           </p>
-          <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
+          <Button asChild className="bg-base-gradient btn-primary-hover w-full">
             <a href={getLoginUrl()}>Connect Wallet</a>
           </Button>
         </Card>
@@ -127,7 +127,7 @@ export default function MyPets() {
                 Manage your pets and generate AI-powered PFPs
               </p>
             </div>
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient btn-primary-hover">
               <Link href="/upload">
                 <UploadIcon className="w-4 h-4 mr-2" />
                 Upload New Pet
@@ -192,7 +192,7 @@ export default function MyPets() {
                   {!pet.pfpImageUrl ? (
                     <Button
                       onClick={() => setSelectedPet(pet.id)}
-                      className="w-full bg-base-gradient hover:opacity-90"
+                      className="w-full bg-base-gradient btn-primary-hover"
                     >
                       <Sparkles className="w-4 h-4 mr-2" />
                       Choose Style
@@ -241,7 +241,7 @@ export default function MyPets() {
                       {/* Mint Button */}
                       <Button
                         asChild
-                        className="w-full bg-base-gradient hover:opacity-90"
+                        className="w-full bg-base-gradient btn-primary-hover"
                       >
                         <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
                       </Button>
@@ -262,7 +262,7 @@ export default function MyPets() {
             <p className="text-muted-foreground mb-4">
               Upload your first pet to get started!
             </p>
-            <Button asChild className="bg-base-gradient hover:opacity-90">
+            <Button asChild className="bg-base-gradient btn-primary-hover">
               <Link href="/upload">
                 <UploadIcon className="w-4 h-4 mr-2" />
                 Upload Your Pet
@@ -327,7 +327,7 @@ export default function MyPets() {
             </Button>
             <Button
               onClick={() => selectedPet && handleGeneratePFP(selectedPet)}
-              className="flex-1 bg-base-gradient hover:opacity-90"
+              className="flex-1 bg-base-gradient btn-primary-hover"
               disabled={generating}
             >
               {generating ? "Generating..." : "Generate PFP"}
