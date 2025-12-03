@@ -31,35 +31,40 @@ export default function Home() {
         <div className="container py-16 pb-12 relative">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
-              <h1 className="text-6xl font-bold leading-tight">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pet-yellow/20 border-2 border-pet-yellow mb-4">
+                <Sparkles className="w-4 h-4 text-pet-yellow animate-pulse" />
+                <span className="font-bold text-sm">🔥 Most Based Pet App on Base</span>
+              </div>
+              
+              <h1 className="text-6xl md:text-7xl font-bold leading-tight">
                 Turn Your Pet Into a{" "}
-                <span className="text-base-gradient">Based NFT PFP</span>
+                <span className="text-base-gradient animate-pulse-glow inline-block">Based NFT PFP</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
-                and compete on the Cuteness Leaderboard. All for just 0.25 USDC.
+                and compete on the Cuteness Leaderboard. <span className="font-bold text-foreground">All for just 0.25 USDC.</span>
               </p>
               
               {/* Primary CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
                 {isAuthenticated ? (
                   <Link href="/upload">
-                    <Button size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                    <Button size="lg" className="cta-based bg-base-gradient hover:opacity-90 w-full sm:w-auto animate-bounce-gentle">
                       <Upload className="w-5 h-5 mr-2" />
-                      Upload Your Pet Now
+                      LFG! Upload Pet
                     </Button>
                   </Link>
                 ) : (
-                  <Button asChild size="lg" className="bg-base-gradient hover:opacity-90 text-lg px-8 py-6 w-full sm:w-auto">
+                  <Button asChild size="lg" className="cta-based bg-base-gradient hover:opacity-90 w-full sm:w-auto animate-bounce-gentle">
                     <a href={getLoginUrl()}>
                       <Zap className="w-5 h-5 mr-2" />
-                      Get Started Free
+                      Get Based Now
                     </a>
                   </Button>
                 )}
                 <Link href="/leaderboard">
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6 w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="text-lg px-8 py-6 w-full sm:w-auto border-2 hover:bg-pet-purple/10 hover:border-pet-purple transition-all">
                     <Trophy className="w-5 h-5 mr-2" />
                     View Leaderboard
                   </Button>
@@ -124,9 +129,9 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
-            {styles.map((style) => (
-              <Card key={style.name} className="p-6 text-center space-y-3 hover:shadow-lg transition-shadow">
-                <div className="text-4xl">{style.emoji}</div>
+            {styles.map((style, index) => (
+              <Card key={style.name} className="p-6 text-center space-y-3 hover:shadow-lg transition-all hover:scale-105 hover:-rotate-2" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="text-5xl animate-float">{style.emoji}</div>
                 <h3 className="font-bold text-lg">{style.name}</h3>
                 <p className="text-sm text-muted-foreground">{style.description}</p>
               </Card>
@@ -145,30 +150,33 @@ export default function Home() {
       <section className="py-20 bg-base-gradient-soft">
         <div className="container">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center">
+            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Zap className="w-8 h-8 text-white" />
               </div>
+              <div className="badge-sticker badge-yellow mx-auto">✨ AI Magic</div>
               <h3 className="text-2xl font-bold">AI-Powered</h3>
               <p className="text-muted-foreground">
                 Advanced AI transforms your pet while preserving their unique features, colors, and personality.
               </p>
             </Card>
 
-            <Card className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center">
+            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Trophy className="w-8 h-8 text-white" />
               </div>
+              <div className="badge-sticker badge-coral mx-auto">🏆 Compete</div>
               <h3 className="text-2xl font-bold">Compete & Win</h3>
               <p className="text-muted-foreground">
                 Vote on the cutest pets and climb the leaderboard. Build your reputation in the Based pet community.
               </p>
             </Card>
 
-            <Card className="p-8 text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center">
+            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+              <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Heart className="w-8 h-8 text-white fill-white" />
               </div>
+              <div className="badge-sticker badge-purple mx-auto">💎 Own It</div>
               <h3 className="text-2xl font-bold">Own Your PFP</h3>
               <p className="text-muted-foreground">
                 Mint your favorite PFP as an NFT on Base for just $0.25 USDC. True ownership, forever.
