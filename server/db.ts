@@ -488,3 +488,39 @@ export async function getUserReferrals(userId: number) {
     .where(eq(referrals.referrerId, userId))
     .orderBy(desc(referrals.createdAt));
 }
+
+/**
+ * Delete a pet and all associated data (versions, votes)
+ * Only allowed if pet has NOT been minted as NFT
+ */
+export async function deletePet(petId: number, userId: number) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  // Check if pet exists and belongs to user
+  const pet = await getPetById(petId);
+  if (!pet) {
+    throw new Error("Pet not found");
+  }
+  if (pet.userId !== userId) {
+    throw new Error("Unauthorized: You can only delete your own pets");
+  }
+  
+  // Prevent deletion of minted NFTs
+  if (pet.nftTokenId) {
+    throw new Error("Cannot delete minted NFTs");
+  }
+
+  // Delete associated PFP versions
+  await db.delete(pfpVersions).where(eq(pfpVersions.petId, petId));
+  
+  // Delete associated votes
+  await db.delete(votes).where(eq(votes.petId, petId));
+  
+  // Delete the pet
+  await db.delete(pets).where(eq(pets.id, petId));
+  
+  return true;
+}

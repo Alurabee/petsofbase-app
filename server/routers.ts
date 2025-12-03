@@ -222,6 +222,14 @@ export const appRouter = router({
         await db.updatePet(id, updates);
         return { success: true };
       }),
+
+    // Delete a pet (only if not minted)
+    delete: protectedProcedure
+      .input(z.object({ petId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await db.deletePet(input.petId, ctx.user.id);
+        return { success: true };
+      }),
   }),
 
   votes: router({

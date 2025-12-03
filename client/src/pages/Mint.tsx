@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "wouter";
 import { toast } from "sonner";
 import { useSocialSharing } from "@/hooks/useSocialSharing";
+import confetti from "canvas-confetti";
 
 export default function Mint() {
   const { id } = useParams<{ id: string }>();
@@ -161,6 +162,13 @@ export default function Mint() {
       const result = await response.json();
       setMintResult(result);
       toast.success("NFT minted successfully!");
+      
+      // Trigger confetti celebration
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     } catch (err: any) {
       console.error("Minting error:", err);
       setError(err.message || "Failed to mint NFT");

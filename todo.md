@@ -306,3 +306,9 @@
 - [x] Remove forward slash "/" character appearing in top left of all pages
 - [x] Change image preview box from rectangle to square (aspect-square)
 - [x] Match preview dimensions to actual PFP output format
+
+## User-Reported Issues (Current)
+- [x] Investigate and fix Pixar style generation (not working properly)
+- [x] Add confetti celebration when user successfully mints NFT
+- [x] Add navigation menu to How It Works page (currently missing)
+- [x] Add delete button for non-minted PFPs on gallery page (allow cleanup of unwanted generations)

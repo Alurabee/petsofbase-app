@@ -3,15 +3,38 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc";
-import { Heart, Search, Loader2 } from "lucide-react";
+import { Heart, Search, Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { toast } from "sonner";
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { user } = useAuth();
 
-  const { data: pets, isLoading } = trpc.pets.list.useQuery({ limit: 100, offset: 0 });
+  const { data: pets, isLoading, refetch } = trpc.pets.list.useQuery({ limit: 100, offset: 0 });
+  const deletePet = trpc.pets.delete.useMutation({
+    onSuccess: () => {
+      toast.success("Pet deleted successfully");
+      refetch();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to delete pet");
+    },
+  });
+
+  const handleDelete = async (e: React.MouseEvent, petId: number, petName: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!confirm(`Are you sure you want to delete ${petName}? This cannot be undone.`)) {
+      return;
+    }
+    
+    deletePet.mutate({ petId });
+  };
 
   const filteredPets = pets?.filter((pet: any) => {
     if (!searchQuery) return true;
@@ -80,6 +103,18 @@ export default function Gallery() {
                         >
                           Original
                         </Badge>
+                      )}
+                      {/* Delete button for user's non-minted pets */}
+                      {user && pet.userId === user.id && !pet.nftTokenId && (
+                        <Button
+                          size="icon"
+                          variant="destructive"
+                          className="absolute bottom-2 right-2 h-8 w-8"
+                          onClick={(e) => handleDelete(e, pet.id, pet.name)}
+                          disabled={deletePet.isPending}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
                       )}
                     </div>
 

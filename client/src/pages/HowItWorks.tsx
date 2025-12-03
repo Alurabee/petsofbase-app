@@ -1,8 +1,11 @@
 import { Card } from "@/components/ui/card";
+import Navigation from "@/components/Navigation";
 
 export default function HowItWorks() {
   return (
-    <div className="container mx-auto py-12 px-4 max-w-4xl">
+    <div className="min-h-screen bg-base-gradient-soft">
+      <Navigation />
+      <div className="container mx-auto py-12 px-4 max-w-4xl">
       <h1 className="text-4xl font-bold text-center mb-8">
         How PetsOfBase Works
       </h1>
@@ -170,6 +173,7 @@ export default function HowItWorks() {
             </div>
           </div>
         </Card>
+      </div>
       </div>
     </div>
   );
