@@ -10,30 +10,30 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+    <nav className="glass-nav sticky top-0 z-50">
       <div className="container py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/logo-square.png" alt="PetsOfBase" className="w-10 h-10" />
-          <span className="text-xl md:text-2xl font-bold text-base-gradient">PetsOfBase</span>
+        <Link href="/" className="flex items-center gap-2 group">
+          <img src="/logo-square.png" alt="PetsOfBase" className="w-10 h-10 logo-pulse group-hover:scale-110 transition-transform" />
+          <span className="text-xl md:text-2xl font-bold text-white" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>PetsOfBase</span>
         </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-4 xl:gap-6">
-          <Link href="/leaderboard" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+          <Link href="/leaderboard" className="text-xs xl:text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap">
             Leaderboard
           </Link>
-          <Link href="/gallery" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+          <Link href="/gallery" className="text-xs xl:text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap">
             Gallery
           </Link>
-          <Link href="/how-it-works" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+          <Link href="/how-it-works" className="text-xs xl:text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap">
             How It Works
           </Link>
           {isAuthenticated ? (
             <>
-              <Link href="/my-pets" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+              <Link href="/my-pets" className="text-xs xl:text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap">
                 My Pets
               </Link>
-              <Link href="/referrals" className="text-xs xl:text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
+              <Link href="/referrals" className="text-xs xl:text-sm font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap">
                 Referrals
               </Link>
               <Button asChild className="bg-base-gradient hover:opacity-90">
@@ -52,34 +52,34 @@ export default function Navigation() {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {mobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
         </button>
       </div>
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t bg-white/95 backdrop-blur-sm">
+        <div className="lg:hidden border-t border-white/10 glass">
           <div className="container py-4 flex flex-col gap-4">
             <Link 
               href="/leaderboard" 
-              className="text-sm font-medium hover:text-primary transition-colors py-2"
+              className="text-sm font-medium text-white/80 hover:text-white transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Leaderboard
             </Link>
             <Link 
               href="/gallery" 
-              className="text-sm font-medium hover:text-primary transition-colors py-2"
+              className="text-sm font-medium text-white/80 hover:text-white transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Gallery
             </Link>
             <Link 
               href="/how-it-works" 
-              className="text-sm font-medium hover:text-primary transition-colors py-2"
+              className="text-sm font-medium text-white/80 hover:text-white transition-colors py-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               How It Works
@@ -88,14 +88,14 @@ export default function Navigation() {
               <>
                 <Link 
                   href="/my-pets" 
-                  className="text-sm font-medium hover:text-primary transition-colors py-2"
+                  className="text-sm font-medium text-white/80 hover:text-white transition-colors py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   My Pets
                 </Link>
                 <Link 
                   href="/referrals" 
-                  className="text-sm font-medium hover:text-primary transition-colors py-2"
+                  className="text-sm font-medium text-white/80 hover:text-white transition-colors py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Referrals

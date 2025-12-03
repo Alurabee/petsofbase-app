@@ -26,26 +26,36 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section with Before/After */}
-      <section className="relative overflow-hidden bg-hero-mesh min-h-[85vh] flex items-center">
+      <section className="relative overflow-hidden bg-vibrant-mesh min-h-[85vh] flex items-center">
         {/* Dot Pattern Overlay */}
         <div className="absolute inset-0 dot-pattern" />
         
-        {/* Pet Silhouettes - Floating Background */}
-        <svg className="pet-silhouette pet-silhouette-1" viewBox="0 0 100 100" fill="currentColor">
+        {/* Pet Silhouettes - Floating Background (6 total) */}
+        <svg className="pet-silhouette pet-silhouette-1" viewBox="0 0 100 100" fill="white">
           <path d="M50 20c-8 0-15 5-18 12-5-3-11-2-14 3s-2 11 3 14c-3 8 0 17 8 21 8 4 17 2 23-4 6 6 15 8 23 4 8-4 11-13 8-21 5-3 6-9 3-14s-9-6-14-3c-3-7-10-12-18-12zm0 15c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
         </svg>
-        <svg className="pet-silhouette pet-silhouette-2" viewBox="0 0 100 100" fill="currentColor">
+        <svg className="pet-silhouette pet-silhouette-2" viewBox="0 0 100 100" fill="white">
           <path d="M30 25c-5 0-9 4-9 9 0 3 1 5 3 7-6 3-10 9-10 16v20c0 8 6 14 14 14h44c8 0 14-6 14-14V57c0-7-4-13-10-16 2-2 3-4 3-7 0-5-4-9-9-9-3 0-6 2-8 4-3-5-8-8-14-8s-11 3-14 8c-2-2-5-4-8-4zm18 20c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5zm14 0c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
         </svg>
-        <svg className="pet-silhouette pet-silhouette-3" viewBox="0 0 100 100" fill="currentColor">
+        <svg className="pet-silhouette pet-silhouette-3" viewBox="0 0 100 100" fill="white">
+          <path d="M50 15c-6 0-11 3-14 7-4-2-9-1-12 2s-3 8-1 12c-4 5-4 12 0 17 2 3 5 5 9 5 1 6 6 11 12 11s11-5 12-11c4 0 7-2 9-5 4-5 4-12 0-17 2-4 2-9-1-12s-8-4-12-2c-3-4-8-7-14-7zm0 20c4 0 7 3 7 7s-3 7-7 7-7-3-7-7 3-7 7-7z"/>
+        </svg>
+        <svg className="pet-silhouette pet-silhouette-4" viewBox="0 0 100 100" fill="white">
+          <path d="M50 20c-8 0-15 5-18 12-5-3-11-2-14 3s-2 11 3 14c-3 8 0 17 8 21 8 4 17 2 23-4 6 6 15 8 23 4 8-4 11-13 8-21 5-3 6-9 3-14s-9-6-14-3c-3-7-10-12-18-12zm0 15c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
+        </svg>
+        <svg className="pet-silhouette pet-silhouette-5" viewBox="0 0 100 100" fill="white">
+          <path d="M30 25c-5 0-9 4-9 9 0 3 1 5 3 7-6 3-10 9-10 16v20c0 8 6 14 14 14h44c8 0 14-6 14-14V57c0-7-4-13-10-16 2-2 3-4 3-7 0-5-4-9-9-9-3 0-6 2-8 4-3-5-8-8-14-8s-11 3-14 8c-2-2-5-4-8-4zm18 20c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5zm14 0c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
+        </svg>
+        <svg className="pet-silhouette pet-silhouette-6" viewBox="0 0 100 100" fill="white">
           <path d="M50 15c-6 0-11 3-14 7-4-2-9-1-12 2s-3 8-1 12c-4 5-4 12 0 17 2 3 5 5 9 5 1 6 6 11 12 11s11-5 12-11c4 0 7-2 9-5 4-5 4-12 0-17 2-4 2-9-1-12s-8-4-12-2c-3-4-8-7-14-7zm0 20c4 0 7 3 7 7s-3 7-7 7-7-3-7-7 3-7 7-7z"/>
         </svg>
         
-        {/* Waveform at Bottom */}
+        {/* Waveform at Bottom - Multiple Layers */}
         <div className="waveform-pattern">
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,50 C150,80 350,0 600,50 C850,100 1050,20 1200,50 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)" />
-            <path d="M0,70 C200,100 400,40 600,70 C800,100 1000,40 1200,70 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.05)" />
+            <path d="M0,50 C150,80 350,0 600,50 C850,100 1050,20 1200,50 L1200,120 L0,120 Z" fill="rgba(255,107,107,0.15)" />
+            <path d="M0,70 C200,100 400,40 600,70 C800,100 1000,40 1200,70 L1200,120 L0,120 Z" fill="rgba(255,217,61,0.15)" />
+            <path d="M0,90 C250,110 450,70 600,90 C750,110 950,70 1200,90 L1200,120 L0,120 Z" fill="rgba(167,139,250,0.15)" />
           </svg>
         </div>
         
@@ -95,9 +105,9 @@ export default function Home() {
 
             {/* Before/After Showcase */}
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
-              <Card className="p-6 space-y-4">
+              <div className="glass-card p-6 space-y-4 rounded-2xl">
                 <div className="text-center">
-                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Before</span>
+                  <span className="text-sm font-medium text-white/60 uppercase tracking-wide">Before</span>
                 </div>
                 <div className="aspect-square rounded-lg overflow-hidden">
                   <img 
@@ -106,33 +116,34 @@ export default function Home() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="text-center text-sm text-muted-foreground">Your adorable pet photo</p>
-              </Card>
+                <p className="text-center text-sm text-white/60">Your adorable pet photo</p>
+              </div>
 
-              <Card className="p-6 space-y-4 border-2 border-primary relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-base-gradient text-white text-xs font-bold rounded-full">
+              <div className="glass-strong p-6 space-y-4 rounded-2xl border-2 border-pet-yellow relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 badge-sticker badge-yellow">
                   ✨ AI MAGIC
                 </div>
                 <div className="text-center">
-                  <span className="text-sm font-medium text-primary uppercase tracking-wide">After</span>
+                  <span className="text-sm font-medium text-pet-yellow uppercase tracking-wide">After</span>
                 </div>
-                <div className="aspect-square rounded-lg overflow-hidden ring-4 ring-primary/20">
+                <div className="aspect-square rounded-lg overflow-hidden ring-4 ring-pet-yellow/30">
                   <img 
                     src="/examples/dog-after-pixar.jpg" 
                     alt="Pixar-style PFP" 
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="text-center text-sm font-medium text-primary">Your Based NFT PFP 🎬</p>
-              </Card>
+                <p className="text-center text-sm font-medium text-white">Your Based NFT PFP 🎬</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Pet of the Day Section */}
-      <section className="py-16 bg-white">
-        <div className="container">
+      <section className="py-16 bg-vibrant-radial relative">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="container relative z-10">
           <div className="max-w-2xl mx-auto">
             <PetOfTheDay />
           </div>
@@ -140,69 +151,76 @@ export default function Home() {
       </section>
 
       {/* Style Showcase Section */}
-      <section className="py-16 bg-base-gradient-soft">
-        <div className="container">
+      <section className="py-16 bg-vibrant-gradient relative">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="waveform-top">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,50 C150,80 350,0 600,50 C850,100 1050,20 1200,50 L1200,0 L0,0 Z" fill="rgba(0,26,77,1)" />
+          </svg>
+        </div>
+        <div className="container relative z-10">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="text-4xl font-bold">Choose Your Style</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-4xl font-bold text-white">Choose Your Style</h2>
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Transform your pet into 5 different artistic styles. Each generation preserves your pet's unique features and personality.
             </p>
           </div>
 
           <div className="grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
             {styles.map((style, index) => (
-              <Card key={style.name} className="p-6 text-center space-y-3 hover:shadow-lg transition-all hover:scale-105 hover:-rotate-2" style={{ animationDelay: `${index * 0.1}s` }}>
+              <div key={style.name} className="glass-card p-6 text-center space-y-3 rounded-2xl hover:glass-strong transition-all hover:scale-105 hover:-rotate-2" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className="text-5xl animate-float">{style.emoji}</div>
-                <h3 className="font-bold text-lg">{style.name}</h3>
-                <p className="text-sm text-muted-foreground">{style.description}</p>
-              </Card>
+                <h3 className="font-bold text-lg text-white">{style.name}</h3>
+                <p className="text-sm text-white/60">{style.description}</p>
+              </div>
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-sm text-muted-foreground mb-4">
-              <strong className="text-primary">2 free generations</strong> per pet, then $0.10 USDC per additional style
+            <p className="text-sm text-white/70 mb-4">
+              <strong className="text-pet-yellow">2 free generations</strong> per pet, then $0.10 USDC per additional style
             </p>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-base-gradient-soft">
-        <div className="container">
+      <section className="py-20 bg-vibrant-mesh relative">
+        <div className="absolute inset-0 dot-pattern" />
+        <div className="container relative z-10">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+            <div className="glass-card p-8 text-center space-y-4 rounded-2xl hover:glass-strong transition-all hover:-translate-y-2">
               <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Zap className="w-8 h-8 text-white" />
               </div>
               <div className="badge-sticker badge-yellow mx-auto">✨ AI Magic</div>
-              <h3 className="text-2xl font-bold">AI-Powered</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-2xl font-bold text-white">AI-Powered</h3>
+              <p className="text-white/70">
                 Advanced AI transforms your pet while preserving their unique features, colors, and personality.
               </p>
-            </Card>
+            </div>
 
-            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+            <div className="glass-card p-8 text-center space-y-4 rounded-2xl hover:glass-strong transition-all hover:-translate-y-2">
               <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Trophy className="w-8 h-8 text-white" />
               </div>
               <div className="badge-sticker badge-coral mx-auto">🏆 Compete</div>
-              <h3 className="text-2xl font-bold">Compete & Win</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-2xl font-bold text-white">Compete & Win</h3>
+              <p className="text-white/70">
                 Vote on the cutest pets and climb the leaderboard. Build your reputation in the Based pet community.
               </p>
-            </Card>
+            </div>
 
-            <Card className="p-8 text-center space-y-4 hover:shadow-xl transition-all hover:-translate-y-2">
+            <div className="glass-card p-8 text-center space-y-4 rounded-2xl hover:glass-strong transition-all hover:-translate-y-2">
               <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center animate-pulse-glow">
                 <Heart className="w-8 h-8 text-white fill-white" />
               </div>
               <div className="badge-sticker badge-purple mx-auto">💎 Own It</div>
-              <h3 className="text-2xl font-bold">Own Your PFP</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-2xl font-bold text-white">Own Your PFP</h3>
+              <p className="text-white/70">
                 Mint your favorite PFP as an NFT on Base for just $0.25 USDC. True ownership, forever.
               </p>
-            </Card>
+            </div>
           </div>
         </div>
       </section>

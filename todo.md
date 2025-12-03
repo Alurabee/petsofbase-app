@@ -344,3 +344,15 @@
 - [x] Add geometric patterns (dots, mesh, shapes) for visual depth
 - [x] Implement layered visual hierarchy for engaging "above the fold" experience
 - [x] Optimize all visuals for mobile viewport
+
+## CRITICAL UX FIXES - Glassmorphism Theme
+- [x] Fix color system: Use vibrant blue-to-cyan gradients (NOT too dark)
+- [x] Fix all text to be WHITE for readability on dark backgrounds
+- [x] Fix navigation bar: Glassmorphism with proper contrast (NOT white bg + white text)
+- [x] RESTORE "PetsOfBase" text in navigation with Space Grotesk font
+- [x] Update glassmorphism cards with GLOWING borders (like BaseTribe example)
+- [x] Add luminous/neon accent colors to glass cards
+- [ ] Apply theme to ALL pages (Home ✅, Gallery ✅, Leaderboard ✅, My Pets 🔄, Upload, Mint, PetDetail, Referrals, HowItWorks)
+- [ ] Ensure waveforms and pet silhouettes on all pages
+- [x] Test readability of text elements on completed pages
+- [x] Verify navigation is readable on all pages

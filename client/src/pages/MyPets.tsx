@@ -115,7 +115,8 @@ export default function MyPets() {
   }
 
   return (
-    <div className="min-h-screen bg-base-gradient-soft">
+    <div className="min-h-screen bg-vibrant-mesh relative">
+      <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
       <div className="bg-white border-b">

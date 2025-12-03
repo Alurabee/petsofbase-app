@@ -47,13 +47,14 @@ export default function Gallery() {
   });
 
   return (
-    <div className="min-h-screen bg-base-gradient-soft">
+    <div className="min-h-screen bg-vibrant-mesh relative">
+      <div className="absolute inset-0 dot-pattern" />
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="glass-nav border-b border-cyan-400/30 relative z-10">
         <div className="container py-8">
-          <h1 className="text-4xl font-bold mb-2">Pet Gallery</h1>
-          <p className="text-muted-foreground mb-6">
+          <h1 className="text-4xl font-bold mb-2 text-white">Pet Gallery</h1>
+          <p className="text-white/70 mb-6">
             Browse all pets in the PetsOfBase community
           </p>
 
@@ -71,20 +72,20 @@ export default function Gallery() {
       </div>
 
       {/* Gallery Grid */}
-      <div className="container py-12">
+      <div className="container py-12 relative z-10">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
           </div>
         ) : filteredPets && filteredPets.length > 0 ? (
           <>
-            <p className="text-sm text-muted-foreground mb-6">
+            <p className="text-sm text-white/70 mb-6">
               Showing {filteredPets.length} {filteredPets.length === 1 ? "pet" : "pets"}
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPets.map((pet: any) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <Card className="p-4 space-y-3 hover:shadow-lg transition-shadow cursor-pointer group">
+                  <div className="glass-card p-4 space-y-3 rounded-2xl hover:glass-strong transition-all cursor-pointer group">
                     <div className="relative">
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
@@ -119,8 +120,8 @@ export default function Gallery() {
                     </div>
 
                     <div>
-                      <h3 className="font-bold text-lg">{pet.name}</h3>
-                      <p className="text-sm text-muted-foreground">
+                      <h3 className="font-bold text-lg text-white">{pet.name}</h3>
+                      <p className="text-sm text-white/70">
                         {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
                       </p>
                     </div>
@@ -138,21 +139,21 @@ export default function Gallery() {
                         View Profile
                       </Button>
                     </div>
-                  </Card>
+                  </div>
                 </Link>
               ))}
             </div>
           </>
         ) : (
-          <Card className="p-12 text-center">
-            <Search className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">No Pets Found</h3>
-            <p className="text-muted-foreground">
+          <div className="glass-card p-12 text-center rounded-2xl">
+            <Search className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-white">No Pets Found</h3>
+            <p className="text-white/70">
               {searchQuery
                 ? "Try adjusting your search query"
                 : "Be the first to upload a pet!"}
             </p>
-          </Card>
+          </div>
         )}
       </div>
     </div>
