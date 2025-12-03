@@ -26,24 +26,45 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section with Before/After */}
-      <section className="relative overflow-hidden bg-base-gradient-soft">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container py-16 pb-12 relative">
+      <section className="relative overflow-hidden bg-hero-mesh min-h-[85vh] flex items-center">
+        {/* Dot Pattern Overlay */}
+        <div className="absolute inset-0 dot-pattern" />
+        
+        {/* Pet Silhouettes - Floating Background */}
+        <svg className="pet-silhouette pet-silhouette-1" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M50 20c-8 0-15 5-18 12-5-3-11-2-14 3s-2 11 3 14c-3 8 0 17 8 21 8 4 17 2 23-4 6 6 15 8 23 4 8-4 11-13 8-21 5-3 6-9 3-14s-9-6-14-3c-3-7-10-12-18-12zm0 15c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
+        </svg>
+        <svg className="pet-silhouette pet-silhouette-2" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M30 25c-5 0-9 4-9 9 0 3 1 5 3 7-6 3-10 9-10 16v20c0 8 6 14 14 14h44c8 0 14-6 14-14V57c0-7-4-13-10-16 2-2 3-4 3-7 0-5-4-9-9-9-3 0-6 2-8 4-3-5-8-8-14-8s-11 3-14 8c-2-2-5-4-8-4zm18 20c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5zm14 0c3 0 5 2 5 5s-2 5-5 5-5-2-5-5 2-5 5-5z"/>
+        </svg>
+        <svg className="pet-silhouette pet-silhouette-3" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M50 15c-6 0-11 3-14 7-4-2-9-1-12 2s-3 8-1 12c-4 5-4 12 0 17 2 3 5 5 9 5 1 6 6 11 12 11s11-5 12-11c4 0 7-2 9-5 4-5 4-12 0-17 2-4 2-9-1-12s-8-4-12-2c-3-4-8-7-14-7zm0 20c4 0 7 3 7 7s-3 7-7 7-7-3-7-7 3-7 7-7z"/>
+        </svg>
+        
+        {/* Waveform at Bottom */}
+        <div className="waveform-pattern">
+          <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,50 C150,80 350,0 600,50 C850,100 1050,20 1200,50 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)" />
+            <path d="M0,70 C200,100 400,40 600,70 C800,100 1000,40 1200,70 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.05)" />
+          </svg>
+        </div>
+        
+        <div className="container py-16 pb-12 relative z-10">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pet-yellow/20 border-2 border-pet-yellow mb-4">
-                <Sparkles className="w-4 h-4 text-pet-yellow animate-pulse" />
-                <span className="font-bold text-sm">🔥 Most Based Pet App on Base</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border-2 border-white shadow-lg mb-4">
+                <Sparkles className="w-4 h-4 text-yellow-500 animate-pulse" />
+                <span className="font-bold text-sm text-gray-900">🔥 Most Based Pet App on Base</span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-bold leading-tight">
+              <h1 className="text-5xl md:text-7xl font-bold leading-tight text-white drop-shadow-lg">
                 Turn Your Pet Into a{" "}
-                <span className="text-base-gradient animate-pulse-glow inline-block">Based NFT PFP</span>
+                <span className="inline-block bg-white text-primary px-4 py-2 rounded-xl animate-pulse-glow">Based NFT PFP</span>
               </h1>
               
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
+              <p className="text-xl text-white/90 max-w-2xl mx-auto font-medium drop-shadow">
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
-                and compete on the Cuteness Leaderboard. <span className="font-bold text-foreground">All for just 0.25 USDC.</span>
+                and compete on the Cuteness Leaderboard. <span className="font-bold text-white bg-black/20 px-2 py-1 rounded">All for just 0.25 USDC.</span>
               </p>
               
               {/* Primary CTA Buttons */}
