@@ -324,7 +324,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="glass-nav border-t border-white/10">
+      <footer className="bg-base-gradient border-t border-white/10">
         <div className="container py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/70">
             <p className="flex items-center gap-1">

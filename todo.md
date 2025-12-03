@@ -370,3 +370,4 @@
 
 ## Footer Styling Fix
 - [x] Update footer to match navigation bar's blue glass aesthetic for better text readability
+- [x] Fix navigation and footer to use solid Base blue gradient (not transparent glass)

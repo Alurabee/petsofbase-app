@@ -10,7 +10,7 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-vibrant-mesh/95 backdrop-blur-md border-b border-cyan-400/20 sticky top-0 z-50">
+    <nav className="bg-base-gradient border-b border-white/10 sticky top-0 z-50">
       <div className="container py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <img src="/logo-square.png" alt="PetsOfBase" className="w-10 h-10 logo-pulse group-hover:scale-110 transition-transform" />
