@@ -103,3 +103,10 @@
 - [x] Apply cream/beige to "How It Works" style sections
 - [x] Ensure all text is readable on new background colors
 - [x] Test color scheme in both light and dark modes
+
+## Homepage Leaderboard Update
+- [x] Change "Cuteness Leaderboard" to "Most Popular Pet Leaderboard"
+- [x] Update leaderboard card styling to match My Pets page
+- [x] Add square aspect ratio for pet images
+- [x] Add Base blue border around images
+- [x] Ensure images fit perfectly within borders

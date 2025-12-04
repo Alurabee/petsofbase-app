@@ -213,7 +213,7 @@ export default function Home() {
           <div className="container">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-2">Cuteness Leaderboard</h2>
+                <h2 className="text-4xl font-bold mb-2">Most Popular Pet Leaderboard</h2>
                 <p className="text-xl text-muted-foreground">
                   The most loved pets in the Based community
                 </p>
@@ -234,8 +234,9 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {leaderboard.map((pet, index) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
-                    <div className="aspect-square relative">
+                  <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer p-4">
+                    {/* Image with Base blue border */}
+                    <div className="aspect-square relative rounded-lg overflow-hidden border-4 border-primary mb-4">
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
                         alt={pet.name}
@@ -245,14 +246,15 @@ export default function Home() {
                         #{index + 1}
                       </div>
                     </div>
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold mb-2">{pet.name}</h3>
-                      <p className="text-muted-foreground mb-4">
+                    {/* Pet info */}
+                    <div>
+                      <h3 className="text-xl font-bold mb-1">{pet.name}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">
                         {pet.species} • {pet.breed}
                       </p>
                       <div className="flex items-center gap-2 text-primary">
-                        <Heart className="w-5 h-5 fill-primary" />
-                        <span className="font-bold">{pet.voteCount} votes</span>
+                        <Heart className="w-4 h-4 fill-primary" />
+                        <span className="font-semibold text-sm">{pet.voteCount} votes</span>
                       </div>
                     </div>
                   </Card>
