@@ -43,7 +43,7 @@ export default function HowItWorks() {
         </Card>
 
         {/* Pet of the Day */}
-        <Card className="p-6">
+        <Card className="p-6 !border-orange-500 !shadow-[0_0_15px_rgba(249,115,22,0.5)]">
           <div className="flex items-start gap-4">
             <div className="text-4xl">⭐</div>
             <div className="flex-1">
@@ -79,7 +79,7 @@ export default function HowItWorks() {
         </Card>
 
         {/* Weekly Draw */}
-        <Card className="p-6">
+        <Card className="p-6 !border-orange-500 !shadow-[0_0_15px_rgba(249,115,22,0.5)]">
           <div className="flex items-start gap-4">
             <div className="text-4xl">🎰</div>
             <div className="flex-1">

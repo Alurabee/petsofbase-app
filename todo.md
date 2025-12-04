@@ -81,3 +81,9 @@
 - [x] Update CSS variables for card styling
 - [x] Test appearance in both light and dark modes
 - [x] Ensure all cards have consistent visual treatment
+
+## Mixed Border Colors
+- [x] Change default Card border back to blue
+- [x] Add orange border variant class for specific cards
+- [x] Apply mixed blue/orange borders across different pages
+- [x] Test visual variety in both themes
