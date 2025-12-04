@@ -75,7 +75,10 @@ export default function Home() {
                   </Button>
                 )}
                 <Link href="/leaderboard">
-                  <Button size="lg" variant="outline" className="text-lg px-8 py-6 w-full sm:w-auto">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-lg px-8 py-6 w-full sm:w-auto"
+                  >
                     <Trophy className="w-5 h-5 mr-2" />
                     View Leaderboard
                   </Button>

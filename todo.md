@@ -127,3 +127,7 @@
 ## View All Button Styling
 - [x] Update View All button to use subtle yellow gradient
 - [x] Match darker gold color from numbered badges (#F59E0B)
+
+## Hero Section View Leaderboard Button
+- [x] Update View Leaderboard button to match View All golden gradient
+- [x] Ensure consistent styling across both leaderboard CTA buttons
