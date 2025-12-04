@@ -57,12 +57,18 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   const screen = onboardingScreens[currentScreen];
 
+  const gradients = [
+    "bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400",
+    "bg-gradient-to-br from-cyan-400 via-blue-400 to-indigo-500",
+    "bg-gradient-to-br from-amber-400 via-orange-400 to-pink-500",
+  ];
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="max-w-md w-full p-8 relative animate-in fade-in zoom-in duration-300 border-2 border-primary">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <Card className={`max-w-md w-full p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl ${gradients[currentScreen]}`}>
         <button
           onClick={handleSkip}
-          className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg transition-colors"
+          className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
           aria-label="Skip onboarding"
         >
           <X className="w-5 h-5" />
@@ -70,24 +76,24 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
         <div className="text-center space-y-6">
           {screen.icon === "logo" ? (
-            <div className="flex items-center justify-center gap-3 mb-2">
-              <span className="text-5xl">🐾</span>
-              <h1 className="text-3xl font-bold">PetsOfBase</h1>
+            <div className="flex flex-col items-center justify-center gap-4 mb-2">
+              <img src="/logo.png" alt="PetsOfBase Logo" className="w-24 h-24 animate-bounce" style={{animationDuration: '2s'}} />
+              <h1 className="text-3xl font-bold text-white">PetsOfBase</h1>
             </div>
           ) : (
-            <div className="text-6xl">{screen.icon}</div>
+            <div className="text-7xl animate-pulse">{screen.icon}</div>
           )}
           
           <div className="space-y-2">
-            <h2 className="text-2xl font-bold">{screen.title}</h2>
-            <p className="text-muted-foreground">{screen.description}</p>
+            <h2 className="text-3xl font-bold text-white drop-shadow-lg">{screen.title}</h2>
+            <p className="text-white/90 text-lg">{screen.description}</p>
           </div>
 
-          <ul className="space-y-3 text-left">
+          <ul className="space-y-3 text-left bg-white/20 backdrop-blur-sm rounded-lg p-4">
             {screen.features.map((feature, index) => (
-              <li key={index} className="flex items-start gap-2">
-                <span className="text-primary text-xl">✓</span>
-                <span className="flex-1">{feature}</span>
+              <li key={index} className="flex items-start gap-3">
+                <span className="text-white text-2xl">✓</span>
+                <span className="flex-1 text-white font-medium">{feature}</span>
               </li>
             ))}
           </ul>
@@ -97,30 +103,27 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               {onboardingScreens.map((_, index) => (
                 <div
                   key={index}
-                  className={`h-2 w-2 rounded-full transition-colors ${
-                    index === currentScreen ? "bg-primary" : "bg-muted"
+                  className={`h-3 w-3 rounded-full transition-all duration-300 ${
+                    index === currentScreen ? "bg-white scale-125" : "bg-white/40"
                   }`}
                 />
               ))}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               {currentScreen > 0 && (
                 <Button
-                  variant="outline"
                   onClick={() => setCurrentScreen(currentScreen - 1)}
+                  className="bg-white/30 hover:bg-white/40 text-white border-2 border-white/50 backdrop-blur-sm"
                 >
                   Back
                 </Button>
               )}
               <Button 
                 onClick={handleNext} 
-                className={currentScreen === onboardingScreens.length - 1 
-                  ? "bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  : "bg-base-gradient btn-primary-hover"
-                }
+                className="bg-white hover:bg-white/90 text-gray-900 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
-                {currentScreen < onboardingScreens.length - 1 ? "Next" : "Get Started"}
+                {currentScreen < onboardingScreens.length - 1 ? "Next →" : "Get Started 🚀"}
               </Button>
             </div>
           </div>

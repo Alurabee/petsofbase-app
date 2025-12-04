@@ -154,3 +154,9 @@
 - [x] Remove all pricing mentions from onboarding
 - [x] Keep onboarding simple, feature and perks oriented
 - [x] Focus on basic instructions of how the app works
+
+## Colorful Onboarding Screens
+- [x] Copy PetsOfBase logo to project public folder
+- [x] Use actual logo image instead of emoji on first screen
+- [x] Add colorful gradient backgrounds to each onboarding screen
+- [x] Add animations and make screens more exciting
