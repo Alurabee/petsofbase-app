@@ -201,13 +201,21 @@ export default function Upload() {
   }
 
   return (
-    <div className="min-h-screen bg-base-gradient-soft py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950 py-12 relative overflow-hidden">
       <Navigation />
-      <div className="container max-w-3xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Upload Your Pet</h1>
-          <p className="text-muted-foreground">
-            Share your pet with the Based community. Fill in the details below to get started.
+      {/* Decorative floating emojis */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 text-6xl opacity-20 animate-bounce" style={{animationDuration: '3s'}}>🐶</div>
+        <div className="absolute top-40 right-20 text-5xl opacity-20 animate-bounce" style={{animationDuration: '4s', animationDelay: '0.5s'}}>🐱</div>
+        <div className="absolute bottom-32 left-1/4 text-5xl opacity-20 animate-bounce" style={{animationDuration: '3.5s', animationDelay: '1s'}}>🐰</div>
+        <div className="absolute bottom-20 right-1/3 text-4xl opacity-20 animate-bounce" style={{animationDuration: '4.5s', animationDelay: '1.5s'}}>🦜</div>
+        <div className="absolute top-1/2 right-10 text-5xl opacity-20 animate-bounce" style={{animationDuration: '3.8s', animationDelay: '0.8s'}}>🐾</div>
+      </div>
+      <div className="container max-w-3xl relative z-10">
+        <div className="mb-8 text-center">
+          <h1 className="text-5xl font-bold mb-3 bg-gradient-blue-purple bg-clip-text text-transparent">Upload Your Pet ✨</h1>
+          <p className="text-lg text-muted-foreground">
+            Your pet is about to become a star! Fill in the details below to get started. 🌟
           </p>
         </div>
 
@@ -219,12 +227,14 @@ export default function Upload() {
               {!imagePreview ? (
                 <label
                   htmlFor="image"
-                  className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-primary/30 rounded-lg cursor-pointer hover:border-primary transition-colors bg-base-gradient-soft"
+                  className="group flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-primary/30 rounded-lg cursor-pointer hover:border-primary hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-purple-50/50 dark:hover:from-blue-950/30 dark:hover:to-purple-950/30 transition-all duration-300 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <UploadIcon className="w-12 h-12 text-primary mb-4" />
+                    <div className="mb-4 p-3 rounded-full bg-gradient-blue-purple group-hover:scale-110 transition-transform duration-300">
+                      <UploadIcon className="w-8 h-8 text-white" />
+                    </div>
                     <p className="mb-2 text-sm font-medium">
-                      Click to upload or drag and drop
+                      Click to upload or drag and drop 📸
                     </p>
                     <p className="text-xs text-muted-foreground">
                       PNG, JPG, or WEBP (max 5MB)
@@ -374,10 +384,18 @@ export default function Upload() {
             {/* Submit Button */}
             <Button
               type="submit"
-              className="w-full bg-base-gradient btn-primary-hover"
+              className="w-full bg-gradient-blue-purple hover:opacity-90 transition-all duration-300 text-white font-semibold text-lg py-6 hover:scale-105"
               disabled={uploading || !imageFile}
             >
-              {uploading ? "Uploading..." : "Continue to Generate PFP"}
+              {uploading ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin">⏳</span> Uploading...
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  Continue to Generate PFP 🎨✨
+                </span>
+              )}
             </Button>
           </Card>
         </form>

@@ -115,3 +115,11 @@
 - [x] Add yellow/gold border to top 3 leaderboard cards on homepage
 - [x] Create gradient yellow utility class for trophy icon
 - [x] Apply conditional styling based on rank (1-3 vs 4+)
+
+## Upload Page Enhancements
+- [x] Add gradient background to upload page
+- [x] Add decorative floating pet emojis
+- [x] Add encouraging microcopy with emojis
+- [x] Enhance upload dropzone with hover effects
+- [x] Make submit button more exciting with gradient styling
+- [x] Add subtle animations to make page feel alive
