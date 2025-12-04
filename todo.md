@@ -143,3 +143,10 @@
 
 ## Trophy Icon Fix
 - [x] Replace Trophy SVG icon with 🏆 emoji on leaderboard page
+
+## Onboarding Content Updates
+- [x] Remove "free NFT minting" claims from onboarding
+- [x] Add weekly $USDC prize information for winners
+- [x] Update pricing to reflect $0.25 USDC minting cost
+- [x] Replace painting emoji with PetsOfBase logo on first onboarding screen
+- [x] Update onboarding to use Base app color scheme

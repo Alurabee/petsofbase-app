@@ -9,13 +9,13 @@ interface OnboardingProps {
 
 const onboardingScreens = [
   {
-    title: "Welcome to PetsOfBase! 🐾",
-    description: "Create AI-generated PFPs of your pets and mint them as NFTs on Base - completely free!",
-    icon: "🎨",
+    title: "Welcome to PetsOfBase!",
+    description: "Create AI-generated PFPs of your pets and mint them as NFTs on Base.",
+    icon: "logo",
     features: [
       "Upload your pet's photo",
       "Get an AI-generated PFP",
-      "Mint as an NFT for free",
+      "Mint as an NFT ($0.25 USDC)",
     ],
   },
   {
@@ -25,16 +25,16 @@ const onboardingScreens = [
     features: [
       "1. Upload a photo of your pet",
       "2. AI generates a unique PFP",
-      "3. Mint it as an NFT (free!)",
+      "3. Mint it as an NFT ($0.25 USDC)",
     ],
   },
   {
-    title: "Join the Community 🌟",
-    description: "Vote for your favorite pets, climb the leaderboard, and earn rewards!",
-    icon: "🏆",
+    title: "Win Weekly Prizes! 🏆",
+    description: "Vote for your favorite pets, climb the leaderboard, and compete for weekly $USDC prizes!",
+    icon: "💰",
     features: [
       "Vote for Pet of the Day",
-      "Compete on the leaderboard",
+      "Top pets win weekly $USDC",
       "Earn referral rewards",
     ],
   },
@@ -59,7 +59,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="max-w-md w-full p-6 relative animate-in fade-in zoom-in duration-300">
+      <Card className="max-w-md w-full p-8 relative animate-in fade-in zoom-in duration-300 border-2 border-primary">
         <button
           onClick={handleSkip}
           className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg transition-colors"
@@ -69,7 +69,14 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         </button>
 
         <div className="text-center space-y-6">
-          <div className="text-6xl">{screen.icon}</div>
+          {screen.icon === "logo" ? (
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <span className="text-5xl">🐾</span>
+              <h1 className="text-3xl font-bold">PetsOfBase</h1>
+            </div>
+          ) : (
+            <div className="text-6xl">{screen.icon}</div>
+          )}
           
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">{screen.title}</h2>
@@ -106,7 +113,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                   Back
                 </Button>
               )}
-              <Button onClick={handleNext} className="bg-base-gradient btn-primary-hover">
+              <Button 
+                onClick={handleNext} 
+                className={currentScreen === onboardingScreens.length - 1 
+                  ? "bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                  : "bg-base-gradient btn-primary-hover"
+                }
+              >
                 {currentScreen < onboardingScreens.length - 1 ? "Next" : "Get Started"}
               </Button>
             </div>
