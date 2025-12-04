@@ -270,4 +270,13 @@
   .dark .bg-cream {
     background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%);
   }
+
+  /* Golden/yellow gradient for winners */
+  .bg-gradient-gold {
+    background: linear-gradient(135deg, #FDB813 0%, #F59E0B 100%);
+  }
+  
+  .border-gold {
+    border-color: #FDB813;
+  }
 }

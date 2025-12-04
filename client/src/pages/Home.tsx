@@ -213,7 +213,12 @@ export default function Home() {
           <div className="container">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-2">Most Popular Pet Leaderboard</h2>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-12 h-12 rounded-full bg-gradient-gold flex items-center justify-center">
+                    <Trophy className="w-6 h-6 text-white" />
+                  </div>
+                  <h2 className="text-4xl font-bold">Most Popular Pet Leaderboard</h2>
+                </div>
                 <p className="text-xl text-muted-foreground">
                   The most loved pets in the Based community
                 </p>
@@ -234,9 +239,13 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-8">
               {leaderboard.map((pet, index) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <Card className="overflow-hidden hover:shadow-xl transition-shadow cursor-pointer p-4">
-                    {/* Image with Base blue border */}
-                    <div className="aspect-square relative rounded-lg overflow-hidden border-4 border-primary mb-4">
+                  <Card className={`overflow-hidden hover:shadow-xl transition-shadow cursor-pointer p-4 ${
+                    index < 3 ? '!border-gold !border-2' : ''
+                  }`}>
+                    {/* Image with border (gold for top 3, blue for others) */}
+                    <div className={`aspect-square relative rounded-lg overflow-hidden border-4 mb-4 ${
+                      index < 3 ? 'border-gold' : 'border-primary'
+                    }`}>
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
                         alt={pet.name}

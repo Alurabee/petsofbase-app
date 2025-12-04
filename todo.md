@@ -110,3 +110,8 @@
 - [x] Add square aspect ratio for pet images
 - [x] Add Base blue border around images
 - [x] Ensure images fit perfectly within borders
+
+## Golden Top 3 Leaderboard Styling
+- [x] Add yellow/gold border to top 3 leaderboard cards on homepage
+- [x] Create gradient yellow utility class for trophy icon
+- [x] Apply conditional styling based on rank (1-3 vs 4+)
