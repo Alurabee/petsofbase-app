@@ -131,3 +131,9 @@
 ## Hero Section View Leaderboard Button
 - [x] Update View Leaderboard button to match View All golden gradient
 - [x] Ensure consistent styling across both leaderboard CTA buttons
+
+## Leaderboard Page Golden Top 3
+- [x] Add golden gradient borders to top 3 cards on full leaderboard page
+- [x] Match homepage golden styling for consistency
+- [x] Keep blue borders for ranks 4+
+- [x] Update Trophy icon at top of leaderboard page to golden gradient
