@@ -140,8 +140,12 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-5 gap-6 max-w-6xl mx-auto">
-            {styles.map((style) => (
-              <Card key={style.name} className="p-6 text-center space-y-3 hover:shadow-lg transition-shadow">
+            {styles.map((style, index) => (
+              <Card key={style.name} className={`p-6 text-center space-y-3 hover:shadow-lg transition-shadow ${
+                index % 3 === 0 ? 'bg-pastel-blue' : 
+                index % 3 === 1 ? 'bg-pastel-pink' : 
+                'bg-pastel-green'
+              }`}>
                 <div className="text-4xl">{style.emoji}</div>
                 <h3 className="font-bold text-lg">{style.name}</h3>
                 <p className="text-sm text-muted-foreground">{style.description}</p>

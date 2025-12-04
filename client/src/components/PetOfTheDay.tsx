@@ -61,9 +61,9 @@ export default function PetOfTheDay() {
   }
 
   return (
-    <Card className="overflow-hidden border-2 border-yellow-400 bg-gradient-to-br from-yellow-50 to-orange-50">
+    <Card className="overflow-hidden !border-0">
       {/* Header */}
-      <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 text-center">
+      <div className="bg-gradient-blue-purple p-4 text-center">
         <div className="flex items-center justify-center gap-2 text-white">
           <Trophy className="w-6 h-6" />
           <h2 className="text-2xl font-bold">Pet of the Day</h2>
@@ -128,18 +128,18 @@ export default function PetOfTheDay() {
         </Button>
 
         {/* Weekly Draw Info */}
-        <div className="mt-4 p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg text-center text-sm">
-          <p className="font-bold text-purple-900 text-lg mb-2">
+        <div className="mt-4 p-4 bg-pastel-pink rounded-lg text-center text-sm">
+          <p className="font-bold text-gray-900 dark:text-white text-lg mb-2">
             🎰 Weekly Draw: $5 USDC Prize!
           </p>
-          <p className="text-purple-700">
+          <p className="text-gray-700 dark:text-gray-200">
             Every Pet of the Day enters the weekly draw
           </p>
-          <p className="text-purple-600 mt-1">
+          <p className="text-gray-600 dark:text-gray-300 mt-1">
             Winner announced Monday at 12pm ET
           </p>
           {weekEntries && weekEntries.length > 0 && (
-            <p className="text-sm text-purple-800 mt-2 font-semibold">
+            <p className="text-sm text-gray-800 dark:text-gray-100 mt-2 font-semibold">
               📅 {weekEntries.length}/7 entries this week
             </p>
           )}
@@ -147,7 +147,7 @@ export default function PetOfTheDay() {
 
         {/* Current Week Winner */}
         {currentDraw && (
-          <div className="mt-4 p-4 bg-green-100 rounded-lg border-2 border-green-400">
+          <div className="mt-4 p-4 bg-pastel-green rounded-lg border-2 border-green-400">
             <p className="font-bold text-green-900 text-center mb-2">
               🎉 This Week's Winner!
             </p>

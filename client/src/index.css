@@ -228,4 +228,46 @@
   .btn-primary-hover:active:not(:disabled) {
     transform: scale(0.98);
   }
+
+  /* Base app color scheme - matching referral page aesthetic */
+  
+  /* Blue to purple gradient (like referral link box) */
+  .bg-gradient-blue-purple {
+    background: linear-gradient(90deg, #3B82F6 0%, #A855F7 100%);
+  }
+  
+  /* Light pastel backgrounds for stat cards */
+  .bg-pastel-blue {
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  }
+  
+  .bg-pastel-pink {
+    background: linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%);
+  }
+  
+  .bg-pastel-green {
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  }
+  
+  /* Cream/beige background for informational sections */
+  .bg-cream {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  }
+  
+  /* Dark mode versions */
+  .dark .bg-pastel-blue {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0.1) 100%);
+  }
+  
+  .dark .bg-pastel-pink {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.1) 100%);
+  }
+  
+  .dark .bg-pastel-green {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.1) 100%);
+  }
+  
+  .dark .bg-cream {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%);
+  }
 }

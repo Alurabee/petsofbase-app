@@ -92,3 +92,14 @@
 - [x] Add subtle gradient backgrounds to selected cards
 - [x] Ensure gradients work in both light and dark modes
 - [x] Test readability with gradient backgrounds
+
+## Base App Color Scheme Update
+- [x] Create blue-to-purple gradient utility class (like referral link box)
+- [x] Create light pastel background classes (blue, pink, green for stat cards)
+- [x] Create cream/beige background class for informational sections
+- [x] Apply blue-purple gradient to Pet of the Day and Weekly Draw
+- [x] Apply blue-purple gradient to featured content sections on homepage
+- [x] Apply light pastel backgrounds to stat cards across all pages
+- [x] Apply cream/beige to "How It Works" style sections
+- [x] Ensure all text is readable on new background colors
+- [x] Test color scheme in both light and dark modes

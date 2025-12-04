@@ -12,7 +12,7 @@ export default function HowItWorks() {
 
       <div className="space-y-8">
         {/* Cuteness Leaderboard */}
-        <Card className="p-6 bg-gradient-to-br from-card via-card to-primary/10">
+        <Card className="p-6 bg-pastel-blue">
           <div className="flex items-start gap-4">
             <div className="text-4xl">🏆</div>
             <div className="flex-1">
@@ -43,34 +43,34 @@ export default function HowItWorks() {
         </Card>
 
         {/* Pet of the Day */}
-        <Card className="p-6 !border-orange-500 !shadow-[0_0_15px_rgba(249,115,22,0.5)] bg-gradient-to-br from-card via-card to-orange-500/10">
+        <Card className="p-6 !border-0 bg-gradient-blue-purple text-white">
           <div className="flex items-start gap-4">
             <div className="text-4xl">⭐</div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold mb-3">Pet of the Day</h2>
-              <p className="text-foreground mb-3">
+              <p className="text-white/90 mb-3">
                 Every day at 12pm ET, we feature one special pet on the homepage.
               </p>
-              <ul className="space-y-2 text-foreground">
+              <ul className="space-y-2 text-white/90">
                 <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Eligibility:</strong> Pets with 5+ votes on the Cuteness Leaderboard</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Selection:</strong> Random selection from eligible pets (fair for everyone!)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Cooldown:</strong> Each pet can only be featured once per week</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Bonus:</strong> Featured pets automatically enter the weekly draw!</span>
                 </li>
               </ul>
-              <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
-                <p className="text-sm text-primary">
+              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
+                <p className="text-sm text-white">
                   💡 <strong>Pro Tip:</strong> Get your pet to 5+ votes to become eligible for Pet of the Day!
                 </p>
               </div>
@@ -79,34 +79,34 @@ export default function HowItWorks() {
         </Card>
 
         {/* Weekly Draw */}
-        <Card className="p-6 !border-orange-500 !shadow-[0_0_15px_rgba(249,115,22,0.5)] bg-gradient-to-br from-card via-card to-orange-500/10">
+        <Card className="p-6 !border-0 bg-gradient-blue-purple text-white">
           <div className="flex items-start gap-4">
             <div className="text-4xl">🎰</div>
             <div className="flex-1">
               <h2 className="text-2xl font-bold mb-3">Weekly Draw - $5 USDC Prize</h2>
-              <p className="text-foreground mb-3">
+              <p className="text-white/90 mb-3">
                 Every Monday at 12pm ET, one lucky pet wins $5 USDC!
               </p>
-              <ul className="space-y-2 text-foreground">
+              <ul className="space-y-2 text-white/90">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Entries:</strong> All 7 daily Pet of the Day winners from Monday-Sunday</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Selection:</strong> Completely random draw - every entry has equal chance</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Prize:</strong> Winner receives $5 USDC to their wallet</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-600 font-bold">•</span>
+                  <span className="text-white font-bold">•</span>
                   <span><strong>Announcement:</strong> Posted on homepage, activity feed, and Farcaster</span>
                 </li>
               </ul>
-              <div className="mt-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
-                <p className="text-sm text-primary">
+              <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
+                <p className="text-sm text-white">
                   🎉 <strong>Fair & Transparent:</strong> Random selection means no vote manipulation - everyone has an equal shot at winning!
                 </p>
               </div>
@@ -115,7 +115,7 @@ export default function HowItWorks() {
         </Card>
 
         {/* The Journey */}
-        <Card className="p-6 bg-gradient-to-br from-primary/5 via-card to-purple-500/10 border-primary/20">
+        <Card className="p-6 bg-cream">
           <h2 className="text-2xl font-bold mb-4 text-center">Your Pet's Journey to Glory</h2>
           <div className="space-y-3 text-foreground">
             <div className="flex items-center gap-3">
@@ -146,7 +146,7 @@ export default function HowItWorks() {
         </Card>
 
         {/* FAQ */}
-        <Card className="p-6">
+        <Card className="p-6 bg-pastel-green">
           <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
           <div className="space-y-4">
             <div>

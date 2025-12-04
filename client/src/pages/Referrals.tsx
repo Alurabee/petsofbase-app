@@ -75,7 +75,7 @@ export default function Referrals() {
       <div className="container py-12 max-w-6xl">
         {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
+          <Card className="p-6 bg-pastel-blue !border-blue-200">
             <div className="flex items-center justify-between mb-2">
               <Users className="w-8 h-8 text-blue-600" />
               <Badge className="bg-blue-600">Total</Badge>
@@ -86,7 +86,7 @@ export default function Referrals() {
             <p className="text-sm text-blue-700 mt-1">Successful Referrals</p>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+          <Card className="p-6 bg-pastel-pink !border-purple-200">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp className="w-8 h-8 text-purple-600" />
               <Badge className="bg-purple-600">Pending</Badge>
@@ -97,7 +97,7 @@ export default function Referrals() {
             <p className="text-sm text-purple-700 mt-1">Clicks (Not Signed Up)</p>
           </Card>
 
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+          <Card className="p-6 bg-pastel-green !border-green-200">
             <div className="flex items-center justify-between mb-2">
               <Gift className="w-8 h-8 text-green-600" />
               <Badge className="bg-green-600">Rewards</Badge>
@@ -110,7 +110,7 @@ export default function Referrals() {
         </div>
 
         {/* Referral Link Card */}
-        <Card className="p-6 mb-8 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+        <Card className="p-6 mb-8 !border-0 bg-gradient-blue-purple text-white">
           <h2 className="text-2xl font-bold mb-4">Your Referral Link</h2>
           <p className="mb-4 opacity-90">
             Share this link to earn 1 free PFP generation for each friend who signs up!
