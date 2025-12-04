@@ -32,3 +32,14 @@
 - [x] Add user profile display to leaderboard entries (avatar + name)
 - [x] Add user profile display to pet detail pages (owner section)
 - [x] Test user profile display across all pages
+
+## Base Context API Profile Integration
+- [x] Install @farcaster/miniapp-sdk package
+- [x] Update pets schema to store owner's Farcaster profile (fid, username, displayName, pfpUrl)
+- [x] Create useBaseContext hook to access Context API user data
+- [x] Update pet creation to store owner's profile from Context API
+- [x] Create Avatar component for displaying profile pictures
+- [x] Update Gallery cards to show avatar + username
+- [x] Update Leaderboard entries to show avatar + username
+- [x] Update Pet detail pages to show avatar + username
+- [ ] Test Context API profile display in Base app

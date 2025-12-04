@@ -11,9 +11,11 @@ import { Upload as UploadIcon, X } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
+import { useBaseContext } from "@/hooks/useBaseContext";
 
 export default function Upload() {
   const { user, isAuthenticated } = useAuth();
+  const { user: farcasterUser } = useBaseContext();
   const [, setLocation] = useLocation();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -150,12 +152,17 @@ export default function Upload() {
             fileData: base64Data,
           });
 
-          // Create pet record
+          // Create pet record with Farcaster profile data
           toast.loading("Creating pet profile...");
           await createPet.mutateAsync({
             ...formData,
             originalImageUrl: uploadResult.url,
-          });
+            // Include Farcaster profile data from Context API
+            ownerFid: farcasterUser?.fid,
+            ownerUsername: farcasterUser?.username,
+            ownerDisplayName: farcasterUser?.displayName,
+            ownerPfpUrl: farcasterUser?.pfpUrl,
+          } as any); // Type assertion needed until tRPC types regenerate
 
           toast.success("Pet uploaded successfully! Now let's generate your PFP.");
           setLocation("/my-pets");

@@ -9,6 +9,7 @@ import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
+import { Avatar } from "@/components/Avatar";
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -123,10 +124,13 @@ export default function Gallery() {
                       <p className="text-sm text-muted-foreground">
                         {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
                       </p>
-                      {pet.ownerName && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Owner: <span className="font-medium text-primary">{pet.ownerName}</span>
-                        </p>
+                      {(pet.ownerPfpUrl || pet.ownerDisplayName || pet.ownerUsername) && (
+                        <div className="flex items-center gap-2 mt-2">
+                          <Avatar src={pet.ownerPfpUrl} alt={pet.ownerDisplayName || pet.ownerUsername} size="sm" />
+                          <span className="text-xs text-muted-foreground">
+                            {pet.ownerDisplayName || `@${pet.ownerUsername}`}
+                          </span>
+                        </div>
                       )}
                     </div>
 

@@ -24,8 +24,10 @@ export type InsertUser = typeof users.$inferInsert;
 export const pets = mysqlTable("pets", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(), // Owner's user ID
-  ownerName: varchar("ownerName", { length: 255 }), // Owner's display name from Base Account
-  ownerAvatar: varchar("ownerAvatar", { length: 500 }), // Owner's avatar URL from Base Account
+  ownerFid: int("ownerFid"), // Owner's Farcaster ID from Context API
+  ownerUsername: varchar("ownerUsername", { length: 255 }), // Owner's Farcaster username (without @)
+  ownerDisplayName: varchar("ownerDisplayName", { length: 255 }), // Owner's Farcaster display name (renamed from ownerName)
+  ownerPfpUrl: varchar("ownerPfpUrl", { length: 500 }), // Owner's Farcaster profile picture URL (renamed from ownerAvatar)
   name: varchar("name", { length: 100 }).notNull(),
   species: varchar("species", { length: 50 }).notNull(), // Dog, Cat, Bird, etc.
   breed: varchar("breed", { length: 100 }), // Optional breed

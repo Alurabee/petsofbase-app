@@ -1,4 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { toast } from "sonner";
+import { Avatar } from "@/components/Avatar";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,7 +17,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { trpc } from "@/lib/trpc";
 import { Heart, ExternalLink, Loader2, ArrowLeft, Sparkles, History, Check, Share2, Copy } from "lucide-react";
 import { useParams, useLocation, Link } from "wouter";
-import { toast } from "sonner";
 import { useState } from "react";
 
 export default function PetDetail() {
@@ -252,10 +253,15 @@ export default function PetDetail() {
               <p className="text-xl text-muted-foreground">
                 {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
               </p>
-              {pet.ownerName && (
-                <div className="mt-3 flex items-center gap-2 text-sm">
-                  <span className="text-muted-foreground">Owner:</span>
-                  <span className="font-semibold text-primary text-base">{pet.ownerName}</span>
+              {(pet.ownerPfpUrl || pet.ownerDisplayName || pet.ownerUsername) && (
+                <div className="mt-3 flex items-center gap-3">
+                  <Avatar src={pet.ownerPfpUrl} alt={pet.ownerDisplayName || pet.ownerUsername} size="md" />
+                  <div>
+                    <div className="text-xs text-muted-foreground">Owner</div>
+                    <div className="font-semibold text-primary">
+                      {pet.ownerDisplayName || `@${pet.ownerUsername}`}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

@@ -92,13 +92,26 @@ export const appRouter = router({
         likes: z.string().optional(),
         dislikes: z.string().optional(),
         originalImageUrl: z.string().url(),
+        // Farcaster profile data from Context API
+        ownerFid: z.number().optional(),
+        ownerUsername: z.string().optional(),
+        ownerDisplayName: z.string().optional(),
+        ownerPfpUrl: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         await db.createPet({
           userId: ctx.user.id,
-          ownerName: ctx.user.name || "Anonymous",
-          ownerAvatar: null, // Avatar not provided by Base OAuth
-          ...input,
+          ownerFid: input.ownerFid || null,
+          ownerUsername: input.ownerUsername || null,
+          ownerDisplayName: input.ownerDisplayName || ctx.user.name || "Anonymous",
+          ownerPfpUrl: input.ownerPfpUrl || null,
+          name: input.name,
+          species: input.species,
+          breed: input.breed,
+          personality: input.personality,
+          likes: input.likes,
+          dislikes: input.dislikes,
+          originalImageUrl: input.originalImageUrl,
         });
         return { success: true };
       }),
