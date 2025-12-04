@@ -42,4 +42,9 @@
 - [x] Update Gallery cards to show avatar + username
 - [x] Update Leaderboard entries to show avatar + username
 - [x] Update Pet detail pages to show avatar + username
-- [ ] Test Context API profile display in Base app
+- [x] Test Context API profile display in Base app
+
+## Database Migration Fix
+- [x] Check current database schema for pets table
+- [x] Apply pending migrations to add Farcaster profile columns
+- [x] Verify all queries work correctly
