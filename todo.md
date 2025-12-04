@@ -176,10 +176,10 @@
 - [ ] Test manifest at base.dev/preview
 
 ## GitHub & Vercel Deployment
-- [ ] Initialize Git repository
-- [ ] Create .gitignore file
-- [ ] Create initial commit
-- [ ] Provide push commands for user
+- [x] Initialize Git repository
+- [x] Create .gitignore file
+- [x] Create initial commit
+- [x] Provide push commands for user
 - [ ] Deploy to Vercel
 - [ ] Configure environment variables in Vercel
 - [ ] Update manifest with Vercel URL
