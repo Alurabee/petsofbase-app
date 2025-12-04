@@ -160,3 +160,8 @@
 - [x] Use actual logo image instead of emoji on first screen
 - [x] Add colorful gradient backgrounds to each onboarding screen
 - [x] Add animations and make screens more exciting
+
+## Onboarding Gradient Fix
+- [x] Fix colorful gradient backgrounds showing in dark mode
+- [x] Ensure gradients override theme colors
+- [x] Test in both light and dark modes

@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
 import { useState } from "react";
 
@@ -65,7 +64,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className={`max-w-md w-full p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl ${gradients[currentScreen]}`}>
+      <div className={`max-w-md w-full p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}>
         <button
           onClick={handleSkip}
           className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
@@ -128,7 +127,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             </div>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
