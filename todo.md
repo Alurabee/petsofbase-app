@@ -137,3 +137,9 @@
 - [x] Match homepage golden styling for consistency
 - [x] Keep blue borders for ranks 4+
 - [x] Update Trophy icon at top of leaderboard page to golden gradient
+
+## Trophy Icon Fix
+- [x] Replace Trophy SVG icon with 🏆 emoji on leaderboard page
+
+## Trophy Icon Fix
+- [x] Replace Trophy SVG icon with 🏆 emoji on leaderboard page
