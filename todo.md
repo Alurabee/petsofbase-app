@@ -87,3 +87,8 @@
 - [x] Add orange border variant class for specific cards
 - [x] Apply mixed blue/orange borders across different pages
 - [x] Test visual variety in both themes
+
+## Gradient Card Backgrounds
+- [x] Add subtle gradient backgrounds to selected cards
+- [x] Ensure gradients work in both light and dark modes
+- [x] Test readability with gradient backgrounds
