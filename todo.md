@@ -74,3 +74,10 @@
 - [x] Fix Leaderboard page subtitle area background and text colors
 - [x] Fix Gallery page subtitle area background and text colors
 - [x] Fix all other pages with subtitle areas
+
+## Card Visual Contrast Enhancement
+- [x] Add orange/gradient borders to card components
+- [x] Lighten card backgrounds in dark mode for better contrast
+- [x] Update CSS variables for card styling
+- [x] Test appearance in both light and dark modes
+- [x] Ensure all cards have consistent visual treatment
