@@ -10,32 +10,32 @@ interface OnboardingProps {
 const onboardingScreens = [
   {
     title: "Welcome to PetsOfBase!",
-    description: "Create AI-generated PFPs of your pets and mint them as NFTs on Base.",
+    description: "Turn your pet into a unique AI-generated PFP and mint it as an NFT on Base.",
     icon: "logo",
     features: [
       "Upload your pet's photo",
-      "Get an AI-generated PFP",
-      "Mint as an NFT ($0.25 USDC)",
+      "Choose from 5 AI art styles",
+      "Mint as an NFT on Base",
     ],
   },
   {
     title: "How It Works ✨",
-    description: "Three simple steps to get your pet's PFP:",
+    description: "Get your pet's PFP in three simple steps:",
     icon: "🚀",
     features: [
-      "1. Upload a photo of your pet",
-      "2. AI generates a unique PFP",
-      "3. Mint it as an NFT ($0.25 USDC)",
+      "Upload a photo of your pet",
+      "AI generates your unique PFP",
+      "Mint it as an NFT",
     ],
   },
   {
-    title: "Win Weekly Prizes! 🏆",
-    description: "Vote for your favorite pets, climb the leaderboard, and compete for weekly $USDC prizes!",
+    title: "Compete & Win! 🏆",
+    description: "Join the community, vote for your favorites, and compete for weekly prizes!",
     icon: "💰",
     features: [
       "Vote for Pet of the Day",
-      "Top pets win weekly $USDC",
-      "Earn referral rewards",
+      "Climb the leaderboard",
+      "Win weekly $USDC prizes",
     ],
   },
 ];

@@ -150,3 +150,7 @@
 - [x] Update pricing to reflect $0.25 USDC minting cost
 - [x] Replace painting emoji with PetsOfBase logo on first onboarding screen
 - [x] Update onboarding to use Base app color scheme
+- [ ] Remove all pricing mentions ($0.25 USDC) from onboarding screens
+- [x] Remove all pricing mentions from onboarding
+- [x] Keep onboarding simple, feature and perks oriented
+- [x] Focus on basic instructions of how the app works
