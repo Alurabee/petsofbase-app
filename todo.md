@@ -123,3 +123,7 @@
 - [x] Enhance upload dropzone with hover effects
 - [x] Make submit button more exciting with gradient styling
 - [x] Add subtle animations to make page feel alive
+
+## View All Button Styling
+- [x] Update View All button to use subtle yellow gradient
+- [x] Match darker gold color from numbered badges (#F59E0B)

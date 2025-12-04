@@ -229,7 +229,10 @@ export default function Home() {
                 )}
               </div>
               <Link href="/leaderboard">
-                <Button variant="outline" size="lg">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   View All
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
