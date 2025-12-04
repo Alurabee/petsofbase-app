@@ -24,3 +24,11 @@
 - [ ] Update manifest with accountAssociation credentials
 - [ ] Test manifest accessibility at Vercel URL
 - [ ] Share app to trigger Base indexing
+
+## User Profile Integration
+- [x] Update pets table schema to store owner avatar and display name
+- [x] Update backend procedures to return user info with pet data
+- [x] Add user profile display to gallery cards (avatar + name)
+- [x] Add user profile display to leaderboard entries (avatar + name)
+- [x] Add user profile display to pet detail pages (owner section)
+- [x] Test user profile display across all pages

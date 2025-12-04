@@ -101,6 +101,11 @@ export default function Leaderboard() {
                       <p className="text-muted-foreground">
                         {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
                       </p>
+                      {pet.ownerName && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Owner: <span className="font-semibold text-primary">{pet.ownerName}</span>
+                        </p>
+                      )}
                       {pet.personality && (
                         <p className="text-sm text-muted-foreground mt-1">
                           {pet.personality}

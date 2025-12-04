@@ -123,6 +123,11 @@ export default function Gallery() {
                       <p className="text-sm text-muted-foreground">
                         {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
                       </p>
+                      {pet.ownerName && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Owner: <span className="font-medium text-primary">{pet.ownerName}</span>
+                        </p>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t">

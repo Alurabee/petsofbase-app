@@ -96,6 +96,8 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         await db.createPet({
           userId: ctx.user.id,
+          ownerName: ctx.user.name || "Anonymous",
+          ownerAvatar: null, // Avatar not provided by Base OAuth
           ...input,
         });
         return { success: true };

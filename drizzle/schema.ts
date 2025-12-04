@@ -24,6 +24,8 @@ export type InsertUser = typeof users.$inferInsert;
 export const pets = mysqlTable("pets", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull(), // Owner's user ID
+  ownerName: varchar("ownerName", { length: 255 }), // Owner's display name from Base Account
+  ownerAvatar: varchar("ownerAvatar", { length: 500 }), // Owner's avatar URL from Base Account
   name: varchar("name", { length: 100 }).notNull(),
   species: varchar("species", { length: 50 }).notNull(), // Dog, Cat, Bird, etc.
   breed: varchar("breed", { length: 100 }), // Optional breed

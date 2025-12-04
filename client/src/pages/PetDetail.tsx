@@ -252,6 +252,12 @@ export default function PetDetail() {
               <p className="text-xl text-muted-foreground">
                 {pet.species} {pet.breed ? `• ${pet.breed}` : ""}
               </p>
+              {pet.ownerName && (
+                <div className="mt-3 flex items-center gap-2 text-sm">
+                  <span className="text-muted-foreground">Owner:</span>
+                  <span className="font-semibold text-primary text-base">{pet.ownerName}</span>
+                </div>
+              )}
             </div>
 
             {pet.personality && (
