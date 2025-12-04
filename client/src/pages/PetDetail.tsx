@@ -103,11 +103,8 @@ export default function PetDetail() {
         }),
       });
 
-      if (response.status === 402 && generationCount >= FREE_LIMIT) {
-        toast.error("Payment required. Please complete the $0.10 USDC payment.");
-        setRegenerating(false);
-        return;
-      }
+      // Payment removed for Base featured guidelines compliance
+      // Transactions will be sponsored via Base Paymaster in production
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -124,7 +121,7 @@ export default function PetDetail() {
       } else if (remaining > 0) {
         toast.success(`PFP regenerated! ${remaining} free generation${remaining > 1 ? 's' : ''} remaining.`);
       } else {
-        toast.success("PFP regenerated! Future regenerations will cost $0.10 USDC or use referral credits.");
+        toast.success("PFP regenerated successfully!");
       }
       
       setShowStylePicker(false);
@@ -293,7 +290,7 @@ export default function PetDetail() {
                 <Button
                   onClick={() => {
                     const shareText = pet.nftTokenId
-                      ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for just $0.25 USDC.\n\n#PetsOfBase #Based #BaseNFT`
+                      ? `Check out my Based NFT PFP "${pet.name}" on @PetsOfBase! 🐾\n\nMinted on @base for free!\n\n#PetsOfBase #Based #BaseNFT`
                       : `Just created an AI-generated PFP for ${pet.name} on @PetsOfBase! 🐾✨\n\nJoin the most wholesome community on @base.\n\n#PetsOfBase #Based`;
                     
                     // Add referral code to URL if user is authenticated
@@ -402,7 +399,7 @@ export default function PetDetail() {
                           </span>
                           {pet.generationCount >= 2 && (
                             <span className="text-blue-600 text-xs">
-                              Additional: $0.10 USDC each
+                              Additional regenerations: Free!
                             </span>
                           )}
                         </div>
@@ -440,7 +437,7 @@ export default function PetDetail() {
                       asChild
                       className="w-full bg-base-gradient btn-primary-hover"
                     >
-                      <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
+                      <Link href={`/mint/${pet.id}`}>Mint as NFT (Free!)</Link>
                     </Button>
                   </>
                 )}
@@ -486,8 +483,8 @@ export default function PetDetail() {
                   )}
                   
                   {remaining === 0 && !hasReferralCredit && (
-                    <span className="text-yellow-600 block text-sm">
-                      ⚠️ This regeneration will cost $0.10 USDC
+                    <span className="text-green-600 block text-sm">
+                      ✨ Free regeneration!
                     </span>
                   )}
                 </div>

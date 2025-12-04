@@ -8,10 +8,25 @@ import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import PetOfTheDay from "@/components/PetOfTheDay";
 import LiveActivityFeed from "@/components/LiveActivityFeed";
+import { Onboarding } from "@/components/Onboarding";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const { data: leaderboard, isLoading } = trpc.pets.leaderboard.useQuery({ limit: 3 });
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    const hasSeenOnboarding = localStorage.getItem("petsofbase-onboarding-complete");
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
+    }
+  }, []);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem("petsofbase-onboarding-complete", "true");
+    setShowOnboarding(false);
+  };
 
   const styles = [
     { name: "Pixar Style", description: "3D animated with vibrant colors", emoji: "🎬" },
@@ -23,6 +38,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
       <Navigation />
 
       {/* Hero Section with Before/After */}
@@ -38,7 +54,7 @@ export default function Home() {
               
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
-                and compete on the Cuteness Leaderboard. All for just 0.25 USDC.
+                and compete on the leaderboard. Completely free!
               </p>
               
               {/* Primary CTA Buttons */}

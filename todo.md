@@ -48,3 +48,24 @@
 - [x] Check current database schema for pets table
 - [x] Apply pending migrations to add Farcaster profile columns
 - [x] Verify all queries work correctly
+
+## Base Featured Guidelines Implementation
+- [ ] Integrate Base Paymaster for sponsored transactions (deferred until NFT contract deployed)
+- [x] Remove $0.25 USDC payment requirement for minting
+- [x] Remove payment requirement for regeneration
+- [x] Implement light/dark mode theme toggle
+- [x] Create ThemeProvider with system preference detection
+- [x] Update all components to support both themes
+- [x] Create onboarding flow (3 screens max)
+- [x] Audit all buttons for 44px minimum touch targets
+- [ ] Test app load time (<3 seconds required)
+- [ ] Test action completion times (<1 second required)
+- [ ] Optimize performance if needed
+
+## Design Polish
+- [x] Add iconic Base blue borders to all NFT/pet cards
+- [x] Ensure consistent Base branding throughout
+- [x] Audit all text colors for visibility in both light and dark modes
+- [x] Replace hardcoded colors with semantic theme colors
+- [x] Add visible borders to all text input fields
+- [x] Fix navigation menu visibility in dark mode

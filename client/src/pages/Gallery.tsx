@@ -85,12 +85,12 @@ export default function Gallery() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredPets.map((pet: any) => (
                 <Link key={pet.id} href={`/pet/${pet.id}`}>
-                  <Card className="p-4 space-y-3 hover:shadow-lg transition-shadow cursor-pointer group">
+                  <Card className="p-4 space-y-3 hover:shadow-lg transition-shadow cursor-pointer group border-2 border-primary/20 hover:border-primary/40">
                     <div className="relative">
                       <img
                         src={pet.pfpImageUrl || pet.originalImageUrl}
                         alt={pet.name}
-                        className="w-full aspect-square object-cover rounded-lg pet-card-border group-hover:scale-105 transition-transform"
+                        className="w-full aspect-square object-cover rounded-lg border-2 border-primary group-hover:scale-105 transition-transform"
                       />
                       {pet.nftTokenId && (
                         <Badge className="absolute top-2 right-2 bg-primary">
