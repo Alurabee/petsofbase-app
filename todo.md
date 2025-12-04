@@ -69,3 +69,8 @@
 - [x] Replace hardcoded colors with semantic theme colors
 - [x] Add visible borders to all text input fields
 - [x] Fix navigation menu visibility in dark mode
+
+## Subtitle Area Theme Fix
+- [x] Fix Leaderboard page subtitle area background and text colors
+- [x] Fix Gallery page subtitle area background and text colors
+- [x] Fix all other pages with subtitle areas

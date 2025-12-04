@@ -51,10 +51,10 @@ export default function Gallery() {
     <div className="min-h-screen bg-base-gradient-soft">
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b border-primary/20">
         <div className="container py-8">
           <h1 className="text-4xl font-bold mb-2">Pet Gallery</h1>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-primary mb-6">
             Browse all pets in the PetsOfBase community
           </p>
 

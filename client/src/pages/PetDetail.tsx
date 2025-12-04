@@ -167,7 +167,7 @@ export default function PetDetail() {
     <div className="min-h-screen bg-base-gradient-soft">
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b border-primary/20">
         <div className="container py-6">
           <Button
             variant="ghost"

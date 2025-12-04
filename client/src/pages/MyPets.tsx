@@ -118,12 +118,12 @@ export default function MyPets() {
     <div className="min-h-screen bg-base-gradient-soft">
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b border-primary/20">
         <div className="container py-8">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold mb-2">My Pets</h1>
-              <p className="text-muted-foreground">
+              <p className="text-primary">
                 Manage your pets and generate AI-powered PFPs
               </p>
             </div>

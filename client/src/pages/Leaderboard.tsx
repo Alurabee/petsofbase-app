@@ -13,7 +13,7 @@ export default function Leaderboard() {
     <div className="min-h-screen bg-base-gradient-soft">
       <Navigation />
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b border-primary/20">
         <div className="container py-8">
           <div className="flex items-center justify-between">
             <div>
@@ -21,7 +21,7 @@ export default function Leaderboard() {
                 <Trophy className="w-10 h-10 text-primary" />
                 Most Popular Pet Leaderboard
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-primary">
                 Vote for your favorite pets and help them climb the ranks!
               </p>
               {pets && pets.length < 10 && (

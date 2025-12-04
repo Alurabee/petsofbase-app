@@ -284,7 +284,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-white border-t">
+      <footer className="py-8 bg-card border-t border-primary/20">
         <div className="container">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <p className="flex items-center gap-1">
