@@ -165,3 +165,22 @@
 - [x] Fix colorful gradient backgrounds showing in dark mode
 - [x] Ensure gradients override theme colors
 - [x] Test in both light and dark modes
+
+## Base Mini App Integration
+- [x] Install @coinbase/minikit-js SDK (not needed - using static JSON)
+- [x] Create minikit.config.ts with app configuration (not needed - using static JSON)
+- [x] Create manifest endpoint at /.well-known/farcaster.json
+- [ ] Add screenshot images for Base App preview
+- [ ] Add app icon and splash images
+- [ ] Generate account association credentials
+- [ ] Test manifest at base.dev/preview
+
+## GitHub & Vercel Deployment
+- [ ] Initialize Git repository
+- [ ] Create .gitignore file
+- [ ] Create initial commit
+- [ ] Provide push commands for user
+- [ ] Deploy to Vercel
+- [ ] Configure environment variables in Vercel
+- [ ] Update manifest with Vercel URL
+- [ ] Generate account association credentials

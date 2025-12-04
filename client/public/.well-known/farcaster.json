@@ -10,24 +10,24 @@
   "miniapp": {
     "version": "1",
     "name": "PetsOfBase",
-    "homeUrl": "https://your-vercel-url.vercel.app",
-    "iconUrl": "https://your-vercel-url.vercel.app/icon-1024.png",
-    "splashImageUrl": "https://your-vercel-url.vercel.app/base-assets/splash-200.png",
+    "homeUrl": "https://petsofbase.manus.space",
+    "iconUrl": "https://petsofbase.manus.space/icon-1024.png",
+    "splashImageUrl": "https://petsofbase.manus.space/base-assets/splash-200.png",
     "splashBackgroundColor": "#0052FF",
     "subtitle": "Turn Pets into Based NFTs",
     "description": "Upload your pet, generate AI-powered Pixar-style PFPs, and mint them as NFTs on Base. Compete in the leaderboard, vote for Pet of the Day, and win prizes!",
     "screenshotUrls": [
-      "https://your-vercel-url.vercel.app/base-assets/screenshot-1.png",
-      "https://your-vercel-url.vercel.app/base-assets/screenshot-2.png",
-      "https://your-vercel-url.vercel.app/base-assets/screenshot-3.png"
+      "https://petsofbase.manus.space/base-assets/screenshot-1.png",
+      "https://petsofbase.manus.space/base-assets/screenshot-2.png",
+      "https://petsofbase.manus.space/base-assets/screenshot-3.png"
     ],
     "primaryCategory": "social",
     "tags": ["pets", "nft", "base", "ai", "social"],
-    "heroImageUrl": "https://your-vercel-url.vercel.app/base-assets/hero-1200x630.png",
+    "heroImageUrl": "https://petsofbase.manus.space/base-assets/hero-1200x630.png",
     "tagline": "Mint Your Pet as a Based NFT",
     "ogTitle": "PetsOfBase - Based NFT PFPs",
     "ogDescription": "Turn your pet into a Pixar-style NFT PFP on Base for just 0.25 USDC",
-    "ogImageUrl": "https://your-vercel-url.vercel.app/base-assets/og-1200x630.png",
-    "noindex": true
+    "ogImageUrl": "https://petsofbase.manus.space/base-assets/og-1200x630.png",
+    "noindex": false
   }
 }
