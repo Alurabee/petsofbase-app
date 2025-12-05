@@ -24,7 +24,7 @@ export async function selectPetOfTheDay(): Promise<number> {
   const recentlyFeatured = await db
     .select({ petId: petOfTheDay.petId })
     .from(petOfTheDay)
-    .where(sql`DATE(${petOfTheDay.createdAt}) > DATE_SUB(NOW(), INTERVAL 7 DAY)`);
+    .where(sql`DATE(${petOfTheDay.createdAt}) > NOW() - INTERVAL '7 days'`);
 
   const recentlyFeaturedIds = recentlyFeatured.map((r: any) => r.petId);
 

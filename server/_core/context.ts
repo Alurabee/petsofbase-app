@@ -1,28 +1,26 @@
-import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
-import type { User } from "../../drizzle/schema";
-import { sdk } from "./sdk";
+import type { Request, Response } from "express";
 
-export type TrpcContext = {
-  req: CreateExpressContextOptions["req"];
-  res: CreateExpressContextOptions["res"];
+export type User = {
+  id: number;
+  openId: string;
+  name: string;
+  pfpUrl: string | null;
+  email: string | null;
+  role: "admin" | "user";
+};
+
+export type Context = {
+  req: Request;
+  res: Response;
   user: User | null;
 };
 
-export async function createContext(
-  opts: CreateExpressContextOptions
-): Promise<TrpcContext> {
-  let user: User | null = null;
-
-  try {
-    user = await sdk.authenticateRequest(opts.req);
-  } catch (error) {
-    // Authentication is optional for public procedures.
-    user = null;
-  }
-
+export async function createContext({ req, res }: { req: Request; res: Response }): Promise<Context> {
+  // TODO: Implement OnchainKit/Farcaster auth
+  // For now, return null user (guest mode)
   return {
-    req: opts.req,
-    res: opts.res,
-    user,
+    req,
+    res,
+    user: null,
   };
 }

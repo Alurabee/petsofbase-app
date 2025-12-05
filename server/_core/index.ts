@@ -3,7 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "./oauth";
+// OAuth disabled - will use OnchainKit
 import { x402Middleware, checkX402Configuration } from "../x402Payment";
 import { getRegenerationPaymentConfig } from "../x402RegenerationPayment";
 import { mintPetNFT, generateNFTMetadata, checkNFTContractStatus } from "../nftMinting";
@@ -40,8 +40,7 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  // OAuth callback under /api/oauth/callback
-  registerOAuthRoutes(app);
+  // OAuth disabled - will use OnchainKit for auth
 
   // Check X402 and NFT configuration on startup
   checkX402Configuration();
