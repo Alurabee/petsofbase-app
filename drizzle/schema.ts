@@ -1,23 +1,17 @@
-import { integer, pgEnum, pgTable, text, timestamp, varchar, uniqueIndex, serial } from "drizzle-orm/pg-core";
-
-/**
- * Enums
- */
-export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
-export const activityTypeEnum = pgEnum("activity_type", ["generation", "mint", "vote", "top10"]);
+import { int, mysqlEnum, mysqlTable, text, timestamp, varchar, uniqueIndex } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
  */
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = mysqlTable("users", {
+  id: int("id").autoincrement().primaryKey(),
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
-  role: userRoleEnum("role").default("user").notNull(),
+  role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
@@ -27,13 +21,13 @@ export type InsertUser = typeof users.$inferInsert;
 /**
  * Pets table - stores all pet information and NFT metadata
  */
-export const pets = pgTable("pets", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(), // Owner's user ID
-  ownerFid: integer("ownerFid"), // Owner's Farcaster ID from Context API
+export const pets = mysqlTable("pets", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Owner's user ID
+  ownerFid: int("ownerFid"), // Owner's Farcaster ID from Context API
   ownerUsername: varchar("ownerUsername", { length: 255 }), // Owner's Farcaster username (without @)
-  ownerDisplayName: varchar("ownerDisplayName", { length: 255 }), // Owner's Farcaster display name
-  ownerPfpUrl: varchar("ownerPfpUrl", { length: 500 }), // Owner's Farcaster profile picture URL
+  ownerDisplayName: varchar("ownerDisplayName", { length: 255 }), // Owner's Farcaster display name (renamed from ownerName)
+  ownerPfpUrl: varchar("ownerPfpUrl", { length: 500 }), // Owner's Farcaster profile picture URL (renamed from ownerAvatar)
   name: varchar("name", { length: 100 }).notNull(),
   species: varchar("species", { length: 50 }).notNull(), // Dog, Cat, Bird, etc.
   breed: varchar("breed", { length: 100 }), // Optional breed
@@ -42,13 +36,13 @@ export const pets = pgTable("pets", {
   dislikes: text("dislikes"), // Things the pet dislikes
   originalImageUrl: varchar("originalImageUrl", { length: 500 }).notNull(), // Original uploaded photo
   pfpImageUrl: varchar("pfpImageUrl", { length: 500 }), // AI-generated PFP (null until generated)
-  generationCount: integer("generationCount").default(0).notNull(), // Number of times PFP has been generated
-  nftTokenId: integer("nftTokenId"), // Token ID from smart contract (null until minted)
+  generationCount: int("generationCount").default(0).notNull(), // Number of times PFP has been generated
+  nftTokenId: int("nftTokenId"), // Token ID from smart contract (null until minted)
   nftContractAddress: varchar("nftContractAddress", { length: 42 }), // Smart contract address
   nftTransactionHash: varchar("nftTransactionHash", { length: 66 }), // Minting transaction hash
-  voteCount: integer("voteCount").default(0).notNull(), // Total votes received
+  voteCount: int("voteCount").default(0).notNull(), // Total votes received
   createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Pet = typeof pets.$inferSelect;
@@ -58,10 +52,10 @@ export type InsertPet = typeof pets.$inferInsert;
  * Votes table - tracks user votes on pets
  * Constraint: One vote per user per pet (enforced by unique index)
  */
-export const votes = pgTable("votes", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(), // Voter's user ID
-  petId: integer("petId").notNull(), // Pet being voted on
+export const votes = mysqlTable("votes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Voter's user ID
+  petId: int("petId").notNull(), // Pet being voted on
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   // Unique constraint: one vote per user per pet
@@ -75,13 +69,13 @@ export type InsertVote = typeof votes.$inferInsert;
  * PFP Versions table - stores all generated PFP versions for each pet
  * Allows users to view history and select which version to use
  */
-export const pfpVersions = pgTable("pfpVersions", {
-  id: serial("id").primaryKey(),
-  petId: integer("petId").notNull(), // Pet this version belongs to
-  imageUrl: varchar("imageUrl", { length: 500 }).notNull(), // Storage URL of generated PFP
+export const pfpVersions = mysqlTable("pfpVersions", {
+  id: int("id").autoincrement().primaryKey(),
+  petId: int("petId").notNull(), // Pet this version belongs to
+  imageUrl: varchar("imageUrl", { length: 500 }).notNull(), // S3 URL of generated PFP
   prompt: text("prompt"), // AI prompt used for generation
-  isSelected: integer("isSelected").default(0).notNull(), // 1 if this is the currently selected version, 0 otherwise
-  generationNumber: integer("generationNumber").notNull(), // Sequential number (1, 2, 3...)
+  isSelected: int("isSelected").default(0).notNull(), // 1 if this is the currently selected version, 0 otherwise
+  generationNumber: int("generationNumber").notNull(), // Sequential number (1, 2, 3...)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -91,13 +85,13 @@ export type InsertPfpVersion = typeof pfpVersions.$inferInsert;
 /**
  * Referrals table - tracks user invitations and rewards
  */
-export const referrals = pgTable("referrals", {
-  id: serial("id").primaryKey(),
-  referrerId: integer("referrerId").notNull(), // User who sent the invite
-  referredUserId: integer("referredUserId"), // User who signed up (null until they sign up)
+export const referrals = mysqlTable("referrals", {
+  id: int("id").autoincrement().primaryKey(),
+  referrerId: int("referrerId").notNull(), // User who sent the invite
+  referredUserId: int("referredUserId"), // User who signed up (null until they sign up)
   referralCode: varchar("referralCode", { length: 50 }).notNull(), // Unique code for tracking
   status: varchar("status", { length: 20 }).default("pending").notNull(), // pending, completed, rewarded
-  rewardGranted: integer("rewardGranted").default(0).notNull(), // 1 if reward given, 0 otherwise
+  rewardGranted: int("rewardGranted").default(0).notNull(), // 1 if reward given, 0 otherwise
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   completedAt: timestamp("completedAt"), // When referred user signed up
 }, (table) => ({
@@ -111,13 +105,13 @@ export type InsertReferral = typeof referrals.$inferInsert;
 /**
  * User referral stats - aggregated data for each user
  */
-export const userReferralStats = pgTable("userReferralStats", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull().unique(), // One record per user
+export const userReferralStats = mysqlTable("userReferralStats", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().unique(), // One record per user
   referralCode: varchar("referralCode", { length: 50 }).notNull().unique(), // User's personal referral code
-  totalReferrals: integer("totalReferrals").default(0).notNull(), // Total successful referrals
-  pendingReferrals: integer("pendingReferrals").default(0).notNull(), // Clicks but no signup yet
-  freeGenerationsEarned: integer("freeGenerationsEarned").default(0).notNull(), // Bonus generations from referrals
+  totalReferrals: int("totalReferrals").default(0).notNull(), // Total successful referrals
+  pendingReferrals: int("pendingReferrals").default(0).notNull(), // Clicks but no signup yet
+  freeGenerationsEarned: int("freeGenerationsEarned").default(0).notNull(), // Bonus generations from referrals
   updatedAt: timestamp("updatedAt").defaultNow().notNull(),
 });
 
@@ -127,12 +121,12 @@ export type InsertUserReferralStats = typeof userReferralStats.$inferInsert;
 /**
  * Pet of the Day - daily featured pet with voting
  */
-export const petOfTheDay = pgTable("petOfTheDay", {
-  id: serial("id").primaryKey(),
-  petId: integer("petId").notNull(), // Featured pet
+export const petOfTheDay = mysqlTable("petOfTheDay", {
+  id: int("id").autoincrement().primaryKey(),
+  petId: int("petId").notNull(), // Featured pet
   date: varchar("date", { length: 10 }).notNull().unique(), // YYYY-MM-DD format
-  voteCount: integer("voteCount").default(0).notNull(), // Total votes for this day
-  prizeAwarded: integer("prizeAwarded").default(0).notNull(), // 1 if 2 USDC prize awarded
+  voteCount: int("voteCount").default(0).notNull(), // Total votes for this day
+  prizeAwarded: int("prizeAwarded").default(0).notNull(), // 1 if 2 USDC prize awarded
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -142,10 +136,10 @@ export type InsertPetOfTheDay = typeof petOfTheDay.$inferInsert;
 /**
  * Pet of the Day Votes - tracks individual votes for daily featured pet
  */
-export const petOfTheDayVotes = pgTable("petOfTheDayVotes", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(), // Voter's user ID
-  petOfTheDayId: integer("petOfTheDayId").notNull(), // Reference to petOfTheDay record
+export const petOfTheDayVotes = mysqlTable("petOfTheDayVotes", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // Voter's user ID
+  petOfTheDayId: int("petOfTheDayId").notNull(), // Reference to petOfTheDay record
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, (table) => ({
   // Unique constraint: one vote per user per day
@@ -158,13 +152,13 @@ export type InsertPetOfTheDayVote = typeof petOfTheDayVotes.$inferInsert;
 /**
  * Weekly Draw - tracks weekly winners from Pet of the Day entries
  */
-export const weeklyDraw = pgTable("weeklyDraw", {
-  id: serial("id").primaryKey(),
+export const weeklyDraw = mysqlTable("weeklyDraw", {
+  id: int("id").autoincrement().primaryKey(),
   weekStartDate: varchar("weekStartDate", { length: 10 }).notNull().unique(), // Monday YYYY-MM-DD
-  winningPetId: integer("winningPetId").notNull(), // Winner's pet ID
-  winningPetOfTheDayId: integer("winningPetOfTheDayId").notNull(), // Reference to petOfTheDay record
-  prizeAmount: integer("prizeAmount").default(5).notNull(), // Prize in USDC (500 = $5.00)
-  prizeAwarded: integer("prizeAwarded").default(0).notNull(), // 1 if prize distributed
+  winningPetId: int("winningPetId").notNull(), // Winner's pet ID
+  winningPetOfTheDayId: int("winningPetOfTheDayId").notNull(), // Reference to petOfTheDay record
+  prizeAmount: int("prizeAmount").default(5).notNull(), // Prize in USDC (500 = $5.00)
+  prizeAwarded: int("prizeAwarded").default(0).notNull(), // 1 if prize distributed
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
@@ -174,11 +168,11 @@ export type InsertWeeklyDraw = typeof weeklyDraw.$inferInsert;
 /**
  * Activity Feed - tracks all major events for live feed
  */
-export const activityFeed = pgTable("activityFeed", {
-  id: serial("id").primaryKey(),
-  userId: integer("userId").notNull(), // User who performed the action
-  petId: integer("petId"), // Pet involved (if applicable)
-  activityType: activityTypeEnum("activityType").notNull(),
+export const activityFeed = mysqlTable("activityFeed", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // User who performed the action
+  petId: int("petId"), // Pet involved (if applicable)
+  activityType: mysqlEnum("activityType", ["generation", "mint", "vote", "top10"]).notNull(),
   metadata: text("metadata"), // JSON string with additional data
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });

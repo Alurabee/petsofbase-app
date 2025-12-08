@@ -76,7 +76,7 @@ export async function getActivityStats() {
       count: sql<number>`COUNT(*)`,
     })
     .from(activityFeed)
-    .where(sql`${activityFeed.createdAt} > NOW() - INTERVAL '24 hours'`)
+    .where(sql`${activityFeed.createdAt} > DATE_SUB(NOW(), INTERVAL 24 HOUR)`)
     .groupBy(activityFeed.activityType);
 
   const result = {

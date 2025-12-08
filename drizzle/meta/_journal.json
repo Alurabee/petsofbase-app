@@ -1,12 +1,82 @@
 {
   "version": "7",
-  "dialect": "postgresql",
+  "dialect": "mysql",
   "entries": [
     {
       "idx": 0,
-      "version": "7",
-      "when": 1764906701832,
-      "tag": "0000_square_zarda",
+      "version": "5",
+      "when": 1764304090804,
+      "tag": "0000_charming_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1764304584634,
+      "tag": "0001_tiresome_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764308635808,
+      "tag": "0002_productive_angel",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1764320416411,
+      "tag": "0003_lumpy_the_renegades",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1764393193431,
+      "tag": "0004_naive_spirit",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1764653320240,
+      "tag": "0005_clear_mariko_yashida",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1764654001203,
+      "tag": "0006_smooth_ravenous",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1764655842539,
+      "tag": "0007_yellow_alex_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1764743576879,
+      "tag": "0008_equal_radioactive_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1764743704197,
+      "tag": "0009_material_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1764807491948,
+      "tag": "0010_brainy_dracula",
       "breakpoints": true
     }
   ]

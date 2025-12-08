@@ -1,6 +1,6 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
-// systemRouter disabled
+import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -8,14 +8,14 @@ import * as db from "./db";
 import { getPetById, updatePet } from "./db";
 import { storagePut } from "./storage";
 import { generatePetPFP, getAvailableStyles, type PetImageStyle } from "./imageGeneration";
-// imageValidation disabled
+import { validatePetImage, getValidationErrorMessage } from "./imageValidation";
 import { nanoid } from "nanoid";
 import * as petOfTheDayService from "./petOfTheDay";
 import * as activityFeedService from "./activityFeed";
 import * as weeklyDrawService from "./weeklyDraw";
 
 export const appRouter = router({
-  // system: systemRouter, // disabled
+  system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
@@ -31,14 +31,17 @@ export const appRouter = router({
     validatePetImage: publicProcedure
       .input(z.object({ imageUrl: z.string().url() }))
       .mutation(async ({ input }) => {
-        // Validation disabled - accept all images
-        return { 
-          isValid: true, 
-          reason: null, 
-          message: "Image accepted",
-          confidence: 1.0,
-          detectedSubject: "pet"
-        };
+        const result = await validatePetImage(input.imageUrl);
+        
+        if (!result.isValid) {
+          const errorDetails = getValidationErrorMessage(result.reason || "unknown");
+          return {
+            ...result,
+            errorDetails
+          };
+        }
+        
+        return result;
       }),
   }),
 

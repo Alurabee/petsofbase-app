@@ -1,4 +1,4 @@
-import { generateImage as generateImageCore } from "./_core/imageGeneration";
+import { generateImageWithFal } from "./_core/falImageGeneration";
 
 export type PetImageStyle = "pixar" | "cartoon" | "realistic" | "anime" | "watercolor";
 
@@ -8,60 +8,74 @@ interface GeneratePetPFPOptions {
   breed?: string;
   personality?: string;
   style: PetImageStyle;
-  originalImageUrl?: string;
+  originalImageUrl: string;
 }
 
+const IDENTITY_ANCHOR = "This is a pet transformation task, not a redesign. Preserve the true proportions, silhouette, fur pattern, ear shape, colors, and expression — stylize only in rendering and background.";
+
 const stylePrompts: Record<PetImageStyle, string> = {
-  pixar: "A Pixar-style 3D animated character portrait. Highly detailed 3D render with smooth, polished surfaces, vibrant saturated colors, large expressive eyes with glossy reflections, soft rounded features, professional Pixar animation studio quality. Warm studio lighting, subtle rim lighting, clean gradient background.",
-  cartoon: "A vibrant cartoon illustration with bold black outlines, flat bright colors, exaggerated cute features, large friendly eyes, simplified shapes, playful expression. Comic book style with clean lines and solid color fills. Colorful gradient background.",
-  realistic: "A hyper-realistic professional portrait photograph. Ultra-detailed fur/feather texture, natural lighting, shallow depth of field, professional studio photography, crisp focus, rich colors, photographic quality. Clean neutral background.",
-  anime: "An anime-style character portrait with large sparkling eyes, detailed shading with cel-shading technique, vibrant colors, glossy highlights, manga-inspired art style. Smooth anime rendering with dramatic lighting. Soft gradient background.",
-  watercolor: "A beautiful watercolor painting with soft flowing colors, visible brush strokes, artistic paper texture, gentle color blending, traditional watercolor technique, delicate and elegant. Subtle watercolor background wash.",
+  pixar: `Transform this pet into a Pixar-style 3D animated portrait. ${IDENTITY_ANCHOR}
+Keep it clearly the same pet: same species, same face shape, same markings and fur colors, same general expression.
+Centered head-and-shoulders, square avatar framing.
+Big expressive eyes, soft rounded features, smooth polished surfaces, warm cinematic lighting, subtle rim light.
+Clean gradient background in soft blue tones.
+Do NOT turn the animal into a human or humanoid character.`,
+
+  cartoon: `Transform this pet into a vibrant cartoon illustration. ${IDENTITY_ANCHOR}
+Keep it clearly the same pet: same species, same face shape, same markings and fur colors.
+Centered head-and-shoulders, square avatar.
+Bold black outlines, flat bright colors, exaggerated cute features, large friendly eyes, simplified shapes, playful expression.
+Comic book style with clean lines and solid color fills.
+Colorful gradient background.
+Do NOT turn the animal into a human or humanoid character.`,
+
+  realistic: `Transform this pet into a hyper-realistic professional portrait. ${IDENTITY_ANCHOR}
+Keep it clearly the same pet: same species, same face shape, same markings and fur colors.
+Centered head-and-shoulders, square avatar.
+Ultra-detailed fur/feather texture, natural lighting, shallow depth of field, professional studio photography, crisp focus, rich colors.
+Clean neutral background.
+Do NOT turn the animal into a human or humanoid character.`,
+
+  anime: `Transform this pet into a clean anime-style portrait. ${IDENTITY_ANCHOR}
+Keep it clearly the same pet: same species, same face shape, same markings and fur colors.
+Centered head-and-shoulders, square avatar.
+Bright anime eyes, smooth cel-shading, pastel tones, glossy highlights, manga-inspired art style.
+Soft gradient background in light blue tones.
+Do NOT turn the animal into a human or humanoid character.`,
+
+  watercolor: `Transform this pet into a beautiful watercolor painting. ${IDENTITY_ANCHOR}
+Keep it clearly the same pet: same species, same face shape, same markings and fur colors.
+Centered head-and-shoulders, square avatar.
+Soft flowing colors, visible brush strokes, artistic paper texture, gentle color blending, traditional watercolor technique, delicate and elegant.
+Subtle watercolor background wash in soft pastel tones.
+Do NOT turn the animal into a human or humanoid character.`,
 };
 
 /**
- * Generate a pet PFP using DALL-E 3 with a blue border matching the Base app color
+ * Generate a pet PFP using fal.ai Gemini 2.5 Flash Image (Nano Banana)
  */
 export async function generatePetPFP(options: GeneratePetPFPOptions): Promise<string> {
-  const { petName, species, breed, personality, style, originalImageUrl } = options;
+  const { petName, species, breed, style, originalImageUrl } = options;
 
   // Build a detailed description from the pet's attributes
   const breedInfo = breed ? ` ${breed}` : "";
-  const personalityInfo = personality ? ` with a ${personality} expression` : "";
-  
-  // Create a detailed subject description
-  const subjectDescription = `A${breedInfo} ${species}${personalityInfo}.`;
   
   // Get the style-specific rendering instructions
-  const styleDescription = stylePrompts[style];
+  const prompt = stylePrompts[style];
   
-  // Build the complete prompt - emphasize preserving appearance while changing style
-  let prompt = `Transform this pet photo into ${styleDescription}. `;
-  prompt += `IMPORTANT: Preserve the pet's exact coloring, markings, and distinctive features. Only change the artistic style, not the pet's appearance. `;
-  prompt += `${subjectDescription} `;
-  prompt += `Centered composition, facing forward, professional quality portrait. `;
-  prompt += `Absolutely NO text, NO labels, NO watermarks, NO color codes, NO words anywhere in the image.`;
-  
-  console.log("[Image Generation] Pet description:", subjectDescription);
+  console.log("[Image Generation] Pet:", petName, `(${breedInfo} ${species})`);
   console.log("[Image Generation] Style:", style);
-
-  console.log("[Image Generation] Generating PFP with prompt:", prompt);
+  console.log("[Image Generation] Generating PFP with fal.ai Nano Banana...");
 
   try {
-    // Use image-to-image generation to preserve pet's appearance while applying style
-    const result = await generateImageCore({
+    // Generate image using fal.ai Gemini 2.5 Flash Image
+    const result = await generateImageWithFal({
       prompt,
-      // Use original image as reference to preserve pet's features and coloring
-      originalImages: originalImageUrl ? [{
-        url: originalImageUrl,
-        mimeType: "image/jpeg"
-      }] : undefined,
+      imageUrl: originalImageUrl,
+      aspectRatio: "1:1",
+      outputFormat: "png",
     });
 
-    if (!result.url) {
-      throw new Error("Image generation did not return a URL");
-    }
-    
     console.log("[Image Generation] Successfully generated PFP:", result.url);
     return result.url;
   } catch (error) {

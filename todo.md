@@ -184,3 +184,27 @@
 - [ ] Configure environment variables in Vercel
 - [ ] Update manifest with Vercel URL
 - [ ] Generate account association credentials
+
+## Gemini 2.0 Flash Image (Nano Banana) Integration
+
+- [x] Request GEMINI_API_KEY from user securely
+- [x] Install @google/generative-ai package
+- [x] Create Gemini image generation helper in server/_core/geminiImageGeneration.ts
+- [x] Update server/imageGeneration.ts to use Gemini instead of Manus Forge
+- [x] Add image URL to base64 conversion helper
+- [x] Update prompts with universal identity anchor
+- [x] Create vitest test to validate Gemini API key
+- [ ] Test all 5 art styles with real pet image
+- [ ] Verify identity preservation quality
+- [ ] Save checkpoint after successful testing
+
+## fal.ai Gemini 2.5 Flash Image Integration
+
+- [x] Research fal.ai API documentation for gemini-25-flash-image/edit
+- [x] Request FAL_KEY from user securely
+- [x] Install @fal-ai/client package
+- [x] Create fal.ai image generation helper
+- [x] Update server/imageGeneration.ts to use fal.ai
+- [x] Test all 5 art styles with real pet image
+- [x] Verify identity preservation quality (EXCELLENT results!)
+- [x] Save checkpoint after successful testing
