@@ -1,0 +1,39 @@
+NEW FILES CREATED:
+==================
+client/src/components/Badge.tsx
+client/src/components/Trending.tsx
+client/src/pages/Badges.tsx
+client/src/pages/HallOfFame.tsx
+server/cron/petOfTheDay.ts
+server/_core/cronScheduler.ts
+server/badges.test.ts
+server/petOfTheDay.test.ts
+DEPLOYMENT_SUMMARY.md
+CHANGED_FILES.txt
+
+MODIFIED FILES:
+===============
+server/routers.ts
+server/db.ts
+server/_core/index.ts
+client/src/App.tsx
+client/src/components/Navigation.tsx
+client/src/components/Onboarding.tsx
+client/src/pages/Home.tsx
+client/src/pages/Leaderboard.tsx
+client/src/pages/Gallery.tsx
+client/src/pages/MyPets.tsx
+client/src/pages/Mint.tsx
+client/src/pages/Referrals.tsx
+client/src/pages/PetDetail.tsx
+client/src/pages/HowItWorks.tsx
+client/src/components/PetOfTheDay.tsx
+package.json
+todo.md
+
+DEPENDENCIES ADDED:
+===================
+node-cron@^3.0.3
+@types/node-cron@^3.0.11
+
+Run: pnpm install
