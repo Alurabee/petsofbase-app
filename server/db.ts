@@ -1,7 +1,8 @@
-import { eq, desc, sql } from "drizzle-orm";
+import { eq, desc, sql, and, isNotNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion, referrals, InsertReferral, userReferralStats, InsertUserReferralStats } from "../drizzle/schema";
+import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion, referrals, InsertReferral, userReferralStats, InsertUserReferralStats, petOfTheDay } from "../drizzle/schema";
 import { ENV } from './_core/env';
+import { awardBadge } from './badgeSystem';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -522,4 +523,154 @@ export async function deletePet(petId: number, userId: number) {
   await db.delete(pets).where(eq(pets.id, petId));
   
   return true;
+}
+
+/**
+ * Get today's Pet of the Day
+ */
+export async function getTodaysPetOfTheDay() {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+
+  const result = await db
+    .select({
+      id: petOfTheDay.id,
+      petId: petOfTheDay.petId,
+      date: petOfTheDay.date,
+      voteCount: petOfTheDay.voteCount,
+      createdAt: petOfTheDay.createdAt,
+      // Pet details
+      petName: pets.name,
+      petSpecies: pets.species,
+      petBreed: pets.breed,
+      petImageUrl: pets.pfpImageUrl,
+      petOriginalImageUrl: pets.originalImageUrl,
+      petVoteCount: pets.voteCount,
+      // Owner details
+      ownerUsername: pets.ownerUsername,
+      ownerDisplayName: pets.ownerDisplayName,
+      ownerPfpUrl: pets.ownerPfpUrl,
+    })
+    .from(petOfTheDay)
+    .leftJoin(pets, eq(petOfTheDay.petId, pets.id))
+    .where(eq(petOfTheDay.date, today))
+    .limit(1);
+
+  return result[0] || null;
+}
+
+/**
+ * Select Pet of the Day
+ * Eligibility: 5+ votes, not featured in the past 7 days
+ * Selection: Random from eligible pets
+ */
+export async function selectPetOfTheDay() {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+
+  // Check if today's Pet of the Day already exists
+  const existing = await getTodaysPetOfTheDay();
+  if (existing) {
+    console.log(`[Pet of the Day] Already selected for ${today}: Pet #${existing.petId}`);
+    return existing;
+  }
+
+  // Get pets featured in the past 7 days (cooldown period)
+  const recentlyFeatured = await db
+    .select({ petId: petOfTheDay.petId })
+    .from(petOfTheDay)
+    .where(sql`${petOfTheDay.date} >= ${sevenDaysAgoStr}`);
+
+  const recentlyFeaturedIds = recentlyFeatured.map(r => r.petId);
+
+  // Build where conditions
+  const whereConditions = [
+    sql`${pets.voteCount} >= 5`,
+    isNotNull(pets.pfpImageUrl)
+  ];
+
+  // Exclude recently featured pets
+  if (recentlyFeaturedIds.length > 0) {
+    whereConditions.push(
+      sql`${pets.id} NOT IN (${sql.join(recentlyFeaturedIds.map(id => sql`${id}`), sql`, `)})`
+    );
+  }
+
+  // Get eligible pets: 5+ votes, not recently featured, has PFP
+  const eligiblePets = await db
+    .select()
+    .from(pets)
+    .where(and(...whereConditions));
+
+  if (eligiblePets.length === 0) {
+    console.log(`[Pet of the Day] No eligible pets found for ${today}`);
+    return null;
+  }
+
+  // Random selection
+  const randomIndex = Math.floor(Math.random() * eligiblePets.length);
+  const selectedPet = eligiblePets[randomIndex];
+
+  // Create Pet of the Day record
+  await db.insert(petOfTheDay).values({
+    petId: selectedPet.id,
+    date: today,
+    voteCount: 0,
+  });
+
+  console.log(`[Pet of the Day] Selected Pet #${selectedPet.id} (${selectedPet.name}) for ${today}`);
+
+  // Award "Pet of the Day" badge (badgeId: 13)
+  const POTDBadgeId = 13;
+  await awardBadge(selectedPet.userId, POTDBadgeId);
+  console.log(`[Pet of the Day] Awarded badge #${POTDBadgeId} to user #${selectedPet.userId}`);
+
+  return await getTodaysPetOfTheDay();
+}
+
+/**
+ * Get Pet of the Day by date
+ */
+export async function getPetOfTheDayByDate(date: string) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db
+    .select({
+      id: petOfTheDay.id,
+      petId: petOfTheDay.petId,
+      date: petOfTheDay.date,
+      voteCount: petOfTheDay.voteCount,
+      createdAt: petOfTheDay.createdAt,
+      // Pet details
+      petName: pets.name,
+      petSpecies: pets.species,
+      petBreed: pets.breed,
+      petImageUrl: pets.pfpImageUrl,
+      petOriginalImageUrl: pets.originalImageUrl,
+      petVoteCount: pets.voteCount,
+      // Owner details
+      ownerUsername: pets.ownerUsername,
+      ownerDisplayName: pets.ownerDisplayName,
+      ownerPfpUrl: pets.ownerPfpUrl,
+    })
+    .from(petOfTheDay)
+    .leftJoin(pets, eq(petOfTheDay.petId, pets.id))
+    .where(eq(petOfTheDay.date, date))
+    .limit(1);
+
+  return result[0] || null;
 }

@@ -404,7 +404,15 @@ export const appRouter = router({
       }
       await petOfTheDayService.createTodaysPetOfTheDay();
       return { success: true };
-      }),
+    }),
+
+    // Manually trigger Pet of the Day selection (admin only, for testing)
+    selectNow: protectedProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin only" });
+      }
+      return await db.selectPetOfTheDay();
+    }),
   }),
 
   weeklyDraw: router({

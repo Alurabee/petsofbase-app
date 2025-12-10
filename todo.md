@@ -75,3 +75,16 @@
 - [x] Update PetDetail.tsx generation counters and messages
 - [x] Update Home.tsx pricing display
 - [x] Update How It Works FAQ with correct pricing (1 free + $0.10 each)
+
+## Pet of the Day Cron Job Implementation
+
+- [x] Create petOfTheDay table in drizzle/schema.ts (already existed)
+- [x] Implement selectPetOfTheDay() function in server/db.ts
+- [x] Implement getTodaysPetOfTheDay() function in server/db.ts
+- [x] Implement getPetOfTheDayByDate() function in server/db.ts
+- [x] Create cron job script that runs at 12 PM ET daily (server/cron/petOfTheDay.ts)
+- [x] Create cron scheduler (server/_core/cronScheduler.ts)
+- [x] Initialize cron jobs on server startup
+- [x] Add tRPC mutation petOfTheDay.selectNow for manual testing
+- [x] Install node-cron and @types/node-cron
+- [x] Test selection logic with vitest (3 tests passing)
