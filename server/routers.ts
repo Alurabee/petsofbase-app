@@ -13,6 +13,7 @@ import { nanoid } from "nanoid";
 import * as petOfTheDayService from "./petOfTheDay";
 import * as activityFeedService from "./activityFeed";
 import * as weeklyDrawService from "./weeklyDraw";
+import * as badgeSystem from "./badgeSystem";
 
 export const appRouter = router({
   system: systemRouter,
@@ -113,6 +114,11 @@ export const appRouter = router({
           dislikes: input.dislikes,
           originalImageUrl: input.originalImageUrl,
         });
+        
+        // Award "First Steps" badge and check OG Member
+        // Note: We'll award badges after getting pet ID from list query
+        await badgeSystem.checkOGMemberBadge(ctx.user.id);
+        
         return { success: true };
       }),
 
@@ -262,6 +268,12 @@ export const appRouter = router({
         if (!success) {
           throw new Error("You have already voted for this pet");
         }
+
+        // Check and award vote milestone badges
+        await badgeSystem.checkVoteMilestoneBadges(input.petId);
+        
+        // Check and award achievement badges for voter
+        await badgeSystem.checkAchievementBadges(ctx.user.id);
 
         return { success: true };
       }),

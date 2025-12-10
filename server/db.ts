@@ -91,14 +91,13 @@ export async function getUserByOpenId(openId: string) {
 
 // ============ Pet Functions ============
 
-export async function createPet(pet: InsertPet) {
+export async function createPet(pet: InsertPet): Promise<void> {
   const db = await getDb();
   if (!db) {
     throw new Error("Database not available");
   }
 
-  const result = await db.insert(pets).values(pet);
-  return result;
+  await db.insert(pets).values(pet);
 }
 
 export async function getPetById(petId: number) {

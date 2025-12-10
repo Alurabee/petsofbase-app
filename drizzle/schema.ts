@@ -179,3 +179,36 @@ export const activityFeed = mysqlTable("activityFeed", {
 
 export type ActivityFeed = typeof activityFeed.$inferSelect;
 export type InsertActivityFeed = typeof activityFeed.$inferInsert;
+
+/**
+ * Badges - defines all available badges in the system
+ */
+export const badges = mysqlTable("badges", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 100 }).notNull(), // "Popular Pet"
+  icon: varchar("icon", { length: 10 }).notNull(), // "⭐"
+  description: text("description").notNull(),
+  tier: mysqlEnum("tier", ["milestone", "achievement", "exclusive"]).notNull(),
+  criteria: text("criteria").notNull(), // JSON: { type: "votes", threshold: 5 }
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Badge = typeof badges.$inferSelect;
+export type InsertBadge = typeof badges.$inferInsert;
+
+/**
+ * User Badges - tracks which badges users have earned
+ */
+export const userBadges = mysqlTable("userBadges", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(), // User who earned the badge
+  petId: int("petId"), // Pet that earned the badge (null for user-level badges)
+  badgeId: int("badgeId").notNull(), // Reference to badges table
+  earnedAt: timestamp("earnedAt").defaultNow().notNull(),
+}, (table) => ({
+  // Unique constraint: one badge per user/pet combination
+  userPetBadgeUnique: uniqueIndex("user_pet_badge_unique").on(table.userId, table.petId, table.badgeId),
+}));
+
+export type UserBadge = typeof userBadges.$inferSelect;
+export type InsertUserBadge = typeof userBadges.$inferInsert;

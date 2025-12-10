@@ -208,3 +208,45 @@
 - [x] Test all 5 art styles with real pet image
 - [x] Verify identity preservation quality (EXCELLENT results!)
 - [x] Save checkpoint after successful testing
+
+
+## Zero-Cost Engagement System (Replaces Weekly Prize)
+
+### Badge System
+- [ ] Design badge types and criteria
+- [ ] Create badge database schema
+- [ ] Implement badge awarding logic
+- [ ] Add badge display on pet cards and profiles
+- [ ] Create badge collection page
+
+### Daily Features
+- [ ] Implement Pet of the Day selection (random from 5+ votes)
+- [ ] Create featured pet banner on homepage
+- [ ] Add daily shoutout to activity feed
+- [ ] Implement cooldown system (once per week per pet)
+
+### Visibility Boosts
+- [ ] Add "Trending" section (most votes in 24h)
+- [ ] Implement "Hall of Fame" (top 10 all-time)
+- [ ] Create "New & Notable" (recent pets with 3+ votes)
+- [ ] Add visibility boost for badge holders
+
+### Leaderboard Enhancements
+- [ ] Add visual crown/trophy for top 3
+- [ ] Create "Rising Stars" section (biggest vote gains)
+- [ ] Add achievement milestones (5, 10, 25, 50, 100 votes)
+
+### Pricing Implementation
+- [ ] Update pricing: $0.50 mint, $0.10 regen
+- [ ] Implement Base Pay for payments
+- [ ] Add payment confirmation UI
+- [ ] Update How It Works page
+
+### Weekly Prize (Disabled for Now)
+- [ ] Comment out weekly prize payout code
+- [ ] Keep database schema for future activation
+- [ ] Remove prize references from How It Works page
+
+### Final Integration
+- [ ] Test all engagement features
+- [ ] Save checkpoint after implementation
