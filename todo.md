@@ -54,3 +54,14 @@
 - [x] Golden top 3 leaderboard styling
 - [x] Upload page enhancements
 - [x] Base Mini App manifest creation
+
+## Content Updates for Badge System
+
+- [x] Update onboarding screen 3: Remove weekly prizes, add badge perks
+- [x] Update homepage "Compete & Win" section: Focus on badges and leaderboard
+- [x] Update homepage "Own Your PFP" section: Remove $0.25 USDC pricing mention
+- [x] Update hero subtitle: Remove "Completely free" text
+- [x] Update How It Works page: Reflect badge system instead of prizes
+- [x] Review all pages for pricing/prize inconsistencies
+- [x] Update all $0.25 to $0.50 (Mint, MyPets, Referrals)
+- [x] Remove weekly prize mentions from PetOfTheDay component

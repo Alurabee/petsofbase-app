@@ -148,8 +148,8 @@ export default function Mint() {
       if (response.status === 402) {
         // Payment required - X402 will handle this
         const paymentData = await response.json();
-        toast.error("Payment required. Please complete the $0.25 USDC payment.");
-        setError("Payment required. The Base app will prompt you to pay $0.25 USDC.");
+        toast.error("Payment required. Please complete the $0.50 USDC payment.");
+        setError("Payment required. The Base app will prompt you to pay $0.50 USDC.");
         setMinting(false);
         return;
       }
@@ -391,7 +391,7 @@ export default function Mint() {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Minting Fee:</span>
                 <span className="font-bold text-primary">
-                  {demoMode ? "FREE (Demo)" : "$0.25 USDC"}
+                  {demoMode ? "FREE (Demo)" : "$0.50 USDC"}
                 </span>
               </div>
             </div>
@@ -462,7 +462,7 @@ export default function Mint() {
               ) : demoMode ? (
                 "Mint NFT (Demo - Free)"
               ) : (
-                "Mint NFT for $0.25 USDC"
+                "Mint NFT for $0.50 USDC"
               )}
             </Button>
 
@@ -470,7 +470,7 @@ export default function Mint() {
               {demoMode ? (
                 "Demo mode: Minting is simulated for testing. No actual blockchain transaction or payment will occur."
               ) : (
-                "By minting, you agree that this NFT will be permanently stored on the Base blockchain. The X402 payment protocol will securely process your $0.25 USDC payment."
+                "By minting, you agree that this NFT will be permanently stored on the Base blockchain. The X402 payment protocol will securely process your $0.50 USDC payment."
               )}
             </p>
           </div>

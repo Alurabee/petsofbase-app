@@ -46,7 +46,7 @@ export default function Referrals() {
   };
 
   const shareOnTwitter = () => {
-    const shareText = `Join me on @PetsOfBase! 🐾✨\n\nTurn your pet into a Based NFT PFP with AI.\n\nMint for just $0.25 USDC on @base.\n\n#PetsOfBase #Based`;
+    const shareText = `Join me on @PetsOfBase! 🐾✨\n\nTurn your pet into a Based NFT PFP with AI.\n\nMint for just $0.50 USDC on @base.\n\n#PetsOfBase #Based`;
     const referralUrl = `${window.location.origin}?ref=${stats?.referralCode}`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(referralUrl)}`;
     window.open(twitterUrl, '_blank', 'width=550,height=420');

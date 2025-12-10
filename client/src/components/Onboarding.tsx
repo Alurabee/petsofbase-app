@@ -28,13 +28,13 @@ const onboardingScreens = [
     ],
   },
   {
-    title: "Compete & Win! 🏆",
-    description: "Join the community, vote for your favorites, and compete for weekly prizes!",
-    icon: "💰",
+    title: "Compete & Collect! 🏆",
+    description: "Join the community, vote for your favorites, and earn exclusive badges!",
+    icon: "🎖️",
     features: [
-      "Vote for Pet of the Day",
-      "Climb the leaderboard",
-      "Win weekly $USDC prizes",
+      "Vote and earn achievement badges",
+      "Climb the leaderboard rankings",
+      "Collect exclusive milestone badges",
     ],
   },
 ];

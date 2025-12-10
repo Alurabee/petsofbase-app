@@ -35,7 +35,7 @@ export default function HowItWorks() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-blue-600 font-bold">•</span>
-                  <span>No prizes - just glory and community recognition!</span>
+                  <span>Earn badges for reaching vote milestones!</span>
                 </li>
               </ul>
             </div>
@@ -66,7 +66,7 @@ export default function HowItWorks() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-white font-bold">•</span>
-                  <span><strong>Bonus:</strong> Featured pets automatically enter the weekly draw!</span>
+                  <span><strong>Reward:</strong> Featured pets earn the exclusive "Pet of the Day" badge!</span>
                 </li>
               </ul>
               <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
@@ -78,36 +78,36 @@ export default function HowItWorks() {
           </div>
         </Card>
 
-        {/* Weekly Draw */}
+        {/* Badge System */}
         <Card className="p-6 !border-0 bg-gradient-blue-purple text-white">
           <div className="flex items-start gap-4">
-            <div className="text-4xl">🎰</div>
+            <div className="text-4xl">🎖️</div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-3">Weekly Draw - $5 USDC Prize</h2>
+              <h2 className="text-2xl font-bold mb-3">Earn Exclusive Badges</h2>
               <p className="text-white/90 mb-3">
-                Every Monday at 12pm ET, one lucky pet wins $5 USDC!
+                Collect badges by participating in the community and reaching milestones!
               </p>
               <ul className="space-y-2 text-white/90">
                 <li className="flex items-start gap-2">
                   <span className="text-white font-bold">•</span>
-                  <span><strong>Entries:</strong> All 7 daily Pet of the Day winners from Monday-Sunday</span>
+                  <span><strong>Milestone Badges:</strong> Earn badges for vote milestones (5, 10, 25, 50, 100 votes)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-white font-bold">•</span>
-                  <span><strong>Selection:</strong> Completely random draw - every entry has equal chance</span>
+                  <span><strong>Achievement Badges:</strong> Unlock badges for special achievements (first upload, voter, etc.)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-white font-bold">•</span>
-                  <span><strong>Prize:</strong> Winner receives $5 USDC to their wallet</span>
+                  <span><strong>Exclusive Badges:</strong> Rare badges for Pet of the Day, OG members, and special events</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-white font-bold">•</span>
-                  <span><strong>Announcement:</strong> Posted on homepage, activity feed, and Farcaster</span>
+                  <span><strong>Display:</strong> Badges appear on your pet cards and profile for everyone to see!</span>
                 </li>
               </ul>
               <div className="mt-4 p-3 bg-white/10 rounded-lg border border-white/20">
                 <p className="text-sm text-white">
-                  🎉 <strong>Fair & Transparent:</strong> Random selection means no vote manipulation - everyone has an equal shot at winning!
+                  🎉 <strong>Collect Them All:</strong> Build your badge collection and show off your achievements!
                 </p>
               </div>
             </div>
@@ -128,19 +128,19 @@ export default function HowItWorks() {
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">3</div>
-              <span>Reach 5+ votes to become eligible for Pet of the Day</span>
+              <span>Earn badges as you reach vote milestones (5, 10, 25+ votes)</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold">4</div>
-              <span>Get randomly selected as Pet of the Day</span>
+              <span>Become eligible for Pet of the Day at 5+ votes</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">5</div>
-              <span>Automatically enter the weekly $5 USDC draw</span>
+              <span>Get featured and earn the exclusive "Pet of the Day" badge</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">6</div>
-              <span>Win the weekly draw and celebrate! 🎉</span>
+              <span>Climb the leaderboard and collect more badges! 🎉</span>
             </div>
           </div>
         </Card>
@@ -154,21 +154,27 @@ export default function HowItWorks() {
               <p className="text-foreground">Yes! But you can only vote once per pet.</p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">How do I increase my chances of winning?</h3>
+              <h3 className="font-semibold text-lg mb-1">How do I earn badges?</h3>
               <p className="text-foreground">
-                Get your pet to 5+ votes to become eligible for Pet of the Day. Once featured, you're automatically entered in the weekly draw with equal chances as everyone else!
+                Badges are automatically awarded when you reach milestones! Upload pets, vote, and reach vote thresholds (5, 10, 25, 50, 100 votes) to unlock badges. Special badges are awarded for Pet of the Day and being an OG member.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">Is the selection process fair?</h3>
+              <h3 className="font-semibold text-lg mb-1">Is the Pet of the Day selection fair?</h3>
               <p className="text-foreground">
-                Absolutely! Pet of the Day uses random selection from eligible pets (5+ votes), and the weekly draw is completely random. No vote manipulation possible!
+                Absolutely! Pet of the Day uses random selection from all eligible pets (5+ votes). Every eligible pet has an equal chance of being featured!
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-1">When do I receive my prize if I win?</h3>
+              <h3 className="font-semibold text-lg mb-1">Where can I see my badges?</h3>
               <p className="text-foreground">
-                Weekly draw winners are announced every Monday at 12pm ET. The $5 USDC prize is distributed to your connected wallet shortly after.
+                Your badges appear on your pet cards in the gallery and My Pets page. You can also view your full badge collection by clicking "Badges" in the navigation menu.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg mb-1">How much does it cost?</h3>
+              <p className="text-foreground">
+                You get 2 free PFP generations per pet. Additional style regenerations cost $0.10 USDC. Minting your PFP as an NFT costs $0.50 USDC.
               </p>
             </div>
           </div>

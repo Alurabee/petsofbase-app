@@ -260,7 +260,7 @@ export default function MyPets() {
                         asChild
                         className="w-full bg-base-gradient btn-primary-hover"
                       >
-                        <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.25 USDC)</Link>
+                        <Link href={`/mint/${pet.id}`}>Mint as NFT ($0.50 USDC)</Link>
                       </Button>
                     </>
                   ) : (

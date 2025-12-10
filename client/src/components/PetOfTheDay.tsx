@@ -130,42 +130,15 @@ export default function PetOfTheDay() {
         {/* Weekly Draw Info */}
         <div className="mt-4 p-4 bg-pastel-pink rounded-lg text-center text-sm">
           <p className="font-bold text-gray-900 dark:text-white text-lg mb-2">
-            🎰 Weekly Draw: $5 USDC Prize!
+            🎖️ Earn Exclusive Badges!
           </p>
           <p className="text-gray-700 dark:text-gray-200">
-            Every Pet of the Day enters the weekly draw
+            Every Pet of the Day earns a special badge
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-1">
-            Winner announced Monday at 12pm ET
+            Collect badges and show off your achievements
           </p>
-          {weekEntries && weekEntries.length > 0 && (
-            <p className="text-sm text-gray-800 dark:text-gray-100 mt-2 font-semibold">
-              📅 {weekEntries.length}/7 entries this week
-            </p>
-          )}
         </div>
-
-        {/* Current Week Winner */}
-        {currentDraw && (
-          <div className="mt-4 p-4 bg-pastel-green rounded-lg border-2 border-green-400">
-            <p className="font-bold text-green-900 text-center mb-2">
-              🎉 This Week's Winner!
-            </p>
-            <div className="flex items-center gap-3 justify-center">
-              {currentDraw.petImageUrl && (
-                <img
-                  src={currentDraw.petImageUrl}
-                  alt={currentDraw.petName || "Winner"}
-                  className="w-16 h-16 rounded-lg object-cover"
-                />
-              )}
-              <div>
-                <p className="font-semibold text-green-900">{currentDraw.petName}</p>
-                <p className="text-sm text-green-700">Won $5 USDC!</p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </Card>
   );

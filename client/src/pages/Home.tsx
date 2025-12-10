@@ -54,7 +54,7 @@ export default function Home() {
               
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
-                and compete on the leaderboard. Completely free!
+                and compete on the leaderboard.
               </p>
               
               {/* Primary CTA Buttons */}
@@ -182,9 +182,9 @@ export default function Home() {
               <div className="w-16 h-16 rounded-full bg-base-gradient mx-auto flex items-center justify-center">
                 <Trophy className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold">Compete & Win</h3>
+              <h3 className="text-2xl font-bold">Compete & Collect</h3>
               <p className="text-muted-foreground">
-                Vote on the cutest pets and climb the leaderboard. Build your reputation in the Based pet community.
+                Vote on the cutest pets, climb the leaderboard, and earn exclusive badges. Build your reputation in the Based pet community.
               </p>
             </Card>
 
@@ -194,7 +194,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold">Own Your PFP</h3>
               <p className="text-muted-foreground">
-                Mint your favorite PFP as an NFT on Base for just $0.25 USDC. True ownership, forever.
+                Mint your favorite PFP as an NFT on Base. True ownership, forever.
               </p>
             </Card>
           </div>
