@@ -168,14 +168,14 @@ export const appRouter = router({
         const referralStats = await db.getUserReferralStats(ctx.user.id);
         const hasFreeGeneration = referralStats && referralStats.freeGenerationsEarned > 0;
         
-        // Check generation limit (2 free generations per pet)
-        const FREE_GENERATION_LIMIT = 2;
+        // Check generation limit (1 free generation per pet)
+        const FREE_GENERATION_LIMIT = 1;
         const currentCount = pet.generationCount || 0;
         
         if (currentCount >= FREE_GENERATION_LIMIT && !hasFreeGeneration) {
           throw new TRPCError({ 
             code: "PAYMENT_REQUIRED", 
-            message: `Generation limit reached. You have used ${currentCount}/${FREE_GENERATION_LIMIT} free generations. Please pay $0.10 USDC to generate more, or refer friends to earn free generations!` 
+            message: `Generation limit reached. You have used your ${FREE_GENERATION_LIMIT} free generation. Please pay $0.10 USDC to generate more, or refer friends to earn free generations!` 
           });
         }
 

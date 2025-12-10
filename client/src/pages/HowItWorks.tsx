@@ -174,7 +174,7 @@ export default function HowItWorks() {
             <div>
               <h3 className="font-semibold text-lg mb-1">How much does it cost?</h3>
               <p className="text-foreground">
-                You get 2 free PFP generations per pet. Additional style regenerations cost $0.10 USDC. Minting your PFP as an NFT costs $0.50 USDC.
+                Your first PFP generation is free. Additional style regenerations cost $0.10 USDC each. Minting your PFP as an NFT costs $0.50 USDC.
               </p>
             </div>
           </div>

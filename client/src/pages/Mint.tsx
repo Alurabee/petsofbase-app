@@ -92,7 +92,7 @@ export default function Mint() {
       if (response.status === 402 && generationCount >= FREE_LIMIT) {
         // Payment required for 3rd+ generation
         toast.error("Payment required. Please complete the $0.10 USDC payment.");
-        setError("Payment required. You've used your 2 free generations. Additional generations cost $0.10 USDC.");
+        setError("Payment required. You've used your free generation. Additional generations cost $0.10 USDC.");
         setRegenerating(false);
         return;
       }
@@ -409,10 +409,10 @@ export default function Mint() {
             {pet.generationCount !== undefined && (
               <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-blue-800">
-                    <strong>{pet.generationCount}/2 free generations used</strong>
-                  </span>
-                  {pet.generationCount >= 2 && (
+                          <span className="text-blue-800">
+                            <strong>{pet.generationCount}/1 free generation used</strong>
+                          </span>
+                          {pet.generationCount >= 1 && (
                     <span className="text-blue-600 text-xs">
                       Additional: $0.10 USDC each
                     </span>
@@ -494,11 +494,11 @@ export default function Mint() {
               Regenerate your pet's PFP with a different artistic style.
               {pet && (() => {
                 const count = pet.generationCount || 0;
-                const remaining = Math.max(0, 2 - count);
+                const remaining = Math.max(0, 1 - count);
                 return (
                   <div className="mt-2">
                     <strong className="text-primary">
-                      {count}/2 free generations used
+                      {count}/1 free generation used
                     </strong>
                     {remaining === 0 && (
                       <span className="text-yellow-600 block mt-1">

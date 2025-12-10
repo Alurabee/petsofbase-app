@@ -65,3 +65,13 @@
 - [x] Review all pages for pricing/prize inconsistencies
 - [x] Update all $0.25 to $0.50 (Mint, MyPets, Referrals)
 - [x] Remove weekly prize mentions from PetOfTheDay component
+
+## PFP Generation Pricing Update
+
+- [x] Change FREE_GENERATION_LIMIT from 2 to 1 in server/routers.ts
+- [x] Update error messages to reflect "1 free generation"
+- [x] Update MyPets.tsx toast messages (currently says "2 free generations")
+- [x] Update Mint.tsx generation counters and messages
+- [x] Update PetDetail.tsx generation counters and messages
+- [x] Update Home.tsx pricing display
+- [x] Update How It Works FAQ with correct pricing (1 free + $0.10 each)

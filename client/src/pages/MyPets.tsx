@@ -104,7 +104,7 @@ export default function MyPets() {
       refetch();
     } catch (error: any) {
       if (error.message?.includes("Generation limit reached")) {
-        toast.error("You've used your 2 free generations. Additional generations cost $0.10 USDC.");
+        toast.error("You've used your free generation. Additional generations cost $0.10 USDC.");
       } else {
         toast.error(error.message || "Failed to generate PFP");
       }
@@ -220,9 +220,9 @@ export default function MyPets() {
                       {pet.generationCount !== undefined && (
                         <div className="bg-blue-50 border border-blue-200 p-2 rounded text-xs text-center">
                           <strong className="text-blue-800">
-                            {pet.generationCount}/2 free generations used
+                            {pet.generationCount}/1 free generation used
                           </strong>
-                          {pet.generationCount >= 2 && (
+                          {pet.generationCount >= 1 && (
                             <span className="text-blue-600 block mt-0.5">
                               Additional: $0.10 USDC each
                             </span>
@@ -300,11 +300,11 @@ export default function MyPets() {
             {selectedPet && pets && (() => {
               const pet = pets.find(p => p.id === selectedPet);
               const count = pet?.generationCount || 0;
-              const remaining = Math.max(0, 2 - count);
+              const remaining = Math.max(0, 1 - count);
               return (
                 <div className="mt-2 text-sm">
                   <strong className="text-primary">
-                    {count}/2 free generations used
+                    {count}/1 free generation used
                   </strong>
                   {remaining === 0 && (
                     <span className="text-yellow-600 block mt-1">

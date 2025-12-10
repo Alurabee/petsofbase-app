@@ -158,7 +158,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <p className="text-sm text-muted-foreground mb-4">
-              <strong className="text-primary">2 free generations</strong> per pet, then $0.10 USDC per additional style
+              <strong className="text-primary">First generation free</strong>, then $0.10 USDC per additional style
             </p>
           </div>
         </div>

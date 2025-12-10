@@ -86,7 +86,7 @@ export default function PetDetail() {
     if (!pet) return;
 
     const generationCount = pet.generationCount || 0;
-    const FREE_LIMIT = 2;
+    const FREE_LIMIT = 1;
 
     setRegenerating(true);
     toast.loading("Regenerating your PFP... This may take 10-20 seconds.");
@@ -395,9 +395,9 @@ export default function PetDetail() {
                       <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm">
                         <div className="flex items-center justify-between">
                           <span className="text-blue-800">
-                            <strong>{pet.generationCount}/2 free generations used</strong>
+                            <strong>{pet.generationCount}/1 free generation used</strong>
                           </span>
-                          {pet.generationCount >= 2 && (
+                          {pet.generationCount >= 1 && (
                             <span className="text-blue-600 text-xs">
                               Additional regenerations: Free!
                             </span>
@@ -463,7 +463,7 @@ export default function PetDetail() {
             </DialogDescription>
             {pet && (() => {
               const count = pet.generationCount || 0;
-              const remaining = Math.max(0, 2 - count);
+              const remaining = Math.max(0, 1 - count);
               const referralGens = referralStats?.freeGenerationsEarned || 0;
               const hasReferralCredit = referralGens > 0;
               
@@ -471,7 +471,7 @@ export default function PetDetail() {
                 <div className="mt-2 space-y-2">
                   <div className="text-sm">
                     <strong className="text-primary">
-                      {count}/2 free generations used
+                      {count}/1 free generation used
                     </strong>
                   </div>
                   
