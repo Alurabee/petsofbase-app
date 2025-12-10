@@ -448,6 +448,27 @@ export const appRouter = router({
       return await activityFeedService.getActivityStats();
     }),
   }),
+
+  badges: router({
+    // Get all badges earned by a user
+    getUserBadges: publicProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(async ({ input }) => {
+        return await badgeSystem.getUserBadges(input.userId);
+      }),
+
+    // Get all badges earned by a specific pet
+    getPetBadges: publicProcedure
+      .input(z.object({ petId: z.number() }))
+      .query(async ({ input }) => {
+        return await badgeSystem.getPetBadges(input.petId);
+      }),
+
+    // Get current user's badges
+    getMyBadges: protectedProcedure.query(async ({ ctx }) => {
+      return await badgeSystem.getUserBadges(ctx.user.id);
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

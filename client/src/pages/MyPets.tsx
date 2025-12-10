@@ -18,6 +18,22 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { useSocialSharing } from "@/hooks/useSocialSharing";
+import { BadgeList } from "@/components/Badge";
+
+// Component to display badges for a pet
+function PetBadges({ petId }: { petId: number }) {
+  const { data: badges } = trpc.badges.getPetBadges.useQuery({ petId });
+  
+  if (!badges || badges.length === 0) {
+    return null;
+  }
+  
+  return (
+    <div className="mt-2">
+      <BadgeList badges={badges} maxDisplay={3} size="sm" />
+    </div>
+  );
+}
 
 export default function MyPets() {
   const { user, isAuthenticated } = useAuth();
@@ -174,6 +190,7 @@ export default function MyPets() {
                   {pet.personality && (
                     <p className="text-sm text-muted-foreground mt-1">{pet.personality}</p>
                   )}
+                  <PetBadges petId={pet.id} />
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t">

@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { trpc } from "@/lib/trpc";
+import { BadgeList } from "@/components/Badge";
 import { Heart, Search, Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
@@ -10,6 +11,21 @@ import Navigation from "@/components/Navigation";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { toast } from "sonner";
 import { Avatar } from "@/components/Avatar";
+
+// Component to display badges for a pet
+function PetBadges({ petId }: { petId: number }) {
+  const { data: badges } = trpc.badges.getPetBadges.useQuery({ petId });
+  
+  if (!badges || badges.length === 0) {
+    return null;
+  }
+  
+  return (
+    <div className="mt-2">
+      <BadgeList badges={badges} maxDisplay={3} size="sm" />
+    </div>
+  );
+}
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -132,6 +148,7 @@ export default function Gallery() {
                           </span>
                         </div>
                       )}
+                      <PetBadges petId={pet.id} />
                     </div>
 
                     <div className="flex items-center justify-between pt-2 border-t">

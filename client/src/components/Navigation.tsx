@@ -38,6 +38,9 @@ export default function Navigation() {
               <Link href="/referrals" className="text-xs xl:text-sm font-medium text-primary hover:text-primary/80 transition-colors whitespace-nowrap">
                 Referrals
               </Link>
+              <Link href="/badges" className="text-xs xl:text-sm font-medium text-primary hover:text-primary/80 transition-colors whitespace-nowrap">
+                Badges
+              </Link>
               <Button asChild className="bg-base-gradient btn-primary-hover">
                 <Link href="/upload">
                   <Upload className="w-4 h-4 mr-2" />
@@ -104,6 +107,13 @@ export default function Navigation() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Referrals
+                </Link>
+                <Link 
+                  href="/badges" 
+                  className="text-sm font-medium text-primary hover:text-primary/80 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Badges
                 </Link>
                 <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
                   <Link href="/upload" onClick={() => setMobileMenuOpen(false)}>
