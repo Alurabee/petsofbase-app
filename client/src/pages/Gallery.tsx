@@ -8,7 +8,7 @@ import { Heart, Search, Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
 import Navigation from "@/components/Navigation";
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import { toast } from "sonner";
 import { Avatar } from "@/components/Avatar";
 
@@ -29,7 +29,7 @@ function PetBadges({ petId }: { petId: number }) {
 
 export default function Gallery() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { user } = useAuth();
+  const { farcasterUser } = useBaseContext();
 
   const { data: pets, isLoading, refetch } = trpc.pets.list.useQuery({ limit: 100, offset: 0 });
   const deletePet = trpc.pets.delete.useMutation({
@@ -122,7 +122,7 @@ export default function Gallery() {
                         </Badge>
                       )}
                       {/* Delete button for user's non-minted pets */}
-                      {user && pet.userId === user.id && !pet.nftTokenId && (
+                      {user && pet.userId === farcasterUser?.fid && !pet.nftTokenId && (
                         <Button
                           size="icon"
                           variant="destructive"

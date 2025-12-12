@@ -1,7 +1,6 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, Heart, Sparkles, Trophy, Upload, Zap } from "lucide-react";
 import { Link } from "wouter";
@@ -12,7 +11,8 @@ import { Onboarding } from "@/components/Onboarding";
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
   const { data: leaderboard, isLoading } = trpc.pets.leaderboard.useQuery({ limit: 3 });
   const [showOnboarding, setShowOnboarding] = useState(false);
 
@@ -67,12 +67,12 @@ export default function Home() {
                     </Button>
                   </Link>
                 ) : (
-                  <Button asChild size="lg" className="bg-base-gradient btn-primary-hover text-lg px-8 py-6 w-full sm:w-auto">
-                    <a href={getLoginUrl()}>
+                  <Link href="/upload">
+                    <Button size="lg" className="bg-base-gradient btn-primary-hover text-lg px-8 py-6 w-full sm:w-auto">
                       <Zap className="w-5 h-5 mr-2" />
                       Get Started Free
-                    </a>
-                  </Button>
+                    </Button>
+                  </Link>
                 )}
                 <Link href="/leaderboard">
                   <Button 
@@ -295,11 +295,11 @@ export default function Home() {
               </Button>
             </Link>
           ) : (
-            <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6">
-              <a href={getLoginUrl()}>
+            <Link href="/upload">
+              <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
                 Get Started
-              </a>
-            </Button>
+              </Button>
+            </Link>
           )}
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { AlertCircle, CheckCircle2, Loader2, ExternalLink, Sparkles, History } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -24,7 +23,8 @@ import confetti from "canvas-confetti";
 export default function Mint() {
   const { id } = useParams<{ id: string }>();
   const petId = parseInt(id || "0");
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
   const { shareMint } = useSocialSharing();
   const [, setLocation] = useLocation();
   const [minting, setMinting] = useState(false);
@@ -188,7 +188,7 @@ export default function Mint() {
             You need to connect your wallet to mint an NFT.
           </p>
           <Button asChild className="bg-base-gradient btn-primary-hover w-full">
-            <a href={getLoginUrl()}>Connect Wallet</a>
+            <span className="text-muted-foreground">Open in Base App</span>
           </Button>
         </Card>
       </div>

@@ -1,21 +1,21 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { Upload as UploadIcon, X } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
-import { useBaseContext } from "@/hooks/useBaseContext";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
+import { useQuickAuth } from "@/_core/hooks/useQuickAuth";
 
 export default function Upload() {
-  const { user, isAuthenticated } = useAuth();
-  const { user: farcasterUser } = useBaseContext();
+  const { farcasterUser } = useBaseContext();
+  const { authenticate } = useQuickAuth();
+  const isAuthenticated = !!farcasterUser;
   const [, setLocation] = useLocation();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -152,6 +152,10 @@ export default function Upload() {
             fileData: base64Data,
           });
 
+          // Authenticate with Quick Auth before creating pet
+          toast.loading("Authenticating...");
+          const authToken = await authenticate();
+          
           // Create pet record with Farcaster profile data
           toast.loading("Creating pet profile...");
           await createPet.mutateAsync({
@@ -185,17 +189,16 @@ export default function Upload() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
+      <div className="min-h-screen flex flex-col">
         <Navigation />
-        <Card className="p-8 max-w-md text-center space-y-4">
-          <h2 className="text-2xl font-bold">Connect Your Wallet</h2>
-          <p className="text-muted-foreground">
-            You need to connect your wallet to upload a pet.
-          </p>
-          <Button asChild className="bg-base-gradient btn-primary-hover w-full">
-            <a href={getLoginUrl()}>Connect Wallet</a>
-          </Button>
-        </Card>
+        <div className="flex-1 flex items-center justify-center bg-base-gradient-soft">
+          <Card className="p-8 max-w-md text-center space-y-4">
+            <h2 className="text-2xl font-bold">Open in Base App</h2>
+            <p className="text-muted-foreground">
+              Please open this app in the Base App to upload your pet.
+            </p>
+          </Card>
+        </div>
       </div>
     );
   }

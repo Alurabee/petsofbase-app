@@ -1,4 +1,4 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { Heart, Sparkles, Upload as UploadIcon, History } from "lucide-react";
 import { useState } from "react";
@@ -36,7 +35,8 @@ function PetBadges({ petId }: { petId: number }) {
 }
 
 export default function MyPets() {
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
   const { shareGeneration, challengeFriend } = useSocialSharing();
   const [selectedPet, setSelectedPet] = useState<number | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
@@ -123,7 +123,7 @@ export default function MyPets() {
             You need to connect your wallet to view your pets.
           </p>
           <Button asChild className="bg-base-gradient btn-primary-hover w-full">
-            <a href={getLoginUrl()}>Connect Wallet</a>
+            <span className="text-muted-foreground">Open in Base App</span>
           </Button>
         </Card>
       </div>

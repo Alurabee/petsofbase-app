@@ -1,14 +1,16 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import { Button } from "@/components/ui/button";
-import { getLoginUrl } from "@/const";
 import { Menu, Upload, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import { Link } from "wouter";
 
 export default function Navigation() {
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // In Base Mini App, users are automatically authenticated via Farcaster
+  const isAuthenticated = !!farcasterUser;
 
   return (
     <nav className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
@@ -49,9 +51,9 @@ export default function Navigation() {
               </Button>
             </>
           ) : (
-            <Button asChild className="bg-base-gradient btn-primary-hover">
-              <a href={getLoginUrl()}>Connect Wallet</a>
-            </Button>
+            <div className="text-xs xl:text-sm text-muted-foreground">
+              Open in Base App to continue
+            </div>
           )}
         </div>
 
@@ -123,9 +125,9 @@ export default function Navigation() {
                 </Button>
               </>
             ) : (
-              <Button asChild className="bg-base-gradient hover:opacity-90 w-full">
-                <a href={getLoginUrl()}>Connect Wallet</a>
-              </Button>
+              <div className="text-sm text-muted-foreground py-2">
+                Open in Base App to continue
+              </div>
             )}
           </div>
         </div>

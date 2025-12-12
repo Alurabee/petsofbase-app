@@ -1,4 +1,4 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import { toast } from "sonner";
 import { Avatar } from "@/components/Avatar";
 import Navigation from "@/components/Navigation";
@@ -22,7 +22,8 @@ import { useState } from "react";
 export default function PetDetail() {
   const { id } = useParams<{ id: string }>();
   const petId = parseInt(id || "0");
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
   const [, setLocation] = useLocation();
   const [showStylePicker, setShowStylePicker] = useState(false);
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");

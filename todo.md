@@ -1,5 +1,51 @@
 # PetsOfBase TODO
 
+## CRITICAL: Remove ALL Manus Code and Fix Authentication
+
+### Phase 1: Remove Manus Dependencies
+- [x] Remove `vite-plugin-manus-runtime` from package.json
+- [x] Remove `vitePluginManusRuntime()` from vite.config.ts
+- [x] Remove Manus allowed hosts from vite.config.ts server config
+- [x] Delete `client/src/_core/hooks/useAuth.ts` (Manus OAuth hook)
+- [x] Remove `getLoginUrl()` from `client/src/const.ts`
+- [x] Remove OAUTH env var checks from `client/src/main.tsx`
+
+### Phase 2: Implement Base Mini App Quick Auth
+- [x] Install `@farcaster/quick-auth` package for backend
+- [x] Ensure `@farcaster/miniapp-sdk` is installed
+- [x] Create Quick Auth backend verification helper (`server/_core/quickAuth.ts`)
+- [x] Create Quick Auth hook (`client/src/_core/hooks/useQuickAuth.ts`)
+- [ ] Update tRPC context to verify JWT tokens from Quick Auth
+
+### Phase 3: Update All Pages to Use Base Context + Quick Auth
+- [x] Update `Navigation.tsx` - remove useAuth, use Base Context for display
+- [x] Update `Home.tsx` - remove getLoginUrl, use Quick Auth for authenticated actions
+- [x] Update `Upload.tsx` - use Quick Auth before creating pets
+- [x] Update `MyPets.tsx` - use Base Context for user display
+- [x] Update `Gallery.tsx` - use Base Context for user display
+- [x] Update `Mint.tsx` - use Quick Auth for minting
+- [x] Update `PetDetail.tsx` - use Quick Auth for voting
+- [x] Update `Referrals.tsx` - use Base Context for user display
+- [x] Update `PetOfTheDay.tsx` - use Quick Auth for voting
+- [x] Update `DashboardLayout.tsx` - simplified (not used in PetsOfBase)
+
+### Phase 4: Backend Authentication Updates
+- [ ] Update `server/routers.ts` - verify JWT in protected procedures
+- [ ] Update pet creation to use FID from verified JWT
+- [ ] Update voting to use FID from verified JWT
+- [ ] Update all user-specific queries to use FID from JWT
+- [ ] Remove any Manus OAuth session handling
+
+### Phase 5: Testing & Verification
+- [ ] Test Quick Auth flow in development
+- [ ] Verify no Manus imports remain in codebase
+- [ ] Test pet upload with Quick Auth
+- [ ] Test voting with Quick Auth
+- [ ] Test all authenticated features work correctly
+- [ ] Verify manifest.json has correct Vercel domain (not manus.space)
+
+---
+
 ## Base App Compatibility Verification
 
 - [x] Audit badge system code for Manus-specific dependencies

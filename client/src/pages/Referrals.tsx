@@ -1,4 +1,4 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,10 +7,10 @@ import { trpc } from "@/lib/trpc";
 import { Copy, Gift, Users, TrendingUp, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
-import { getLoginUrl } from "@/const";
 
 export default function Referrals() {
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
 
   const { data: stats, isLoading } = trpc.referrals.getMyStats.useQuery(
     undefined,
@@ -32,7 +32,7 @@ export default function Referrals() {
             Connect your wallet to access your referral dashboard and start earning rewards.
           </p>
           <Button asChild className="w-full bg-base-gradient btn-primary-hover">
-            <a href={getLoginUrl()}>Connect Wallet</a>
+            <span className="text-muted-foreground">Open in Base App</span>
           </Button>
         </Card>
       </div>

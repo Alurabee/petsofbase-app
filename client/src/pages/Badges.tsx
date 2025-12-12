@@ -1,14 +1,14 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { Loader2, Award, Lock } from "lucide-react";
-import { getLoginUrl } from "@/const";
 import { Badge as BadgeComponent } from "@/components/Badge";
 
 export default function Badges() {
-  const { user, isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
 
   const { data: myBadges, isLoading } = trpc.badges.getMyBadges.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -25,7 +25,7 @@ export default function Badges() {
             You need to connect your wallet to view your badges.
           </p>
           <Button asChild className="bg-base-gradient btn-primary-hover">
-            <a href={getLoginUrl()}>Connect Wallet</a>
+            <span className="text-muted-foreground">Open in Base App</span>
           </Button>
         </Card>
       </div>

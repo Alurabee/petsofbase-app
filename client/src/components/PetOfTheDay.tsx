@@ -4,11 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Heart, Trophy, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useSocialSharing } from "@/hooks/useSocialSharing";
-import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
+import { useBaseContext } from "@/_core/hooks/useBaseContext";
 
 export default function PetOfTheDay() {
-  const { isAuthenticated } = useAuth();
+  const { farcasterUser } = useBaseContext();
+  const isAuthenticated = !!farcasterUser;
   const { shareTop10 } = useSocialSharing();
   
   const { data: todaysPet, isLoading } = trpc.petOfTheDay.getToday.useQuery();
@@ -36,8 +36,7 @@ export default function PetOfTheDay() {
 
   const handleVote = () => {
     if (!isAuthenticated) {
-      toast.error("Please connect your wallet to vote");
-      window.location.href = getLoginUrl();
+      toast.error("Please open in Base App to vote");
       return;
     }
     voteMutation.mutate();
