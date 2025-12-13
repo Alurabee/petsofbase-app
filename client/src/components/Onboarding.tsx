@@ -63,8 +63,11 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   ];
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className={`max-w-md w-full p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}>
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto">
+      <div className="min-h-[100svh] flex items-center justify-center p-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-[calc(env(safe-area-inset-bottom)+16px)]">
+        <div
+          className={`max-w-md w-full p-6 sm:p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}
+        >
         <button
           onClick={handleSkip}
           className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
@@ -76,7 +79,12 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         <div className="text-center space-y-6">
           {screen.icon === "logo" ? (
             <div className="flex flex-col items-center justify-center gap-4 mb-2">
-              <img src="/logo.png" alt="PetsOfBase Logo" className="w-24 h-24 animate-bounce" style={{animationDuration: '2s'}} />
+              <img
+                src="/logo.png"
+                alt="PetsOfBase Logo"
+                className="w-24 h-24 animate-bounce"
+                style={{ animationDuration: "2s" }}
+              />
               <h1 className="text-3xl font-bold text-white">PetsOfBase</h1>
             </div>
           ) : (
@@ -126,6 +134,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               </Button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
