@@ -1,16 +1,19 @@
 import { eq, desc, sql, and, isNotNull } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { InsertUser, users, pets, votes, InsertPet, InsertVote, pfpVersions, InsertPfpVersion, referrals, InsertReferral, userReferralStats, InsertUserReferralStats, petOfTheDay } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 import { awardBadge } from './badgeSystem';
 
 let _db: ReturnType<typeof drizzle> | null = null;
+let _sql: ReturnType<typeof postgres> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      _sql = postgres(process.env.DATABASE_URL, { prepare: false });
+      _db = drizzle(_sql);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
@@ -69,9 +72,13 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
-      set: updateSet,
-    });
+    await db
+      .insert(users)
+      .values(values)
+      .onConflictDoUpdate({
+        target: users.openId,
+        set: updateSet,
+      });
   } catch (error) {
     console.error("[Database] Failed to upsert user:", error);
     throw error;
@@ -167,7 +174,8 @@ export async function createVote(vote: InsertVote) {
     return true;
   } catch (error) {
     // Unique constraint violation (user already voted)
-    if ((error as any).code === 'ER_DUP_ENTRY') {
+    const code = (error as any)?.code;
+    if (code === "ER_DUP_ENTRY" || code === "23505") {
       return false;
     }
     throw error;
