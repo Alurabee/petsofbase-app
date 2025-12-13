@@ -1,11 +1,8 @@
-# PetsOfBase - GitHub & Vercel Deployment Guide
+# PetsOfBase - GitHub & Vercel Deployment Guide (Base Mini App)
 
 ## Step 1: Download Project Files
 
-Download all project files from the Manus Management UI:
-1. Go to Management UI → Code panel
-2. Click "Download All Files"
-3. Extract the ZIP file to your local machine
+This project is a Base mini app designed to deploy on Vercel with a static frontend + serverless `/api/*`.\n+Deploy by pushing to GitHub and importing into Vercel.
 
 ## Step 2: Push to GitHub
 
@@ -33,26 +30,34 @@ git push -u origin main
 4. Configure the project:
    - **Framework Preset**: Other
    - **Build Command**: `pnpm run build`
-   - **Output Directory**: `dist`
+   - **Output Directory**: `dist/public`
    - **Install Command**: `pnpm install`
 
-5. Add Environment Variables (copy from Manus Settings → Secrets):
+5. Add Environment Variables (Vercel Project → Settings → Environment Variables):
    ```
-   DATABASE_URL=<your-database-url>
-   JWT_SECRET=<your-jwt-secret>
-   VITE_APP_ID=<your-app-id>
-   OAUTH_SERVER_URL=<oauth-server-url>
-   VITE_OAUTH_PORTAL_URL=<oauth-portal-url>
-   OWNER_OPEN_ID=<owner-open-id>
-   OWNER_NAME=<owner-name>
-   BUILT_IN_FORGE_API_URL=<forge-api-url>
-   BUILT_IN_FORGE_API_KEY=<forge-api-key>
-   VITE_FRONTEND_FORGE_API_KEY=<frontend-forge-api-key>
-   VITE_FRONTEND_FORGE_API_URL=<frontend-forge-api-url>
-   VITE_APP_LOGO=<app-logo-url>
-   VITE_APP_TITLE=PetsOfBase
-   VITE_ANALYTICS_ENDPOINT=<analytics-endpoint>
-   VITE_ANALYTICS_WEBSITE_ID=<analytics-website-id>
+   # Base mini app domain (no protocol)
+   APP_DOMAIN=petsofbase-app.vercel.app
+
+   # fal.ai (required for image-to-image generation)
+   FAL_KEY=...
+
+   # Supabase Postgres
+   DATABASE_URL=postgres://...
+
+   # Supabase Storage
+   STORAGE_SUPABASE_URL=https://....
+   STORAGE_SUPABASE_SERVICE_ROLE_KEY=...
+
+   # X402 payments (recipient wallet)
+   PAYMENT_RECIPIENT_ADDRESS=0x...
+
+   # NFT minting (optional for demo mode)
+   NFT_CONTRACT_ADDRESS=0x...
+   NFT_MINTER_PRIVATE_KEY=...
+   BASE_RPC_URL=https://...
+
+   # Optional
+   OWNER_FID=12345
    ```
 
 6. Click "Deploy"
@@ -62,7 +67,7 @@ git push -u origin main
 After deployment, you'll get a Vercel URL (e.g., `petsofbase.vercel.app`)
 
 Update `client/public/.well-known/farcaster.json`:
-- Replace all instances of `https://petsofbase.manus.space` with your Vercel URL
+- Replace all instances of the old placeholder domain with your Vercel URL
 - Push changes to GitHub (Vercel will auto-deploy)
 
 ## Step 5: Generate Account Association

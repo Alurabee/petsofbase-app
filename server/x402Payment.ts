@@ -3,7 +3,7 @@ import { paymentMiddleware } from "x402-express";
 /**
  * X402 Payment Configuration
  * 
- * This middleware protects the NFT minting endpoint with a $0.25 USDC payment requirement.
+ * This middleware protects the NFT minting endpoint with a $0.50 USDC payment requirement.
  * When a client tries to access the protected endpoint without payment, the server responds
  * with HTTP 402 Payment Required. The Base app wallet handles the payment and retries.
  */
@@ -20,12 +20,12 @@ if (PAYMENT_RECIPIENT_ADDRESS === "0x0000000000000000000000000000000000000000") 
  * X402 Payment Middleware
  * 
  * Routes and their payment requirements:
- * - /api/mint-nft: $0.25 USDC per mint
+ * - /api/mint-nft: $0.50 USDC per mint
  */
 export const x402Middleware = paymentMiddleware(
   PAYMENT_RECIPIENT_ADDRESS,
   {
-    "/api/mint-nft": "$0.25", // $0.25 USDC per NFT mint
+    "/api/mint-nft": "$0.50", // $0.50 USDC per NFT mint
   }
 );
 
@@ -34,7 +34,7 @@ export const x402Middleware = paymentMiddleware(
  */
 export const PAYMENT_CONFIG = {
   recipientAddress: PAYMENT_RECIPIENT_ADDRESS,
-  mintPrice: "$0.25",
+  mintPrice: "$0.50",
   currency: "USDC",
   network: "base", // Base mainnet
   testnetNetwork: "base-sepolia", // Base Sepolia testnet

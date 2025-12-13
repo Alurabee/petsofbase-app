@@ -63,10 +63,10 @@
 
 ---
 
-## 🔴 CRITICAL - Must Fix Before Submission
+## ✅ CRITICAL - Fixed Before Submission
 
-### 1. Manifest Account Association ❌
-**Issue:** Empty signature fields in farcaster.json
+### 1. Manifest Account Association ✅
+**Status:** `accountAssociation` fields are present in `client/public/.well-known/farcaster.json`.
 ```json
 "accountAssociation": {
   "header": "",      // ❌ EMPTY
@@ -75,38 +75,28 @@
 }
 ```
 
-**Required Action:**
-1. Go to Base Build Account Association tool
-2. Sign the manifest with your wallet
-3. Copy header, payload, and signature values
-4. Update farcaster.json
-
-**Impact:** App will NOT be indexed without valid signature
+**Impact:** Base Build can verify domain ownership via the signed manifest.
 
 ---
 
-### 2. Base Builder Owner Address ❌
-**Issue:** Empty ownerAddress field
+### 2. Base Builder Owner Address ✅
+**Status:** `baseBuilder.ownerAddress` is set in the manifest.
 ```json
 "baseBuilder": {
   "ownerAddress": ""  // ❌ EMPTY
 }
 ```
 
-**Required Action:**
-1. Add your Base wallet address (the one that will own the app)
-2. This address will receive Builder Rewards
-
-**Impact:** Cannot receive Builder Rewards without owner address
+**Impact:** Ownership/rewards attribution can be applied correctly.
 
 ---
 
-## ⚠️ WARNINGS - Should Update Before Submission
+## ✅ WARNINGS - Addressed
 
-### 1. Outdated Pricing in Manifest ⚠️
-**Issue:** Manifest shows old pricing ($0.25)
+### 1. Pricing in Manifest ✅
+**Status:** Manifest pricing is updated to $0.50 mint / $0.10 regen (first gen free).
 ```json
-"ogDescription": "Turn your pet into a Pixar-style NFT PFP on Base for just 0.25 USDC"
+"ogDescription": "Turn your pet into a Pixar-style NFT PFP on Base for just $0.50 USDC"
 ```
 
 **Current Pricing:**
@@ -114,24 +104,17 @@
 - Regen: $0.10 USDC
 - Free generations: 1 per pet
 
-**Required Action:**
-Update line 29 in farcaster.json:
-```json
-"ogDescription": "Turn your pet into a Pixar-style NFT PFP on Base for just $0.50 USDC"
-```
+**Note:** Keep this consistent with in-app pricing and X402 configuration.
 
 ---
 
-### 2. Domain URL Mismatch ⚠️
-**Issue:** Manifest points to Manus domain
+### 2. Domain URL ✅
+**Status:** Manifest URLs point to the Vercel production domain.
 ```json
-"homeUrl": "https://petsofbase.manus.space"
+"homeUrl": "https://petsofbase-app.vercel.app"
 ```
 
-**Required Action:**
-1. Update to your Vercel production URL
-2. Update all asset URLs to match
-3. Ensure all images are accessible from new domain
+**Note:** Ensure Vercel Deployment Protection is OFF so Base can fetch the manifest.
 
 **Current References:**
 - homeUrl
@@ -143,8 +126,8 @@ Update line 29 in farcaster.json:
 
 ---
 
-### 3. Weekly Prize Mention Removed ⚠️
-**Issue:** Manifest description mentions prizes, but feature removed
+### 3. Copy / Messaging ✅
+**Status:** Manifest description matches the current badge-based engagement system.
 ```json
 "description": "...vote for Pet of the Day, and win prizes!"
 ```
@@ -178,9 +161,9 @@ Update line 18 in farcaster.json:
 ### Immediate (Before Submission):
 1. **Sign manifest** - Use Base Build Account Association tool
 2. **Add owner address** - Your Base wallet address
-3. **Update pricing** - Change $0.25 to $0.50 in ogDescription
+3. **Pricing** - Confirm $0.50 mint / $0.10 regen is consistent everywhere
 4. **Update description** - Remove "win prizes", add "earn badges"
-5. **Update domain** - Change petsofbase.manus.space to your Vercel URL
+5. **Domain** - Confirm all manifest URLs point to your Vercel domain
 
 ### After Vercel Deployment:
 6. **Update all asset URLs** - Point to new domain
@@ -241,7 +224,7 @@ Update line 18 in farcaster.json:
 
 ## 📝 Notes
 
-1. **No Manus Dependencies:** All new features (badges, trending, Hall of Fame, Pet of the Day cron) are Base-compatible ✅
+1. **No platform dependencies:** All core features are Base-compatible ✅
 2. **Test Coverage:** 54/57 tests passing (94.7%) ✅
 3. **Cron Job:** Pet of the Day runs daily at 12 PM ET ✅
 4. **Pricing Updated:** All UI shows correct pricing ($0.50 mint, $0.10 regen) ✅

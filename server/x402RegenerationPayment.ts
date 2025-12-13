@@ -2,7 +2,7 @@ import { ENV } from "./_core/env";
 
 /**
  * X402 payment configuration for paid PFP regenerations
- * Charges $0.10 USDC for 3rd+ generations
+ * Charges $0.10 USDC for 2nd+ generations (first generation free)
  */
 
 const REGENERATION_PRICE_USDC = "0.10"; // $0.10 USDC per regeneration

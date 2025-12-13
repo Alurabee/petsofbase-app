@@ -161,7 +161,7 @@ export default function PetDetail() {
     );
   }
 
-  const isOwner = user?.id === pet.userId;
+  const isOwner = !!farcasterUser && pet.ownerFid === farcasterUser.fid;
   const displayImage = pet.pfpImageUrl || pet.originalImageUrl;
 
   return (

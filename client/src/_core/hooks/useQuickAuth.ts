@@ -39,6 +39,13 @@ export function useQuickAuth() {
 
     try {
       const { token } = await sdk.quickAuth.getToken();
+
+      // Persist token so API clients (tRPC/fetch) can reuse it.
+      try {
+        globalThis.localStorage?.setItem("quickAuthToken", token);
+      } catch {
+        // ignore
+      }
       
       setState({
         token,
@@ -66,6 +73,11 @@ export function useQuickAuth() {
    * Clear authentication state
    */
   const clearAuth = useCallback(() => {
+    try {
+      globalThis.localStorage?.removeItem("quickAuthToken");
+    } catch {
+      // ignore
+    }
     setState({
       token: null,
       isAuthenticated: false,

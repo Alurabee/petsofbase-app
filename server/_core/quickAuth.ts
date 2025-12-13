@@ -1,6 +1,12 @@
 import { createClient, Errors } from '@farcaster/quick-auth';
 
-const domain = process.env.VITE_APP_DOMAIN || 'localhost:3000';
+// Domain must match the mini app's host (no protocol).
+// Prefer server-side env var names; fall back to Vercel's host when available.
+const domain =
+  process.env.APP_DOMAIN ||
+  process.env.VITE_APP_DOMAIN ||
+  process.env.VERCEL_URL ||
+  'localhost:3000';
 const client = createClient();
 
 export interface VerifiedUser {

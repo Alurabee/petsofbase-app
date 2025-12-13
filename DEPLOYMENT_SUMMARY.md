@@ -29,7 +29,7 @@ This document summarizes all changes made in this session that need to be pushed
 8. `client/src/pages/Leaderboard.tsx` - Added crown emojis (🥇🥈🥉) to top 3
 9. `client/src/pages/Gallery.tsx` - Added badge display on pet cards
 10. `client/src/pages/MyPets.tsx` - Added badge display on pet cards, updated pricing to $0.50
-11. `client/src/pages/Mint.tsx` - Updated pricing from $0.25 to $0.50
+11. `client/src/pages/Mint.tsx` - Pricing is $0.50 mint / $0.10 regen (first gen free)
 12. `client/src/pages/Referrals.tsx` - Updated share text to $0.50
 13. `client/src/pages/PetDetail.tsx` - Updated generation pricing display
 14. `client/src/pages/HowItWorks.tsx` - Completely rewritten to focus on badge system
@@ -111,19 +111,22 @@ pnpm install
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️ Environment Variables (current)
 
-**No new environment variables required.**
+At minimum for production:
 
-All existing env vars are sufficient:
-- `DATABASE_URL`
-- `JWT_SECRET`
-- `VITE_APP_ID`
-- `OAUTH_SERVER_URL`
-- `VITE_OAUTH_PORTAL_URL`
-- `BUILT_IN_FORGE_API_URL`
-- `BUILT_IN_FORGE_API_KEY`
-- etc.
+- `APP_DOMAIN` (e.g. `petsofbase-app.vercel.app`)
+- `FAL_KEY`
+- `DATABASE_URL` (Supabase Postgres)
+- `STORAGE_SUPABASE_URL`
+- `STORAGE_SUPABASE_SERVICE_ROLE_KEY`
+- `PAYMENT_RECIPIENT_ADDRESS`
+
+If minting live:
+
+- `NFT_CONTRACT_ADDRESS`
+- `NFT_MINTER_PRIVATE_KEY`
+- `BASE_RPC_URL` (optional)
 
 ---
 

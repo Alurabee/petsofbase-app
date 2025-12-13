@@ -3,7 +3,7 @@
 ## ✅ COMPLETED
 
 ### Authentication
-- [x] In-app authentication stays within Base app (using Manus OAuth + Farcaster Context API)
+- [x] In-app authentication stays within Base app (Farcaster Context API + Quick Auth)
 - [x] Wallet connection happens automatically
 - [x] No email or phone verification inside the app
 
@@ -61,9 +61,8 @@
 
 ### Base Compatibility
 - [ ] **CRITICAL: Transactions must be sponsored** (currently not implemented)
-  - Need to integrate Base Paymaster
-  - Claim free gas credits on base.dev
-  - Remove payment requirements for minting/regeneration
+  - Integrate Base Paymaster (sponsor gas)
+  - App fees remain: $0.50 mint / $0.10 regen (first gen free)
 
 ### Usability
 - [ ] **App must support light AND dark modes** (currently only dark mode)
@@ -106,7 +105,7 @@
 - [ ] **Integrate Base Paymaster** for sponsored transactions
   - Follow Base Paymaster guide
   - Claim gas credits
-  - Remove $0.25 USDC payment requirement
+  - Confirm pricing is correct ($0.50 mint / $0.10 regen)
 
 ### Technical - Batch Transactions
 - [ ] **Batch sequential actions** where applicable
@@ -127,7 +126,7 @@
 ## 📋 PRIORITY ORDER
 
 ### HIGH PRIORITY (Required for Featured)
-1. **Sponsored Transactions** - This is critical, currently charging $0.25 USDC
+1. **Sponsored Transactions** - Sponsor gas; app fees are $0.50 mint / $0.10 regen
 2. **Light/Dark Mode Support** - Required for featured placement
 3. **Onboarding Flow** - First-time user experience
 4. **Touch Target Sizes** - Verify all buttons are 44px+
