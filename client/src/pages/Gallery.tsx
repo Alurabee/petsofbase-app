@@ -121,8 +121,8 @@ export default function Gallery() {
                           Original
                         </Badge>
                       )}
-                      {/* Delete button for user's non-minted pets */}
-                      {user && pet.userId === farcasterUser?.fid && !pet.nftTokenId && (
+                      {/* Delete button for the pet owner (non-minted only) */}
+                      {farcasterUser && pet.ownerFid === farcasterUser.fid && !pet.nftTokenId && (
                         <Button
                           size="icon"
                           variant="destructive"

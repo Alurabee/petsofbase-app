@@ -11,6 +11,8 @@ export interface FarcasterUser {
 export interface BaseContext {
   isInMiniApp: boolean;
   user: FarcasterUser | null;
+  // Back-compat name used across the codebase.
+  farcasterUser: FarcasterUser | null;
   isLoading: boolean;
 }
 
@@ -52,5 +54,5 @@ export function useBaseContext(): BaseContext {
     loadContext();
   }, []);
 
-  return { isInMiniApp, user, isLoading };
+  return { isInMiniApp, user, farcasterUser: user, isLoading };
 }

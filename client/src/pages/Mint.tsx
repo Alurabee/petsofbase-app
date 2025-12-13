@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ import { useLocation, useParams } from "wouter";
 import { toast } from "sonner";
 import { useSocialSharing } from "@/hooks/useSocialSharing";
 import confetti from "canvas-confetti";
+import { useQuickAuth } from "@/_core/hooks/useQuickAuth";
 
 export default function Mint() {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +28,7 @@ export default function Mint() {
   const { farcasterUser } = useBaseContext();
   const isAuthenticated = !!farcasterUser;
   const { shareMint } = useSocialSharing();
+  const { authenticate } = useQuickAuth();
   const [, setLocation] = useLocation();
   const [minting, setMinting] = useState(false);
   const [mintResult, setMintResult] = useState<any>(null);
@@ -35,6 +38,7 @@ export default function Mint() {
   const [selectedStyle, setSelectedStyle] = useState<string>("pixar");
   const [regenerating, setRegenerating] = useState(false);
   const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string>("");
 
   // Check if demo mode is active
   useEffect(() => {
@@ -71,17 +75,19 @@ export default function Mint() {
     if (!pet) return;
 
     const generationCount = pet.generationCount || 0;
-    const FREE_LIMIT = 2;
+    const FREE_LIMIT = 1;
 
     setRegenerating(true);
     toast.loading("Regenerating your PFP... This may take 10-20 seconds.");
 
     try {
+      const token = await authenticate();
       // Call the regeneration endpoint (free for first 2, paid for 3+)
       const response = await fetch("/api/regenerate-pfp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           petId: pet.id,
@@ -122,22 +128,25 @@ export default function Mint() {
   };
 
   const handleMint = async () => {
-    if (!user || !pet) return;
+    if (!pet) return;
+    if (!walletAddress || !walletAddress.startsWith("0x") || walletAddress.length !== 42) {
+      toast.error("Please enter a valid wallet address (0x...)");
+      return;
+    }
 
     setMinting(true);
     setError(null);
     toast.loading("Preparing to mint your NFT...");
 
     try {
-      // Get user's wallet address from Manus OAuth
-      // In a real Base app, this would come from the connected wallet
-      const walletAddress = user.email || "0x0000000000000000000000000000000000000000";
+      const token = await authenticate();
 
       // Call the X402-protected minting endpoint
       const response = await fetch("/api/mint-nft", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           petId: pet.id,
@@ -183,9 +192,9 @@ export default function Mint() {
       <div className="min-h-screen flex items-center justify-center bg-base-gradient-soft">
         <Navigation />
         <Card className="p-8 max-w-md text-center space-y-4">
-          <h2 className="text-2xl font-bold">Connect Your Wallet</h2>
+          <h2 className="text-2xl font-bold">Open in Base App</h2>
           <p className="text-muted-foreground">
-            You need to connect your wallet to mint an NFT.
+            Please open this app in the Base app to mint an NFT.
           </p>
           <Button asChild className="bg-base-gradient btn-primary-hover w-full">
             <span className="text-muted-foreground">Open in Base App</span>
@@ -405,6 +414,22 @@ export default function Mint() {
           )}
 
           <div className="space-y-3">
+            <div className="space-y-2">
+              <Label htmlFor="walletAddress">Wallet address to receive the NFT</Label>
+              <Input
+                id="walletAddress"
+                value={walletAddress}
+                onChange={(e) => setWalletAddress(e.target.value)}
+                placeholder="0x..."
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+              <p className="text-xs text-muted-foreground">
+                This should be your Base/Ethereum wallet address. It will own the minted NFT.
+              </p>
+            </div>
+
             {/* Regeneration Info */}
             {pet.generationCount !== undefined && (
               <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg text-sm">
