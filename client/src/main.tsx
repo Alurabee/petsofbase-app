@@ -27,20 +27,11 @@ async function getQuickAuthToken(): Promise<string | null> {
     // ignore
   }
 
-  try {
-    const inApp = await sdk.isInMiniApp();
-    if (!inApp) return null;
-    const { token } = await sdk.quickAuth.getToken();
-    cachedQuickAuthToken = token;
-    try {
-      globalThis.localStorage?.setItem("quickAuthToken", token);
-    } catch {
-      // ignore
-    }
-    return token;
-  } catch {
-    return null;
-  }
+  // IMPORTANT: Do not auto-trigger Quick Auth here.
+  // In Base preview/embedded contexts, calling quickAuth.getToken() from background
+  // requests can cause an authentication prompt loop.
+  // Tokens are requested explicitly via the useQuickAuth() hook on protected actions.
+  return null;
 }
 
 // Optional analytics (no build-time placeholders).
