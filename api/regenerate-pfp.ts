@@ -111,5 +111,8 @@ app.post(
 );
 
 export default function handler(req: any, res: any) {
+  // Vercel passes the full path (e.g. "/api/regenerate-pfp"). Our Express app is mounted at "/".
+  // Normalize so route matching works in serverless.
+  if (typeof req.url === "string") req.url = "/";
   return app(req, res);
 }

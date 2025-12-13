@@ -1,3 +1,3 @@
-export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
-
-// Base Mini Apps use Quick Auth - no manual login URL needed
+// (Intentionally left empty) This file previously re-exported cookie constants from a Manus auth flow.
+// Base mini apps use Farcaster context + Quick Auth, so no shared cookie constants are needed client-side.
+export {};
