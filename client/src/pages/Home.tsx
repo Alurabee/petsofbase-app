@@ -15,8 +15,23 @@ export default function Home() {
   const isAuthenticated = !!farcasterUser;
   const { data: leaderboard, isLoading } = trpc.pets.leaderboard.useQuery({ limit: 3 });
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [forceOnboarding, setForceOnboarding] = useState(false);
 
   useEffect(() => {
+    // Allow forcing the onboarding overlay for testing/support:
+    // https://<domain>/?onboarding=1
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const forced = params.get("onboarding") === "1";
+      if (forced) {
+        setForceOnboarding(true);
+        setShowOnboarding(true);
+        return;
+      }
+    } catch {
+      // ignore
+    }
+
     try {
       const hasSeenOnboarding = localStorage.getItem(
         "petsofbase-onboarding-complete"
@@ -35,6 +50,17 @@ export default function Home() {
       localStorage.setItem("petsofbase-onboarding-complete", "true");
     } catch {
       // ignore
+    }
+    // If onboarding was forced via query param, remove it.
+    if (forceOnboarding) {
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("onboarding");
+        window.history.replaceState({}, "", url.toString());
+      } catch {
+        // ignore
+      }
+      setForceOnboarding(false);
     }
     setShowOnboarding(false);
   };
@@ -67,6 +93,16 @@ export default function Home() {
                 Join the most wholesome community on Base. Upload your pet, mint a unique AI-generated PFP, 
                 and compete on the leaderboard.
               </p>
+
+              {!showOnboarding && (
+                <button
+                  type="button"
+                  onClick={() => setShowOnboarding(true)}
+                  className="text-sm text-primary underline underline-offset-4 hover:opacity-80"
+                >
+                  Show tutorial
+                </button>
+              )}
               
               {/* Primary CTA Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
