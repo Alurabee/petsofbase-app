@@ -28,7 +28,11 @@ function ReferralTracker() {
     
     if (refCode) {
       // Store in localStorage for later (when user signs up)
-      localStorage.setItem('referralCode', refCode);
+      try {
+        localStorage.setItem('referralCode', refCode);
+      } catch {
+        // ignore
+      }
       
       // Track the click
       trackClickMutation.mutate({ referralCode: refCode });
