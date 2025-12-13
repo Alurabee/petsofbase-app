@@ -64,19 +64,27 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto">
-      <div className="min-h-[100svh] flex items-center justify-center p-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-[calc(env(safe-area-inset-bottom)+16px)]">
+      <div className="min-h-[100svh] flex items-start justify-center p-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-[calc(env(safe-area-inset-bottom)+16px)]">
         <div
-          className={`max-w-md w-full max-h-[calc(100svh-32px-env(safe-area-inset-top)-env(safe-area-inset-bottom))] overflow-y-auto p-5 sm:p-8 relative animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}
+          className={`max-w-md w-full overflow-y-auto p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}
+          style={{
+            // Keep the card fully visible inside embedded webviews with safe areas.
+            maxHeight:
+              "calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px)",
+          }}
         >
-        <button
-          onClick={handleSkip}
-          className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors text-white"
-          aria-label="Skip onboarding"
-        >
-          <X className="w-5 h-5" />
-        </button>
+          <div className="flex justify-end mb-2">
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="p-2 rounded-lg hover:bg-white/20 transition-colors text-white z-10"
+              aria-label="Close onboarding"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
 
-        <div className="text-center space-y-6">
+          <div className="text-center space-y-6">
           {screen.icon === "logo" ? (
             <div className="flex flex-col items-center justify-center gap-4 mb-2">
               <img
