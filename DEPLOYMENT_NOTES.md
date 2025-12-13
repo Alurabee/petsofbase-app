@@ -16,19 +16,17 @@ The Base documentation shows that their quickstart uses Vercel for deployment, b
    - Railway
    - Render
    - AWS/GCP/Azure
-   - **Manus hosting** (we're already deployed!)
+   - Any hosting that serves your manifest publicly (Vercel is recommended)
 
 2. **Manifest File** - Must be accessible at `https://your-domain/.well-known/farcaster.json`
 
 3. **Account Association** - Sign the manifest using Base Build's Account Association tool
 
-### Our Current Situation:
+### Current approach (recommended)
 
-✅ **We already have a public domain** from Manus hosting:
-- Dev server: `https://3000-i3378a7o0712f6xf07ipx-02d2c383.manus-asia.computer`
-- This URL works for testing and initial setup
-
-✅ **We have Base Build access** at https://www.base.dev/apps
+Deploy on Vercel and ensure:
+- `/.well-known/farcaster.json` is publicly accessible
+- Vercel Deployment Protection is OFF
 
 ### What We Need to Do:
 
@@ -50,29 +48,22 @@ The Base documentation shows that their quickstart uses Vercel for deployment, b
    - Sign with wallet
    - Copy the generated accountAssociation fields back into manifest
 
-5. **Important: Turn off Vercel Deployment Protection** (if using Vercel):
+5. **Important: Turn off Vercel Deployment Protection**:
    - The docs mention: "Ensure that Vercel's Deployment Protection is off by going to the Vercel dashboard for your project and navigating to Settings → Deployment Protection and toggling 'Vercel Authentication' to off and click save."
-   - This is only needed if using Vercel - not applicable to Manus hosting
+   - Base needs public access to your manifest and assets
 
 ### Deployment Options:
 
-**Option A: Stay on Manus (Easiest)**
-- Use current Manus URL for initial testing
-- Create manifest with Manus URL
-- Sign and test
-- Later can add custom domain if needed
+**Option A: Deploy to Vercel (recommended)**
+- Import repo into Vercel
+- Set env vars
+- Deploy and validate via `base.dev/preview`
 
-**Option B: Deploy to Vercel (Base's Recommended)**
-- Connect GitHub repo to Vercel
-- Deploy to Vercel (gets custom domain like petsofbase.vercel.app)
-- Create manifest with Vercel URL
-- Sign and test
-
-**Option C: Custom Domain**
+**Option B: Custom Domain**
 - Buy domain (e.g., petsofbase.com)
-- Point to either Manus or Vercel hosting
+- Point to Vercel hosting
 - Create manifest with custom domain
 - Sign and test
 
 ### Recommendation:
-Start with **Option A** (Manus hosting) to get everything working, then optionally migrate to Vercel or custom domain later. The manifest can be updated anytime.
+Start with **Vercel** to match Base’s docs and avoid private-access issues.

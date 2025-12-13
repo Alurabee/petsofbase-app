@@ -43,6 +43,21 @@ async function getQuickAuthToken(): Promise<string | null> {
   }
 }
 
+// Optional analytics (no build-time placeholders).
+try {
+  const endpoint = (import.meta as any).env?.VITE_ANALYTICS_ENDPOINT as string | undefined;
+  const websiteId = (import.meta as any).env?.VITE_ANALYTICS_WEBSITE_ID as string | undefined;
+  if (endpoint && websiteId) {
+    const s = document.createElement("script");
+    s.defer = true;
+    s.src = `${String(endpoint).replace(/\/+$/, "")}/umami`;
+    s.setAttribute("data-website-id", String(websiteId));
+    document.head.appendChild(s);
+  }
+} catch {
+  // ignore
+}
+
 queryClient.getQueryCache().subscribe(event => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.query.state.error;

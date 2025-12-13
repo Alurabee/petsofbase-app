@@ -53,6 +53,46 @@ This repo is configured to deploy the Vite SPA output from `dist/public`, plus V
 - `vercel.json` rewrites keep `/api/*` and `/.well-known/*` from being swallowed by the SPA rewrite.
 - Serverless endpoints live in `api/` (tRPC + mint/regeneration helpers).
 
+### Supabase setup (Storage + Postgres)
+
+#### 1) Create a Supabase project
+
+- Create a project in Supabase.
+- Copy your **Postgres connection string** for Vercel (`DATABASE_URL`).
+
+#### 2) Create the Storage bucket
+
+This app expects a bucket named:
+
+- `pet-images`
+
+Uploads are done server-side using the **Service Role** key. The returned URLs are public URLs from Supabase Storage.
+
+#### 3) Apply database migrations (Drizzle → Supabase)
+
+The Postgres migration SQL is in:
+
+- `drizzle/0000_majestic_joshua_kane.sql`
+
+Apply it using **Supabase SQL Editor**:
+
+1. Supabase Dashboard → **SQL Editor**
+2. Create a new query
+3. Paste the contents of `drizzle/0000_majestic_joshua_kane.sql`
+4. Run it
+
+If you already have tables, review the SQL before running (it contains `CREATE TABLE` and enum `CREATE TYPE`).
+
+### Testing in Base dev / preview
+
+1. Ensure Vercel **Deployment Protection is OFF** (Base needs to fetch your manifest + assets).
+2. Confirm the manifest is reachable:
+   - `https://<your-domain>/.well-known/farcaster.json`
+3. Use Base’s preview tooling:
+   - Go to `https://base.dev/preview`
+   - Enter your deployed URL
+4. For protected actions (upload/generate/mint), open inside Base so **Context + Quick Auth** are available.
+
 ### Required environment variables
 
 #### Core
