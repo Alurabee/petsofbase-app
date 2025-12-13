@@ -92,19 +92,19 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </div>
 
           <div className="text-center space-y-6">
-          {screen.icon === "logo" ? (
-            <div className="flex flex-col items-center justify-center gap-4 mb-2">
+          {/* Fixed-height icon area so all screens have consistent layout */}
+          <div className="h-24 sm:h-28 flex items-center justify-center">
+            {screen.icon === "logo" ? (
               <img
                 src="/logo.png"
                 alt="PetsOfBase Logo"
-                className="w-20 h-20 sm:w-24 sm:h-24 animate-bounce"
+                className="w-16 h-16 sm:w-20 sm:h-20 animate-bounce"
                 style={{ animationDuration: "2s" }}
               />
-              <h1 className="text-2xl sm:text-3xl font-bold text-white">PetsOfBase</h1>
-            </div>
-          ) : (
-            <div className="text-5xl sm:text-7xl animate-pulse">{screen.icon}</div>
-          )}
+            ) : (
+              <div className="text-5xl sm:text-7xl animate-pulse">{screen.icon}</div>
+            )}
+          </div>
           
           <div className="space-y-2">
             <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">{screen.title}</h2>
