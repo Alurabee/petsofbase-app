@@ -14,6 +14,13 @@ const queryClient = new QueryClient();
 // Base Mini Apps use Quick Auth - no redirect needed
 // Users are automatically authenticated via Farcaster context
 
+// Tell the Base/Farcaster host we're ready so it can dismiss the loading shell.
+try {
+  sdk.actions.ready();
+} catch {
+  // ignore if not running inside a mini app host
+}
+
 let cachedQuickAuthToken: string | null = null;
 async function getQuickAuthToken(): Promise<string | null> {
   if (cachedQuickAuthToken) return cachedQuickAuthToken;
