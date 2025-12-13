@@ -40,12 +40,11 @@ git remote add github https://github.com/yourusername/petsofbase.git
 git push -u github main
 ```
 
-**Option B: Use Existing Manus Git (if applicable)**
+**Option B: Use your existing Git repo**
 ```bash
-cd /home/ubuntu/PetsOfBase
 git add .
-git commit -m "Prepare for Vercel deployment with Base manifest"
-git push origin main
+git commit -m "Prepare for Vercel deployment"
+git push
 ```
 
 ---
@@ -68,21 +67,17 @@ git push origin main
    - **Install Command**: `pnpm install`
 
 4. **Environment Variables** (Important!):
-   Add all your existing environment variables from Manus:
-   - `DATABASE_URL`
-   - `JWT_SECRET`
-   - `VITE_APP_ID`
-   - `OAUTH_SERVER_URL`
-   - `VITE_OAUTH_PORTAL_URL`
-   - `OWNER_OPEN_ID`
-   - `OWNER_NAME`
-   - `BUILT_IN_FORGE_API_URL`
-   - `BUILT_IN_FORGE_API_KEY`
-   - `VITE_FRONTEND_FORGE_API_KEY`
-   - `VITE_FRONTEND_FORGE_API_URL`
-   - `NFT_CONTRACT_ADDRESS` (if deployed)
-   - `NFT_MINTER_PRIVATE_KEY` (if configured)
-   - `PAYMENT_RECIPIENT_ADDRESS` (if configured)
+   Add the Base mini app env vars:
+   - `APP_DOMAIN` (e.g. `petsofbase-app.vercel.app`)
+   - `FAL_KEY` (required for image generation)
+   - `DATABASE_URL` (Supabase Postgres)
+   - `STORAGE_SUPABASE_URL`
+   - `STORAGE_SUPABASE_SERVICE_ROLE_KEY`
+   - `PAYMENT_RECIPIENT_ADDRESS`
+   - `NFT_CONTRACT_ADDRESS` (if minting live)
+   - `NFT_MINTER_PRIVATE_KEY` (if minting live)
+   - `BASE_RPC_URL` (optional; defaults to Base mainnet)
+   - `OWNER_FID` (optional admin)
 
    **How to add**: Settings → Environment Variables → Add each one
 

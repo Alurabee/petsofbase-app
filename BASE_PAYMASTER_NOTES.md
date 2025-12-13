@@ -27,9 +27,9 @@ Base Paymaster allows sponsoring gas fees for users, making transactions free an
 ## Implementation Approach for PetsOfBase
 
 ### Current State
-- Charging $0.25 USDC for minting
-- Charging for regeneration
-- Need to remove all payment requirements
+- Charging **$0.50 USDC** for minting
+- Charging **$0.10 USDC** for regenerations (after the first free generation)
+- Paymaster is for **sponsoring gas**, not removing app fees
 
 ### Integration Plan
 1. **Sign up for Coinbase Developer Platform**
@@ -50,8 +50,8 @@ Base Paymaster allows sponsoring gas fees for users, making transactions free an
    - Remove payment UI/logic
 
 4. **Update Backend**
-   - Remove payment verification
-   - Remove USDC transfer logic
+   - Keep X402 payment verification for app fees (USDC)
+   - Use Paymaster to sponsor gas for the onchain transaction
    - Keep NFT minting logic
 
 ## Code Structure

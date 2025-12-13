@@ -96,20 +96,19 @@ The minter wallet is a server-side wallet that will mint NFTs on behalf of users
      - You'll need to modify the contract to add a `minter` role, OR
      - Transfer ownership to minter and keep your wallet address stored separately
 
-## Step 4: Configure Environment Variables
+## Step 4: Configure Environment Variables (Vercel)
 
-Add these three required environment variables to your PetsOfBase project:
+Add these required environment variables to your Vercel project:
 
-### Via Manus Settings UI:
+### Via Vercel Settings UI:
 
-1. Click "Settings" in the Management UI (right panel)
-2. Go to "Secrets" tab
-3. Add the following secrets:
+1. Vercel Project → **Settings** → **Environment Variables**
+2. Add the following values:
 
 **1. PAYMENT_RECIPIENT_ADDRESS**
 - **Value**: Your wallet address that will receive USDC payments
 - **Example**: `0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb`
-- **Description**: All user payments (0.25 USDC per mint) will be sent here
+- **Description**: All user payments (**$0.50 USDC per mint**) will be sent here
 
 **2. NFT_CONTRACT_ADDRESS**
 - **Value**: The deployed PetPFP contract address from Step 1
@@ -136,7 +135,7 @@ The application currently runs in "Demo Mode" without payment protection. After 
      - Upload a pet
      - Generate a PFP
      - Click "Mint as NFT"
-     - You should see a USDC payment request for 0.25 USDC
+     - You should see a USDC payment request for **$0.50 USDC**
 
 ## Step 6: Test the Integration
 
@@ -149,7 +148,7 @@ The application currently runs in "Demo Mode" without payment protection. After 
 2. **Test End-to-End**
    - Upload a pet photo
    - Generate a PFP (use free generations or pay $0.10)
-   - Click "Mint as NFT" ($0.25 USDC)
+   - Click "Mint as NFT" (**$0.50 USDC**)
    - Approve USDC spending in MetaMask
    - Confirm the minting transaction
    - Verify NFT appears in your wallet

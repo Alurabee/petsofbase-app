@@ -1,3 +1,21 @@
+DO $$ BEGIN
+ CREATE TYPE "role" AS ENUM('user', 'admin');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "activityType" AS ENUM('generation', 'mint', 'vote', 'top10');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "tier" AS ENUM('milestone', 'achievement', 'exclusive');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE "activityFeed" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"userId" integer NOT NULL,

@@ -106,7 +106,7 @@
 - [ ] **Integrate Base Paymaster** for sponsored transactions
   - Follow Base Paymaster guide
   - Claim gas credits
-  - Remove $0.25 USDC payment requirement
+  - Confirm pricing is correct ($0.50 mint / $0.10 regen)
 
 ### Technical - Batch Transactions
 - [ ] **Batch sequential actions** where applicable
@@ -127,7 +127,7 @@
 ## 📋 PRIORITY ORDER
 
 ### HIGH PRIORITY (Required for Featured)
-1. **Sponsored Transactions** - This is critical, currently charging $0.25 USDC
+1. **Sponsored Transactions** - Sponsor gas; app fees are $0.50 mint / $0.10 regen
 2. **Light/Dark Mode Support** - Required for featured placement
 3. **Onboarding Flow** - First-time user experience
 4. **Touch Target Sizes** - Verify all buttons are 44px+
