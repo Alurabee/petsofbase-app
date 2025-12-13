@@ -63,8 +63,14 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto">
-      <div className="min-h-[100svh] flex items-start justify-center p-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-[calc(env(safe-area-inset-bottom)+16px)]">
+    <div
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm overflow-y-auto"
+      // Allow dismissing by tapping the dark backdrop.
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onComplete();
+      }}
+    >
+      <div className="min-h-[100svh] flex items-start justify-center p-4 pt-[calc(env(safe-area-inset-top)+64px)] pb-[calc(env(safe-area-inset-bottom)+24px)]">
         <div
           className={`max-w-md w-full overflow-y-auto p-5 sm:p-8 animate-in fade-in zoom-in-95 duration-500 border-4 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}
           style={{
@@ -77,7 +83,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             <button
               type="button"
               onClick={handleSkip}
-              className="p-2 rounded-lg hover:bg-white/20 transition-colors text-white z-10"
+              onPointerUp={handleSkip}
+              className="p-2 rounded-lg hover:bg-white/20 transition-colors text-white z-10 pointer-events-auto"
               aria-label="Close onboarding"
             >
               <X className="w-6 h-6" />
