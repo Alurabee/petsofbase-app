@@ -3,7 +3,7 @@ import { paymentMiddleware } from "x402-express";
 /**
  * X402 Payment Configuration
  * 
- * This middleware protects the NFT minting endpoint with a $0.25 USDC payment requirement.
+ * This middleware protects the NFT minting endpoint with a $0.50 USDC payment requirement.
  * When a client tries to access the protected endpoint without payment, the server responds
  * with HTTP 402 Payment Required. The Base app wallet handles the payment and retries.
  */
