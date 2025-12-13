@@ -216,7 +216,7 @@ export default function Upload() {
       </div>
       <div className="container max-w-3xl relative z-10">
         <div className="mb-8 text-center">
-          <h1 className="text-5xl font-bold mb-3 bg-gradient-blue-purple bg-clip-text text-transparent">Upload Your Pet ✨</h1>
+          <h1 className="text-3xl sm:text-5xl font-bold mb-3 bg-gradient-blue-purple bg-clip-text text-transparent">Upload Your Pet ✨</h1>
           <p className="text-lg text-muted-foreground">
             Your pet is about to become a star! Fill in the details below to get started. 🌟
           </p>

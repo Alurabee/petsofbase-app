@@ -84,7 +84,7 @@ export default function Home() {
         <div className="container py-16 pb-12 relative">
           <div className="max-w-6xl mx-auto">
             <div className="text-center space-y-6 mb-12">
-              <h1 className="text-6xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-6xl font-bold leading-tight">
                 Turn Your Pet Into a{" "}
                 <span className="text-base-gradient">Based NFT PFP</span>
               </h1>
@@ -330,7 +330,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 bg-base-gradient text-white">
         <div className="container text-center space-y-8">
-          <h2 className="text-5xl font-bold">Ready to Join the Based Pet Community?</h2>
+          <h2 className="text-3xl sm:text-5xl font-bold">Ready to Join the Based Pet Community?</h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
             Upload your pet, generate an adorable AI PFP, and compete for the #1 spot on the leaderboard.
           </p>

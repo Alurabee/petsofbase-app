@@ -114,6 +114,23 @@
 }
 
 @layer base {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Base webviews can have safe-area insets (notches / home indicator). */
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Prefer stable viewport height for embedded webviews. */
+  .min-h-screen {
+    min-height: 100svh !important;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }

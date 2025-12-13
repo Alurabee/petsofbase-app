@@ -13,7 +13,10 @@ export default function Navigation() {
   const isAuthenticated = !!farcasterUser;
 
   return (
-    <nav className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+    <nav
+      className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+    >
       <div className="container py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <img src="/logo.png" alt="PetsOfBase" className="w-10 h-10 rounded-lg" />
