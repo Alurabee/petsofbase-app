@@ -70,13 +70,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         if (e.target === e.currentTarget) onComplete();
       }}
     >
-      <div className="min-h-[100svh] flex items-start justify-center p-3 pt-[calc(env(safe-area-inset-top)+56px)] pb-[calc(env(safe-area-inset-bottom)+20px)]">
+      <div className="min-h-[100dvh] flex items-center justify-center p-3 pt-[calc(env(safe-area-inset-top)+16px)] pb-[calc(env(safe-area-inset-bottom)+16px)]">
         <div
           className={`w-full max-w-[22rem] sm:max-w-md overflow-y-auto p-4 sm:p-6 animate-in fade-in zoom-in-95 duration-500 border-2 border-white shadow-2xl rounded-xl ${gradients[currentScreen]}`}
           style={{
             // Keep the card fully visible inside embedded webviews with safe areas.
             maxHeight:
-              "calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px)",
+              "calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 32px)",
           }}
         >
           <div className="flex justify-end mb-2">
