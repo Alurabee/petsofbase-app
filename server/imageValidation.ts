@@ -1,4 +1,5 @@
-import { invokeLLM } from "./_core/llm";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ENV } from "./_core/env";
 
 export interface ImageValidationResult {
   isValid: boolean;
@@ -13,92 +14,57 @@ export interface ImageValidationResult {
  */
 export async function validatePetImage(imageUrl: string): Promise<ImageValidationResult> {
   try {
-    const response = await invokeLLM({
-      messages: [
-        {
-          role: "system",
-          content: `You are an image validation system for a pet photo app. Analyze images and determine if they contain a domestic pet (dog, cat, rabbit, bird, hamster, guinea pig, ferret, etc.).
+    // If no Gemini key is set, skip validation (uploads still work).
+    if (!ENV.geminiApiKey) {
+      return {
+        isValid: true,
+        reason: "valid",
+        confidence: 0.5,
+        detectedSubject: "validation_disabled",
+        message: "Validation not configured, allowing upload",
+      };
+    }
 
-REJECT if:
-- Contains human faces (even with pets)
-- No animal visible
-- Inappropriate/offensive content
-- Image is too blurry or low quality
-- Wild animals (lions, tigers, bears, etc.)
+    const res = await fetch(imageUrl);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch image (${res.status} ${res.statusText})`);
+    }
+    const mimeType = res.headers.get("content-type") || "image/jpeg";
+    const bytes = Buffer.from(await res.arrayBuffer());
+    const imageBase64 = bytes.toString("base64");
 
-ACCEPT if:
-- Clear photo of a domestic pet
-- Pet is the main subject
-- Good image quality
-- Wholesome content
+    const genAI = new GoogleGenerativeAI(ENV.geminiApiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-Respond ONLY with valid JSON in this exact format:
+    const prompt = `You are an image validation system for a pet photo app.
+Return ONLY valid JSON with this exact schema:
 {
   "isValid": true/false,
   "reason": "human_face" | "no_animal" | "low_quality" | "inappropriate" | "valid",
   "confidence": 0.0-1.0,
-  "detectedSubject": "description of what you see",
+  "detectedSubject": "short description of what you see",
   "message": "brief explanation"
-}`
-        },
+}
+
+Rules:
+- ACCEPT if: clear photo of a domestic pet (dog, cat, rabbit, bird, hamster, guinea pig, ferret, etc.), pet is the main subject, wholesome content.
+- REJECT if: human faces (even with pets), no animal visible, inappropriate/offensive, too blurry/low quality, wild animals.`;
+
+    const result = await model.generateContent({
+      contents: [
         {
           role: "user",
-          content: [
-            {
-              type: "text",
-              text: "Analyze this image and determine if it's a valid pet photo:"
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: imageUrl,
-                detail: "low" // Use low detail for faster validation
-              }
-            }
-          ]
-        }
+          parts: [
+            { text: prompt },
+            { inlineData: { mimeType, data: imageBase64 } },
+          ],
+        },
       ],
-      response_format: {
-        type: "json_schema",
-        json_schema: {
-          name: "image_validation",
-          strict: true,
-          schema: {
-            type: "object",
-            properties: {
-              isValid: {
-                type: "boolean",
-                description: "Whether the image is a valid pet photo"
-              },
-              reason: {
-                type: "string",
-                enum: ["human_face", "no_animal", "low_quality", "inappropriate", "valid"],
-                description: "Reason for validation result"
-              },
-              confidence: {
-                type: "number",
-                description: "Confidence score from 0.0 to 1.0"
-              },
-              detectedSubject: {
-                type: "string",
-                description: "What was detected in the image"
-              },
-              message: {
-                type: "string",
-                description: "Brief explanation of the validation result"
-              }
-            },
-            required: ["isValid", "reason", "confidence", "detectedSubject", "message"],
-            additionalProperties: false
-          }
-        }
-      }
     });
 
-    const content = response.choices[0].message.content;
-    const contentStr = typeof content === 'string' ? content : JSON.stringify(content);
-    const result = JSON.parse(contentStr || "{}");
-    return result as ImageValidationResult;
+    const text = result.response.text();
+    const parsed = JSON.parse(text);
+    return parsed as ImageValidationResult;
   } catch (error) {
     console.error("[Image Validation] Error:", error);
     // On error, allow the image through but log it
