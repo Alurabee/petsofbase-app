@@ -1,1 +1,0 @@
-ALTER TABLE `pets` ADD `generationCount` int DEFAULT 0 NOT NULL;
