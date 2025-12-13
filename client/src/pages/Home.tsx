@@ -17,14 +17,25 @@ export default function Home() {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem("petsofbase-onboarding-complete");
-    if (!hasSeenOnboarding) {
+    try {
+      const hasSeenOnboarding = localStorage.getItem(
+        "petsofbase-onboarding-complete"
+      );
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+      }
+    } catch {
+      // If storage is blocked (embedded environments), still show onboarding.
       setShowOnboarding(true);
     }
   }, []);
 
   const handleOnboardingComplete = () => {
-    localStorage.setItem("petsofbase-onboarding-complete", "true");
+    try {
+      localStorage.setItem("petsofbase-onboarding-complete", "true");
+    } catch {
+      // ignore
+    }
     setShowOnboarding(false);
   };
 
