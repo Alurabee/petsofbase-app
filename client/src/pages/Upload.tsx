@@ -69,6 +69,10 @@ export default function Upload() {
       toast.loading("Analyzing image...", { id: "validation" });
       
       try {
+        // Ensure Quick Auth token exists before hitting protected tRPC routes (uploadImage).
+        // This also stores the token so the tRPC client can attach it automatically.
+        await authenticate();
+
         // First upload to get URL for validation
         const base64Data = preview.split(',')[1];
         const uploadResult = await uploadImage.mutateAsync({
