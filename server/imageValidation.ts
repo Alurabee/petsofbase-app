@@ -18,6 +18,62 @@ export interface ImageValidationResult {
 
 type ImageBytes = { bytes: Buffer; mimeType: string };
 
+async function validatePetImageBytes(bytes: Buffer, mimeType: string): Promise<ImageValidationResult> {
+  if (!ENV.geminiApiKey) {
+    return {
+      isValid: false,
+      reason: "service_error",
+      confidence: 0,
+      detectedSubject: "validation_not_configured",
+      message: "Image validation is not configured. Please set GEMINI_API_KEY.",
+    };
+  }
+
+  const imageBase64 = bytes.toString("base64");
+
+  const genAI = new GoogleGenerativeAI(ENV.geminiApiKey);
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+
+  const prompt = `You are an image validation system for a pet photo app.
+Return ONLY valid JSON with this exact schema:
+{
+  "isValid": true/false,
+  "reason": "human_face" | "no_animal" | "low_quality" | "inappropriate" | "valid",
+  "confidence": 0.0-1.0,
+  "detectedSubject": "short description of what you see",
+  "message": "brief explanation"
+}
+
+Rules:
+- ACCEPT if: clear photo of a domestic pet (dog, cat, rabbit, bird, hamster, guinea pig, ferret, etc.), pet is the main subject, wholesome content.
+- REJECT if: human faces (even with pets), no animal visible, inappropriate/offensive, too blurry/low quality, wild animals.`;
+
+  const result = await model.generateContent({
+    contents: [
+      {
+        role: "user",
+        parts: [{ text: prompt }, { inlineData: { mimeType, data: imageBase64 } }],
+      },
+    ],
+  });
+
+  const text = result.response.text();
+  const parsed = safeParseJsonObject(text);
+  const normalized = normalizeResult(parsed);
+
+  if (typeof normalized.isValid !== "boolean" || typeof normalized.confidence !== "number") {
+    return {
+      isValid: false,
+      reason: "service_error",
+      confidence: 0,
+      detectedSubject: "validation_parse_error",
+      message: "Validation returned an unexpected response. Please try again.",
+    };
+  }
+
+  return normalized;
+}
+
 function safeParseJsonObject(text: string): any {
   // Gemini sometimes returns code-fenced JSON or extra text. Extract the first JSON object.
   const start = text.indexOf("{");
@@ -116,67 +172,30 @@ function normalizeResult(input: any): ImageValidationResult {
  */
 export async function validatePetImage(imageUrl: string): Promise<ImageValidationResult> {
   try {
-    if (!ENV.geminiApiKey) {
-      return {
-        isValid: false,
-        reason: "service_error",
-        confidence: 0,
-        detectedSubject: "validation_not_configured",
-        message: "Image validation is not configured. Please set GEMINI_API_KEY.",
-      };
-    }
-
     const { bytes, mimeType } = await getImageBytes(imageUrl);
-    const imageBase64 = bytes.toString("base64");
-
-    const genAI = new GoogleGenerativeAI(ENV.geminiApiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-    const prompt = `You are an image validation system for a pet photo app.
-Return ONLY valid JSON with this exact schema:
-{
-  "isValid": true/false,
-  "reason": "human_face" | "no_animal" | "low_quality" | "inappropriate" | "valid",
-  "confidence": 0.0-1.0,
-  "detectedSubject": "short description of what you see",
-  "message": "brief explanation"
-}
-
-Rules:
-- ACCEPT if: clear photo of a domestic pet (dog, cat, rabbit, bird, hamster, guinea pig, ferret, etc.), pet is the main subject, wholesome content.
-- REJECT if: human faces (even with pets), no animal visible, inappropriate/offensive, too blurry/low quality, wild animals.`;
-
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: "user",
-          parts: [
-            { text: prompt },
-            { inlineData: { mimeType, data: imageBase64 } },
-          ],
-        },
-      ],
-    });
-
-    const text = result.response.text();
-    const parsed = safeParseJsonObject(text);
-    const normalized = normalizeResult(parsed);
-
-    // If the model outputs malformed fields, treat it as a service error (fail closed).
-    if (typeof normalized.isValid !== "boolean" || typeof normalized.confidence !== "number") {
-      return {
-        isValid: false,
-        reason: "service_error",
-        confidence: 0,
-        detectedSubject: "validation_parse_error",
-        message: "Validation returned an unexpected response. Please try again.",
-      };
-    }
-
-    return normalized;
+    return await validatePetImageBytes(bytes, mimeType);
   } catch (error) {
     console.error("[Image Validation] Error:", error);
     // Fail closed: block uploads if the validation service is down/misconfigured.
+    return {
+      isValid: false,
+      reason: "service_error",
+      confidence: 0,
+      detectedSubject: "validation_error",
+      message: "Validation service unavailable. Please try again in a moment.",
+    };
+  }
+}
+
+export async function validatePetImageBase64(input: {
+  imageBase64: string;
+  mimeType: string;
+}): Promise<ImageValidationResult> {
+  try {
+    const bytes = Buffer.from(input.imageBase64, "base64");
+    return await validatePetImageBytes(bytes, input.mimeType || "image/jpeg");
+  } catch (error) {
+    console.error("[Image Validation] Base64 error:", error);
     return {
       isValid: false,
       reason: "service_error",
