@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
 import { Upload as UploadIcon, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
 import { useBaseContext } from "@/_core/hooks/useBaseContext";
@@ -17,8 +17,11 @@ export default function Upload() {
   const { authenticate } = useQuickAuth();
   const isAuthenticated = !!farcasterUser;
   const [, setLocation] = useLocation();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [validatedImageUrl, setValidatedImageUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [validating, setValidating] = useState(false);
   const [validationError, setValidationError] = useState<{
@@ -44,6 +47,13 @@ export default function Upload() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Always reset state when a new file is selected.
+    setValidationError(null);
+    setValidating(false);
+    setImageFile(null);
+    setImagePreview(null);
+    setValidatedImageUrl(null);
+
     // Validate file type
     if (!file.type.startsWith("image/")) {
       toast.error("Please upload an image file");
@@ -56,14 +66,10 @@ export default function Upload() {
       return;
     }
 
-    setImageFile(file);
-    setValidationError(null);
-    
     const reader = new FileReader();
     reader.onloadend = async () => {
       const preview = reader.result as string;
-      setImagePreview(preview);
-      
+
       // Validate image with AI
       setValidating(true);
       toast.loading("Analyzing image...", { id: "validation" });
@@ -96,6 +102,7 @@ export default function Upload() {
           setValidationError(errorDetails);
           setImageFile(null);
           setImagePreview(null);
+          setValidatedImageUrl(null);
           toast.error(errorDetails.title || "Validation failed", { id: "validation" });
           
           // Track validation failure for analytics
@@ -106,13 +113,32 @@ export default function Upload() {
           });
         } else {
           // Success
+          setImageFile(file);
+          setImagePreview(preview);
+          setValidatedImageUrl(uploadResult.url);
           toast.success("Pet detected! ✓", { id: "validation" });
         }
       } catch (error: any) {
         console.error("Validation error:", error);
+        setImageFile(null);
+        setImagePreview(null);
+        setValidatedImageUrl(null);
+        setValidationError({
+          icon: "🛠️",
+          title: "Validation temporarily unavailable",
+          message:
+            "We couldn't validate this image right now. Please try again. If this keeps happening, check that GEMINI_API_KEY is set and that the storage upload is configured.",
+        });
         toast.error("Validation failed. Please try again.", { id: "validation" });
       } finally {
         setValidating(false);
+
+        // Allow re-selecting the same file by clearing the input value.
+        try {
+          if (fileInputRef.current) fileInputRef.current.value = "";
+        } catch {
+          // ignore
+        }
       }
     };
     reader.readAsDataURL(file);
@@ -122,12 +148,18 @@ export default function Upload() {
     setImageFile(null);
     setImagePreview(null);
     setValidationError(null);
+    setValidatedImageUrl(null);
+    try {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch {
+      // ignore
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!imageFile) {
+    if (!imageFile || !validatedImageUrl) {
       toast.error("Please upload a photo of your pet");
       return;
     }
@@ -140,50 +172,24 @@ export default function Upload() {
     setUploading(true);
 
     try {
-      // Convert file to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(imageFile);
+      // Authenticate with Quick Auth before creating pet
+      toast.loading("Authenticating...");
+      await authenticate();
       
-      reader.onload = async () => {
-        try {
-          const base64Data = (reader.result as string).split(',')[1]; // Remove data:image/...;base64, prefix
-          
-          // Upload to S3
-          toast.loading("Uploading image...");
-          const uploadResult = await uploadImage.mutateAsync({
-            fileName: imageFile.name,
-            fileType: imageFile.type,
-            fileData: base64Data,
-          });
+      // Create pet record with Farcaster profile data
+      toast.loading("Creating pet profile...");
+      await createPet.mutateAsync({
+        ...formData,
+        originalImageUrl: validatedImageUrl,
+        // Include Farcaster profile data from Context API
+        ownerFid: farcasterUser?.fid,
+        ownerUsername: farcasterUser?.username,
+        ownerDisplayName: farcasterUser?.displayName,
+        ownerPfpUrl: farcasterUser?.pfpUrl,
+      } as any); // Type assertion needed until tRPC types regenerate
 
-          // Authenticate with Quick Auth before creating pet
-          toast.loading("Authenticating...");
-          const authToken = await authenticate();
-          
-          // Create pet record with Farcaster profile data
-          toast.loading("Creating pet profile...");
-          await createPet.mutateAsync({
-            ...formData,
-            originalImageUrl: uploadResult.url,
-            // Include Farcaster profile data from Context API
-            ownerFid: farcasterUser?.fid,
-            ownerUsername: farcasterUser?.username,
-            ownerDisplayName: farcasterUser?.displayName,
-            ownerPfpUrl: farcasterUser?.pfpUrl,
-          } as any); // Type assertion needed until tRPC types regenerate
-
-          toast.success("Pet uploaded successfully! Now let's generate your PFP.");
-          setLocation("/my-pets");
-        } catch (error: any) {
-          toast.error(error.message || "Failed to upload pet");
-          setUploading(false);
-        }
-      };
-
-      reader.onerror = () => {
-        toast.error("Failed to read image file");
-        setUploading(false);
-      };
+      toast.success("Pet uploaded successfully! Now let's generate your PFP.");
+      setLocation("/my-pets");
     } catch (error) {
       console.error("Upload error:", error);
       toast.error("An unexpected error occurred");
@@ -206,6 +212,8 @@ export default function Upload() {
       </div>
     );
   }
+
+  const canEditDetails = !!validatedImageUrl && !validating && !uploading && !validationError;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-950 dark:to-purple-950 py-12 relative overflow-hidden">
@@ -246,14 +254,13 @@ export default function Upload() {
                     <p className="text-xs text-muted-foreground">
                       PNG, JPG, or WEBP (max 5MB)
                     </p>
+                    <div className="mt-4 text-xs text-muted-foreground text-center max-w-xs space-y-1">
+                      <p className="font-medium text-foreground/80">For best results, use:</p>
+                      <p>- Clear pet face, centered</p>
+                      <p>- Good lighting, minimal motion blur</p>
+                      <p>- No humans in frame</p>
+                    </div>
                   </div>
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
-                  />
                 </label>
               ) : (
                 <div className="relative">
@@ -273,6 +280,16 @@ export default function Upload() {
                   </Button>
                 </div>
               )}
+
+              {/* Keep file input mounted so we can trigger it reliably */}
+              <input
+                ref={fileInputRef}
+                id="image"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
             </div>
 
             {/* Validation Error */}
@@ -291,7 +308,7 @@ export default function Upload() {
                       type="button"
                       onClick={() => {
                         setValidationError(null);
-                        document.getElementById('image')?.click();
+                        fileInputRef.current?.click();
                       }}
                       className="bg-base-gradient btn-primary-hover"
                     >
@@ -313,7 +330,7 @@ export default function Upload() {
             {validating && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
-                <span>Analyzing image...</span>
+                <span>Analyzing image... (we’ll show it after it passes)</span>
               </div>
             )}
 
@@ -326,6 +343,7 @@ export default function Upload() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -338,6 +356,7 @@ export default function Upload() {
                 value={formData.species}
                 onChange={(e) => setFormData({ ...formData, species: e.target.value })}
                 required
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -349,6 +368,7 @@ export default function Upload() {
                 placeholder="e.g., Golden Retriever"
                 value={formData.breed}
                 onChange={(e) => setFormData({ ...formData, breed: e.target.value })}
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -361,6 +381,7 @@ export default function Upload() {
                 value={formData.personality}
                 onChange={(e) => setFormData({ ...formData, personality: e.target.value })}
                 rows={3}
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -373,6 +394,7 @@ export default function Upload() {
                 value={formData.likes}
                 onChange={(e) => setFormData({ ...formData, likes: e.target.value })}
                 rows={2}
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -385,6 +407,7 @@ export default function Upload() {
                 value={formData.dislikes}
                 onChange={(e) => setFormData({ ...formData, dislikes: e.target.value })}
                 rows={2}
+                disabled={!canEditDetails}
               />
             </div>
 
@@ -392,7 +415,7 @@ export default function Upload() {
             <Button
               type="submit"
               className="w-full bg-gradient-blue-purple hover:opacity-90 transition-all duration-300 text-white font-semibold text-lg py-6 hover:scale-105"
-              disabled={uploading || !imageFile}
+              disabled={uploading || validating || !imageFile || !validatedImageUrl}
             >
               {uploading ? (
                 <span className="flex items-center gap-2">

@@ -3,10 +3,56 @@ import { ENV } from "./_core/env";
 
 export interface ImageValidationResult {
   isValid: boolean;
-  reason?: "human_face" | "no_animal" | "low_quality" | "inappropriate" | "valid";
+  reason?:
+    | "human_face"
+    | "no_animal"
+    | "low_quality"
+    | "inappropriate"
+    | "service_error"
+    | "valid";
   confidence: number;
   detectedSubject?: string;
   message?: string;
+}
+
+function safeParseJsonObject(text: string): any {
+  // Gemini sometimes returns code-fenced JSON or extra text. Extract the first JSON object.
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start === -1 || end === -1 || end <= start) {
+    throw new Error("Model response did not contain a JSON object");
+  }
+  const json = text.slice(start, end + 1);
+  return JSON.parse(json);
+}
+
+function normalizeResult(input: any): ImageValidationResult {
+  const isValid = Boolean(input?.isValid);
+  const confidence =
+    typeof input?.confidence === "number" && Number.isFinite(input.confidence)
+      ? Math.max(0, Math.min(1, input.confidence))
+      : 0.5;
+
+  const allowedReasons = new Set([
+    "human_face",
+    "no_animal",
+    "low_quality",
+    "inappropriate",
+    "service_error",
+    "valid",
+  ]);
+  const reason = typeof input?.reason === "string" && allowedReasons.has(input.reason) ? input.reason : undefined;
+
+  const detectedSubject = typeof input?.detectedSubject === "string" ? input.detectedSubject : undefined;
+  const message = typeof input?.message === "string" ? input.message : undefined;
+
+  return {
+    isValid,
+    reason,
+    confidence,
+    detectedSubject,
+    message,
+  };
 }
 
 /**
@@ -14,14 +60,13 @@ export interface ImageValidationResult {
  */
 export async function validatePetImage(imageUrl: string): Promise<ImageValidationResult> {
   try {
-    // If no Gemini key is set, skip validation (uploads still work).
     if (!ENV.geminiApiKey) {
       return {
-        isValid: true,
-        reason: "valid",
-        confidence: 0.5,
-        detectedSubject: "validation_disabled",
-        message: "Validation not configured, allowing upload",
+        isValid: false,
+        reason: "service_error",
+        confidence: 0,
+        detectedSubject: "validation_not_configured",
+        message: "Image validation is not configured. Please set GEMINI_API_KEY.",
       };
     }
 
@@ -63,17 +108,30 @@ Rules:
     });
 
     const text = result.response.text();
-    const parsed = JSON.parse(text);
-    return parsed as ImageValidationResult;
+    const parsed = safeParseJsonObject(text);
+    const normalized = normalizeResult(parsed);
+
+    // If the model outputs malformed fields, treat it as a service error (fail closed).
+    if (typeof normalized.isValid !== "boolean" || typeof normalized.confidence !== "number") {
+      return {
+        isValid: false,
+        reason: "service_error",
+        confidence: 0,
+        detectedSubject: "validation_parse_error",
+        message: "Validation returned an unexpected response. Please try again.",
+      };
+    }
+
+    return normalized;
   } catch (error) {
     console.error("[Image Validation] Error:", error);
-    // On error, allow the image through but log it
+    // Fail closed: block uploads if the validation service is down/misconfigured.
     return {
-      isValid: true,
-      reason: "valid",
-      confidence: 0.5,
+      isValid: false,
+      reason: "service_error",
+      confidence: 0,
       detectedSubject: "validation_error",
-      message: "Validation service unavailable, allowing upload"
+      message: "Validation service unavailable. Please try again in a moment.",
     };
   }
 }
@@ -106,6 +164,13 @@ export function getValidationErrorMessage(reason: string): { title: string; mess
         icon: "⚠️",
         title: "Image Not Allowed",
         message: "This image violates our content policy. Please upload a wholesome photo of your pet."
+      };
+    case "service_error":
+      return {
+        icon: "🛠️",
+        title: "Validation Temporarily Unavailable",
+        message:
+          "We couldn't validate this image right now. Please try again. If this keeps happening, the app may be missing GEMINI_API_KEY or the validation service is down.",
       };
     default:
       return {

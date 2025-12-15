@@ -24,6 +24,18 @@ try {
 let cachedQuickAuthToken: string | null = null;
 async function getQuickAuthToken(): Promise<string | null> {
   if (cachedQuickAuthToken) return cachedQuickAuthToken;
+
+  // Prefer in-memory token (works even if localStorage is blocked).
+  try {
+    const mem = (globalThis as any).__quickAuthToken as string | undefined;
+    if (typeof mem === "string" && mem.length > 0) {
+      cachedQuickAuthToken = mem;
+      return mem;
+    }
+  } catch {
+    // ignore
+  }
+
   try {
     const stored = globalThis.localStorage?.getItem("quickAuthToken");
     if (stored) {

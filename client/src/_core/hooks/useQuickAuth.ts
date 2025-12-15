@@ -40,6 +40,13 @@ export function useQuickAuth() {
     try {
       const { token } = await sdk.quickAuth.getToken();
 
+      // Keep an in-memory copy for environments where localStorage is blocked.
+      try {
+        (globalThis as any).__quickAuthToken = token;
+      } catch {
+        // ignore
+      }
+
       // Persist token so API clients (tRPC/fetch) can reuse it.
       try {
         globalThis.localStorage?.setItem("quickAuthToken", token);
