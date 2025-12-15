@@ -6,7 +6,7 @@ import * as db from "./db";
 import { getPetById, updatePet } from "./db";
 import { storagePut } from "./storage";
 import { generatePetPFP, getAvailableStyles, type PetImageStyle } from "./imageGeneration";
-import { validatePetImage, getValidationErrorMessage } from "./imageValidation";
+import { validatePetImage, validatePetImageBase64, getValidationErrorMessage } from "./imageValidation";
 import { nanoid } from "nanoid";
 import * as petOfTheDayService from "./petOfTheDay";
 import * as activityFeedService from "./activityFeed";
@@ -34,6 +34,31 @@ export const appRouter = router({
           };
         }
         
+        return result;
+      }),
+
+    // Validate an image payload directly (avoids storage/public URL fetch issues).
+    validatePetImageBase64: publicProcedure
+      .input(
+        z.object({
+          imageBase64: z.string().min(1),
+          mimeType: z.string().min(1),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const result = await validatePetImageBase64({
+          imageBase64: input.imageBase64,
+          mimeType: input.mimeType,
+        });
+
+        if (!result.isValid) {
+          const errorDetails = getValidationErrorMessage(result.reason || "unknown");
+          return {
+            ...result,
+            errorDetails,
+          };
+        }
+
         return result;
       }),
   }),

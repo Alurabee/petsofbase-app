@@ -41,7 +41,7 @@ export default function Upload() {
 
   const uploadImage = trpc.pets.uploadImage.useMutation();
   const createPet = trpc.pets.create.useMutation();
-  const validateImage = trpc.imageValidation.validatePetImage.useMutation();
+  const validateImage = trpc.imageValidation.validatePetImageBase64.useMutation();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -75,21 +75,12 @@ export default function Upload() {
       toast.loading("Analyzing image...", { id: "validation" });
       
       try {
-        // Ensure Quick Auth token exists before hitting protected tRPC routes (uploadImage).
-        // This also stores the token so the tRPC client can attach it automatically.
-        await authenticate();
-
-        // First upload to get URL for validation
         const base64Data = preview.split(',')[1];
-        const uploadResult = await uploadImage.mutateAsync({
-          fileName: file.name,
-          fileType: file.type,
-          fileData: base64Data,
-        });
-        
-        // Validate the uploaded image
+
+        // Validate the image payload first (no upload, no auth prompt).
         const validationResult = await validateImage.mutateAsync({
-          imageUrl: uploadResult.url
+          imageBase64: base64Data,
+          mimeType: file.type,
         });
         
         if (!validationResult.isValid) {
@@ -112,6 +103,17 @@ export default function Upload() {
             detectedSubject: validationResult.detectedSubject
           });
         } else {
+          // Ensure Quick Auth token exists before hitting protected tRPC routes (uploadImage).
+          // This also stores the token so the tRPC client can attach it automatically.
+          await authenticate();
+
+          // Upload only after validation passes (keeps invalid photos out of storage).
+          const uploadResult = await uploadImage.mutateAsync({
+            fileName: file.name,
+            fileType: file.type,
+            fileData: base64Data,
+          });
+
           // Success
           setImageFile(file);
           setImagePreview(preview);
