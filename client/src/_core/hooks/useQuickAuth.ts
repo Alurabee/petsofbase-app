@@ -30,11 +30,44 @@ export function useQuickAuth() {
     error: null,
   });
 
+  const getCachedToken = useCallback((): string | null => {
+    // Prefer in-memory token (works even when localStorage is blocked).
+    try {
+      const mem = (globalThis as any).__quickAuthToken as string | undefined;
+      if (typeof mem === "string" && mem.length > 0) return mem;
+    } catch {
+      // ignore
+    }
+
+    // Fall back to localStorage if available.
+    try {
+      const stored = globalThis.localStorage?.getItem("quickAuthToken");
+      if (typeof stored === "string" && stored.length > 0) return stored;
+    } catch {
+      // ignore
+    }
+
+    return null;
+  }, []);
+
   /**
    * Authenticate user and get JWT token
    * @returns JWT token for backend verification
    */
   const authenticate = useCallback(async (): Promise<string> => {
+    // If we already have a token, reuse it without prompting again.
+    const cached = getCachedToken();
+    if (cached) {
+      setState(prev => ({
+        ...prev,
+        token: cached,
+        isAuthenticated: true,
+        isAuthenticating: false,
+        error: null,
+      }));
+      return cached;
+    }
+
     setState(prev => ({ ...prev, isAuthenticating: true, error: null }));
 
     try {
@@ -74,7 +107,7 @@ export function useQuickAuth() {
 
       throw new Error(errorMessage);
     }
-  }, []);
+  }, [getCachedToken]);
 
   /**
    * Clear authentication state

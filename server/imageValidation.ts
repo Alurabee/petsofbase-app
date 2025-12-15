@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { createClient } from "@supabase/supabase-js";
 import { ENV } from "./_core/env";
 
 export interface ImageValidationResult {
@@ -15,6 +16,8 @@ export interface ImageValidationResult {
   message?: string;
 }
 
+type ImageBytes = { bytes: Buffer; mimeType: string };
+
 function safeParseJsonObject(text: string): any {
   // Gemini sometimes returns code-fenced JSON or extra text. Extract the first JSON object.
   const start = text.indexOf("{");
@@ -24,6 +27,59 @@ function safeParseJsonObject(text: string): any {
   }
   const json = text.slice(start, end + 1);
   return JSON.parse(json);
+}
+
+function tryParseSupabaseStoragePath(url: string): { bucket: string; path: string } | null {
+  // Typical public URL:
+  // https://<project>.supabase.co/storage/v1/object/public/<bucket>/<path>
+  // Signed URL:
+  // https://<project>.supabase.co/storage/v1/object/sign/<bucket>/<path>?token=...
+  try {
+    const u = new URL(url);
+    const parts = u.pathname.split("/").filter(Boolean);
+    const idx = parts.findIndex(p => p === "storage");
+    if (idx === -1) return null;
+    // Expect: storage/v1/object/{public|sign}/bucket/path...
+    const objectIdx = parts.findIndex((p, i) => i > idx && p === "object");
+    if (objectIdx === -1) return null;
+    const visibility = parts[objectIdx + 1];
+    const bucket = parts[objectIdx + 2];
+    if (!bucket || (visibility !== "public" && visibility !== "sign")) return null;
+    const pathParts = parts.slice(objectIdx + 3);
+    if (pathParts.length === 0) return null;
+    return { bucket, path: pathParts.join("/") };
+  } catch {
+    return null;
+  }
+}
+
+async function getImageBytes(imageUrl: string): Promise<ImageBytes> {
+  // First attempt: plain fetch (works for public URLs).
+  const res = await fetch(imageUrl);
+  if (res.ok) {
+    const mimeType = res.headers.get("content-type") || "image/jpeg";
+    const bytes = Buffer.from(await res.arrayBuffer());
+    return { bytes, mimeType };
+  }
+
+  // Fallback: if this is a Supabase Storage URL, download via service role.
+  const supabaseUrl = process.env.STORAGE_SUPABASE_URL;
+  const supabaseKey = process.env.STORAGE_SUPABASE_SERVICE_ROLE_KEY;
+  const parsed = tryParseSupabaseStoragePath(imageUrl);
+  if (!supabaseUrl || !supabaseKey || !parsed) {
+    throw new Error(`Failed to fetch image (${res.status} ${res.statusText})`);
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
+  const { data, error } = await supabase.storage.from(parsed.bucket).download(parsed.path);
+  if (error || !data) {
+    throw new Error(`Supabase storage download failed: ${error?.message || "unknown error"}`);
+  }
+
+  // supabase-js returns a Blob
+  const mimeType = (data as any).type || "image/jpeg";
+  const bytes = Buffer.from(await (data as any).arrayBuffer());
+  return { bytes, mimeType };
 }
 
 function normalizeResult(input: any): ImageValidationResult {
@@ -70,12 +126,7 @@ export async function validatePetImage(imageUrl: string): Promise<ImageValidatio
       };
     }
 
-    const res = await fetch(imageUrl);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch image (${res.status} ${res.statusText})`);
-    }
-    const mimeType = res.headers.get("content-type") || "image/jpeg";
-    const bytes = Buffer.from(await res.arrayBuffer());
+    const { bytes, mimeType } = await getImageBytes(imageUrl);
     const imageBase64 = bytes.toString("base64");
 
     const genAI = new GoogleGenerativeAI(ENV.geminiApiKey);
