@@ -41,7 +41,38 @@ export default function Upload() {
 
   const uploadImage = trpc.pets.uploadImage.useMutation();
   const createPet = trpc.pets.create.useMutation();
-  const validateImage = trpc.imageValidation.validatePetImageBase64.useMutation();
+  const validateImageBase64 = trpc.imageValidation.validatePetImageBase64.useMutation();
+  const validateImageUrl = trpc.imageValidation.validatePetImage.useMutation();
+
+  async function fetchDeployStatus(): Promise<null | {
+    vercelEnv?: string | null;
+    commitSha?: string | null;
+    hasGeminiApiKey?: boolean;
+  }> {
+    try {
+      const res = await fetch("/api/demo-status", { credentials: "include" });
+      if (!res.ok) return null;
+      const json = (await res.json()) as any;
+      return {
+        vercelEnv: json?.vercelEnv ?? null,
+        commitSha: json?.commitSha ?? null,
+        hasGeminiApiKey: Boolean(json?.hasGeminiApiKey),
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  function isLikelyProcedureMissing(err: any): boolean {
+    const msg = String(err?.message || err || "");
+    return (
+      msg.includes("validatePetImageBase64") ||
+      msg.includes("NOT_FOUND") ||
+      msg.includes("404") ||
+      msg.includes("No \"validatePetImageBase64\"") ||
+      msg.includes("No such procedure")
+    );
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -78,10 +109,25 @@ export default function Upload() {
         const base64Data = preview.split(',')[1];
 
         // Validate the image payload first (no upload, no auth prompt).
-        const validationResult = await validateImage.mutateAsync({
-          imageBase64: base64Data,
-          mimeType: file.type,
-        });
+        // If the server hasn't deployed this new procedure yet, fall back to URL validation.
+        let validationResult: any;
+        try {
+          validationResult = await validateImageBase64.mutateAsync({
+            imageBase64: base64Data,
+            mimeType: file.type,
+          });
+        } catch (err: any) {
+          if (!isLikelyProcedureMissing(err)) throw err;
+
+          // Fallback path: validate via URL (requires upload + auth).
+          await authenticate();
+          const uploadResult = await uploadImage.mutateAsync({
+            fileName: file.name,
+            fileType: file.type,
+            fileData: base64Data,
+          });
+          validationResult = await validateImageUrl.mutateAsync({ imageUrl: uploadResult.url });
+        }
         
         if (!validationResult.isValid) {
           // Show validation error
@@ -107,7 +153,8 @@ export default function Upload() {
           // This also stores the token so the tRPC client can attach it automatically.
           await authenticate();
 
-          // Upload only after validation passes (keeps invalid photos out of storage).
+          // Upload only after validation passes (keeps invalid photos out of storage when base64
+          // validation is available; if we fell back to URL validation above, this will upsert).
           const uploadResult = await uploadImage.mutateAsync({
             fileName: file.name,
             fileType: file.type,
@@ -125,11 +172,19 @@ export default function Upload() {
         setImageFile(null);
         setImagePreview(null);
         setValidatedImageUrl(null);
+
+        const status = await fetchDeployStatus();
+        const deployHint =
+          status?.commitSha
+            ? ` (env: ${status.vercelEnv ?? "unknown"}, commit: ${String(status.commitSha).slice(0, 7)}, GEMINI key: ${
+                status.hasGeminiApiKey ? "yes" : "no"
+              })`
+            : "";
         setValidationError({
           icon: "🛠️",
           title: "Validation temporarily unavailable",
           message:
-            "We couldn't validate this image right now. Please try again. If this keeps happening, check that GEMINI_API_KEY is set and that the storage upload is configured.",
+            `We couldn't validate this image right now. Please try again. If this keeps happening, check that GEMINI_API_KEY is set (for the same Vercel env you're testing) and open /api/demo-status to confirm deployment settings.${deployHint}`,
         });
         toast.error("Validation failed. Please try again.", { id: "validation" });
       } finally {
