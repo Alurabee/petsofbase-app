@@ -44,6 +44,48 @@ export default function Upload() {
   const validateImageBase64 = trpc.imageValidation.validatePetImageBase64.useMutation();
   const validateImageUrl = trpc.imageValidation.validatePetImage.useMutation();
 
+  async function downscaleForValidation(dataUrl: string): Promise<{ imageBase64: string; mimeType: string }> {
+    // Keep validation payload small to avoid serverless request limits.
+    // Convert to JPEG and downscale to max 768px on the long edge.
+    const MAX_DIM = 768;
+    const QUALITY = 0.85;
+
+    // Some environments may not support canvas/image decode; fall back to original.
+    try {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = dataUrl;
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = () => reject(new Error("Failed to decode image"));
+      });
+
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
+      if (!w || !h) throw new Error("Invalid image dimensions");
+
+      const scale = Math.min(1, MAX_DIM / Math.max(w, h));
+      const tw = Math.max(1, Math.round(w * scale));
+      const th = Math.max(1, Math.round(h * scale));
+
+      const canvas = document.createElement("canvas");
+      canvas.width = tw;
+      canvas.height = th;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("No canvas context");
+      ctx.drawImage(img, 0, 0, tw, th);
+
+      const jpegDataUrl = canvas.toDataURL("image/jpeg", QUALITY);
+      const base64 = jpegDataUrl.split(",")[1] || "";
+      if (!base64) throw new Error("Failed to encode jpeg");
+      return { imageBase64: base64, mimeType: "image/jpeg" };
+    } catch {
+      // Fall back to original payload.
+      const base64 = dataUrl.split(",")[1] || "";
+      return { imageBase64: base64, mimeType: "image/jpeg" };
+    }
+  }
+
   async function fetchDeployStatus(): Promise<null | {
     vercelEnv?: string | null;
     commitSha?: string | null;
@@ -106,15 +148,16 @@ export default function Upload() {
       toast.loading("Analyzing image...", { id: "validation" });
       
       try {
-        const base64Data = preview.split(',')[1];
+        const base64Data = preview.split(",")[1];
+        const validationPayload = await downscaleForValidation(preview);
 
         // Validate the image payload first (no upload, no auth prompt).
         // If the server hasn't deployed this new procedure yet, fall back to URL validation.
         let validationResult: any;
         try {
           validationResult = await validateImageBase64.mutateAsync({
-            imageBase64: base64Data,
-            mimeType: file.type,
+            imageBase64: validationPayload.imageBase64,
+            mimeType: validationPayload.mimeType,
           });
         } catch (err: any) {
           if (!isLikelyProcedureMissing(err)) throw err;
@@ -180,11 +223,12 @@ export default function Upload() {
                 status.hasGeminiApiKey ? "yes" : "no"
               })`
             : "";
+        const rawError = String(error?.message || error || "");
         setValidationError({
           icon: "🛠️",
           title: "Validation temporarily unavailable",
           message:
-            `We couldn't validate this image right now. Please try again. If this keeps happening, check that GEMINI_API_KEY is set (for the same Vercel env you're testing) and open /api/demo-status to confirm deployment settings.${deployHint}`,
+            `We couldn't validate this image right now. Please try again. If this keeps happening, check that GEMINI_API_KEY is set (for the same Vercel env you're testing). Error: ${rawError}${deployHint}`,
         });
         toast.error("Validation failed. Please try again.", { id: "validation" });
       } finally {
