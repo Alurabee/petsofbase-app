@@ -44,11 +44,14 @@ export default function Upload() {
   const validateImageBase64 = trpc.imageValidation.validatePetImageBase64.useMutation();
   const validateImageUrl = trpc.imageValidation.validatePetImage.useMutation();
 
-  async function downscaleForValidation(dataUrl: string): Promise<{ imageBase64: string; mimeType: string }> {
-    // Keep validation payload small to avoid serverless request limits.
-    // Convert to JPEG and downscale to max 768px on the long edge.
-    const MAX_DIM = 768;
-    const QUALITY = 0.85;
+  async function downscaleToJpeg(
+    dataUrl: string,
+    opts: { maxDim: number; quality: number }
+  ): Promise<{ imageBase64: string; mimeType: string }> {
+    // Keep payloads small to avoid serverless request limits.
+    // Converts to JPEG and downscales to maxDim on the long edge.
+    const MAX_DIM = opts.maxDim;
+    const QUALITY = opts.quality;
 
     // Some environments may not support canvas/image decode; fall back to original.
     try {
@@ -80,7 +83,7 @@ export default function Upload() {
       if (!base64) throw new Error("Failed to encode jpeg");
       return { imageBase64: base64, mimeType: "image/jpeg" };
     } catch {
-      // Fall back to original payload.
+      // Fall back to original payload (still as jpeg mime type hint).
       const base64 = dataUrl.split(",")[1] || "";
       return { imageBase64: base64, mimeType: "image/jpeg" };
     }
@@ -113,6 +116,16 @@ export default function Upload() {
       msg.includes("404") ||
       msg.includes("No \"validatePetImageBase64\"") ||
       msg.includes("No such procedure")
+    );
+  }
+
+  function isLikelyTrpcJsonParseFailure(err: any): boolean {
+    const msg = String(err?.message || err || "");
+    return (
+      msg.includes("Unexpected end of JSON input") ||
+      msg.includes("Failed to execute 'json'") ||
+      msg.includes("Invalid JSON") ||
+      msg.includes("SyntaxError")
     );
   }
 
@@ -149,7 +162,11 @@ export default function Upload() {
       
       try {
         const base64Data = preview.split(",")[1];
-        const validationPayload = await downscaleForValidation(preview);
+        // Validation thumbnail: very small payload.
+        const validationPayload = await downscaleToJpeg(preview, { maxDim: 512, quality: 0.75 });
+        // Upload payload: keep within Vercel body limits by downscaling.
+        const uploadPayload = await downscaleToJpeg(preview, { maxDim: 1024, quality: 0.88 });
+        const uploadFileName = file.name.replace(/\.[^.]+$/, "") + ".jpg";
 
         // Validate the image payload first (no upload, no auth prompt).
         // If the server hasn't deployed this new procedure yet, fall back to URL validation.
@@ -160,14 +177,16 @@ export default function Upload() {
             mimeType: validationPayload.mimeType,
           });
         } catch (err: any) {
-          if (!isLikelyProcedureMissing(err)) throw err;
+          // If the procedure isn't available yet OR the response isn't JSON (serverless limit/crash),
+          // fall back to URL validation (upload + validate by URL).
+          if (!isLikelyProcedureMissing(err) && !isLikelyTrpcJsonParseFailure(err)) throw err;
 
           // Fallback path: validate via URL (requires upload + auth).
           await authenticate();
           const uploadResult = await uploadImage.mutateAsync({
-            fileName: file.name,
-            fileType: file.type,
-            fileData: base64Data,
+            fileName: uploadFileName,
+            fileType: uploadPayload.mimeType,
+            fileData: uploadPayload.imageBase64,
           });
           validationResult = await validateImageUrl.mutateAsync({ imageUrl: uploadResult.url });
         }
@@ -199,9 +218,9 @@ export default function Upload() {
           // Upload only after validation passes (keeps invalid photos out of storage when base64
           // validation is available; if we fell back to URL validation above, this will upsert).
           const uploadResult = await uploadImage.mutateAsync({
-            fileName: file.name,
-            fileType: file.type,
-            fileData: base64Data,
+            fileName: uploadFileName,
+            fileType: uploadPayload.mimeType,
+            fileData: uploadPayload.imageBase64,
           });
 
           // Success
